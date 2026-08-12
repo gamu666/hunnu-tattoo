@@ -82,13 +82,19 @@
     line-height:0.88;
     opacity:0;animation:fadeUp .9s .4s forwards;
   }
-  .hero-logo{
-    max-width:min(520px,80vw);
-    width:100%;
-    height:auto;
-    opacity:0;animation:fadeUp .9s .4s forwards;
-    filter:drop-shadow(0 0 40px rgba(163,22,33,0.15));
-  }
+.hero-logo{
+  width:min(900px,90vw);
+  max-width:none;
+  height:auto;
+
+  display:block;
+  margin:0 auto;
+
+  opacity:0;
+  animation:fadeUp .9s .4s forwards;
+
+  filter:drop-shadow(0 0 40px rgba(163,22,33,0.15));
+}
   .hero h1 .outline{
     -webkit-text-stroke:1.5px var(--paper);
     color:transparent;
