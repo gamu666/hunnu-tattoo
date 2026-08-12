@@ -242,7 +242,7 @@
   }
 
   @media(max-width:900px){
-    .team-grid{grid-template-columns:1fr;}
+    .team-grid{grid-template-columns:repeat(2,1fr);}
   }
 
   /* BOOKING */
@@ -542,11 +542,45 @@
       <p class="artist-bio">Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.</p>
       <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a3');">Цаг захиалах →</a>
     </div>
+    <div class="artist-card" onclick="openArtistPage('a4','Artist 4','Japanese / Irezumi','Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.')">
+      <div class="artist-portrait">
+        <span class="initial display">04</span>
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+      </div>
+      <span class="artist-tag">Japanese / Irezumi</span>
+      <h3 class="artist-name display">Artist Name</h3>
+      <p class="artist-bio">Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.</p>
+      <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a4');">Цаг захиалах →</a>
+    </div>
+    <div class="artist-card" onclick="openArtistPage('a5','Artist 5','Neo-traditional','Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.')">
+      <div class="artist-portrait">
+        <span class="initial display">05</span>
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+      </div>
+      <span class="artist-tag">Neo-traditional</span>
+      <h3 class="artist-name display">Artist Name</h3>
+      <p class="artist-bio">Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.</p>
+      <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a5');">Цаг захиалах →</a>
+    </div>
+    <div class="artist-card" onclick="openArtistPage('a6','Artist 6','Minimal / Dotwork','Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.')">
+      <div class="artist-portrait">
+        <span class="initial display">06</span>
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+      </div>
+      <span class="artist-tag">Minimal / Dotwork</span>
+      <h3 class="artist-name display">Artist Name</h3>
+      <p class="artist-bio">Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.</p>
+      <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a6');">Цаг захиалах →</a>
+    </div>
   </div>
+
 
   <div class="studio-stats">
     <div>
-      <div class="stat-num display" data-start="1" data-target="3">1</div>
+      <div class="stat-num display" data-start="3" data-target="6">3</div>
       <div class="stat-label">Artist studio-д</div>
     </div>
     <div>
@@ -604,6 +638,9 @@
             <option value="ml">Mnhja Loco</option>
             <option value="a2">Artist 2 (Blackwork)</option>
             <option value="a3">Artist 3 (Realism)</option>
+            <option value="a4">Artist 4 (Japanese)</option>
+            <option value="a5">Artist 5 (Neo-traditional)</option>
+            <option value="a6">Artist 6 (Minimal/Dotwork)</option>
             <option value="any">Хамаагүй — санал болгоорой</option>
           </select>
         </div>
@@ -765,6 +802,7 @@
   function handleServiceChange(){
     var val = document.getElementById('bookingServiceSelect').value;
     var artistGroup = document.getElementById('artistFieldGroup');
+    var artistSelect = document.getElementById('bookingArtistSelect');
     var qtyGroup = document.getElementById('piercingQtyGroup');
     var sizeGroup = document.getElementById('sizeFieldGroup');
     var locLabel = document.getElementById('bookingLocationLabel');
@@ -778,12 +816,15 @@
 
     if(val === 'tattoo'){
       artistGroup.style.display = '';
+      artistSelect.innerHTML = '<option value="ml">Mnhja Loco</option><option value="a2">Artist 2 (Blackwork)</option><option value="a3">Artist 3 (Realism)</option><option value="a4">Artist 4 (Japanese)</option><option value="a5">Artist 5 (Neo-traditional)</option>';
       sizeGroup.style.display = '';
       locLabel.textContent = 'Байршил';
       locSelect.innerHTML = '<option>Гар</option><option>Мөр</option><option>Хөл</option><option>Нуруу</option><option>Бусад</option>';
       noteLabel.textContent = 'Санааны тайлбар';
       noteText.placeholder = 'Ямар шивээс хийлгэх гэж байгаагаа бичээрэй...';
     } else if(val === 'piercing'){
+      artistGroup.style.display = '';
+      artistSelect.innerHTML = '<option value="a6">Artist 6 (Piercing)</option>';
       qtyGroup.style.display = '';
       locLabel.textContent = 'Байршил (piercing цэг)';
       locSelect.innerHTML = '<option>Чихний дэлбэн (Lobe)</option><option>Chandarhai (Helix)</option><option>Tragus</option><option>Хамар (Nostril)</option><option>Хөмсөг (Eyebrow)</option><option>Уруул (Lip)</option><option>Хүйс (Navel)</option><option>Бусад</option>';
