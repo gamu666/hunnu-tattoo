@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUNNU TATTOO STUDIO — Tattoo Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #0B0B0D;
+    --ink-2: #16151A;
+    --paper: #EDE9E1;
+    --crimson: #A31621;
+    --brass: #B08D3F;
+    --line: #2C2A2E;
+    --muted: #8A8790;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Work Sans',sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  .display{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:0.01em;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+
+  /* texture */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(237,233,225,0.035) 1px, transparent 0);
+    background-size: 26px 26px;
+    pointer-events:none;
+    z-index:1;
+  }
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:22px 5vw;
+    z-index:100;
+    background:linear-gradient(to bottom, rgba(11,11,13,0.9), transparent);
+  }
+  .logo{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:0.03em;}
+  .logo span{color:var(--crimson);}
+  .nav-links{display:flex;gap:36px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;}
+  .nav-links a{position:relative;padding-bottom:4px;transition:color .25s;}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--crimson);transition:width .3s;}
+  .nav-links a:hover{color:var(--paper);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    border:1px solid var(--paper);
+    padding:9px 20px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+    transition:all .25s;
+  }
+  .nav-cta:hover{background:var(--crimson);border-color:var(--crimson);}
+  .burger{display:none;font-size:22px;cursor:pointer;}
+
+  /* HERO */
+  .hero{
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:0 5vw;
+    position:relative;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:0.25em;color:var(--brass);
+    margin-bottom:22px;text-transform:uppercase;
+    opacity:0;animation:fadeUp .8s .2s forwards;
+  }
+  .hero h1{
+    font-size:clamp(52px,10vw,150px);
+    line-height:0.88;
+    opacity:0;animation:fadeUp .9s .4s forwards;
+  }
+  .hero h1 .outline{
+    -webkit-text-stroke:1.5px var(--paper);
+    color:transparent;
+  }
+  .hero h1 .fill-red{color:var(--crimson);}
+  .hero-sub{
+    max-width:480px;margin-top:28px;
+    font-size:16px;line-height:1.7;color:var(--muted);font-weight:300;
+    opacity:0;animation:fadeUp .9s .6s forwards;
+  }
+  .hero-actions{
+    margin-top:38px;display:flex;gap:16px;align-items:center;
+    opacity:0;animation:fadeUp .9s .8s forwards;
+  }
+  .btn-primary{
+    background:var(--crimson);color:var(--paper);
+    padding:16px 34px;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;
+    transition:transform .25s, background .25s;
+    display:inline-block;
+  }
+  .btn-primary:hover{background:#8a121b;transform:translateY(-2px);}
+  .btn-ghost{
+    font-size:13px;letter-spacing:0.08em;text-transform:uppercase;
+    border-bottom:1px solid var(--muted);padding-bottom:4px;
+    color:var(--muted);transition:color .25s, border-color .25s;
+  }
+  .btn-ghost:hover{color:var(--paper);border-color:var(--paper);}
+
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(18px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  .stitch{
+    position:absolute;bottom:40px;left:5vw;right:5vw;
+    display:flex;align-items:center;gap:14px;
+    color:var(--muted);font-size:11px;letter-spacing:0.15em;
+  }
+  .stitch-line{flex:1;height:1px;background:repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 12px);}
+
+  /* SECTION SHELL */
+  section{padding:120px 5vw;position:relative;}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:18px;}
+  .section-num{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brass);
+    letter-spacing:0.2em;margin-bottom:14px;display:block;
+  }
+  .section-title{font-size:clamp(34px,5vw,58px);line-height:0.95;}
+  .section-title .accent{color:var(--crimson);}
+  .section-desc{max-width:340px;color:var(--muted);font-size:14px;line-height:1.7;}
+
+  /* GALLERY — flash sheet */
+  .flash-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    grid-auto-rows:110px;
+    gap:2px;
+    border:1px solid var(--line);
+    background:var(--line);
+  }
+  .flash-card{
+    background:var(--ink-2);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+    cursor:pointer;
+  }
+  .flash-card svg{width:46%;height:46%;stroke:var(--paper);opacity:0.75;transition:opacity .3s, transform .5s;}
+  .flash-card::before{
+    content:attr(data-tag);
+    position:absolute;top:10px;left:12px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--brass);
+    letter-spacing:0.1em;opacity:0;transition:opacity .3s;
+  }
+  .flash-card:hover{background:#1e1c22;}
+  .flash-card:hover svg{opacity:1;transform:scale(1.08) rotate(-2deg);}
+  .flash-card:hover::before{opacity:1;}
+
+  .flash-meta{
+    position:absolute;bottom:0;left:0;right:0;
+    background:linear-gradient(to top, rgba(11,11,13,0.95), transparent 100%);
+    padding:14px 12px 10px;
+    display:flex;align-items:center;gap:9px;
+    transform:translateY(100%);
+    transition:transform .35s ease;
+  }
+  .flash-card:hover .flash-meta, .flash-card.show .flash-meta{transform:translateY(0);}
+  .flash-meta .avatar{
+    width:24px;height:24px;border-radius:50%;flex:none;
+    background:var(--ink);border:1px solid var(--brass);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--brass);
+  }
+  .flash-meta .aname{font-size:12px;letter-spacing:0.03em;color:var(--paper);}
+  .fc-1{grid-column:span 2;grid-row:span 2;}
+  .fc-2{grid-column:span 2;grid-row:span 3;}
+  .fc-3{grid-column:span 2;grid-row:span 2;}
+  .fc-4{grid-column:span 2;grid-row:span 2;}
+  .fc-5{grid-column:span 2;grid-row:span 3;}
+  .fc-6{grid-column:span 2;grid-row:span 2;}
+
+  @media(max-width:720px){
+    .flash-grid{grid-template-columns:repeat(2,1fr);}
+    .fc-1,.fc-2,.fc-3,.fc-4,.fc-5,.fc-6{grid-column:span 1;grid-row:span 2;}
+  }
+
+  /* TEAM — multiple artists */
+  .team-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+    background:var(--line);border:1px solid var(--line);
+    margin-bottom:60px;
+  }
+  .artist-card{
+    background:var(--ink);padding:34px 28px;
+    transition:background .3s;
+    cursor:pointer;
+  }
+  .artist-card:hover{background:var(--ink-2);}
+  .artist-portrait{
+    aspect-ratio:3/4;
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;margin-bottom:22px;
+  }
+  .artist-card:hover .artist-portrait{background:#1e1c22;}
+  .artist-portrait .initial{
+    font-family:'Anton',sans-serif;font-size:64px;color:var(--line);
+  }
+  .artist-portrait .corner{position:absolute;width:14px;height:14px;border:1px solid var(--brass);}
+  .artist-portrait .c1{top:10px;left:10px;border-right:none;border-bottom:none;}
+  .artist-portrait .c2{bottom:10px;right:10px;border-left:none;border-top:none;}
+  .artist-name{font-size:22px;margin-bottom:6px;}
+  .artist-tag{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--brass);
+    letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;display:block;
+  }
+  .artist-bio{color:var(--muted);line-height:1.8;font-size:13.5px;margin-bottom:18px;}
+  .artist-link{font-size:12px;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--muted);padding-bottom:3px;color:var(--muted);transition:color .2s,border-color .2s;}
+  .artist-link:hover{color:var(--paper);border-color:var(--paper);}
+
+  .studio-stats{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    text-align:center;margin-top:70px;
+    border-top:1px solid var(--line);padding-top:56px;
+  }
+  .studio-stats > div{
+    padding:0 20px;position:relative;
+  }
+  .studio-stats > div:not(:first-child)::before{
+    content:"";position:absolute;left:0;top:8px;bottom:8px;width:1px;background:var(--line);
+  }
+  .stat-num{font-family:'Anton',sans-serif;font-size:clamp(56px,7vw,104px);color:var(--brass);line-height:1;}
+  .stat-label{font-size:14px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;margin-top:14px;}
+
+  @media(max-width:700px){
+    .studio-stats{grid-template-columns:1fr;gap:36px;}
+    .studio-stats > div:not(:first-child)::before{display:none;}
+  }
+
+  @media(max-width:900px){
+    .team-grid{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* BOOKING */
+  .booking-wrap{
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    padding:56px 5vw;
+    display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;
+  }
+  .booking-info h3{font-size:26px;margin-bottom:16px;}
+  .booking-info p{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:26px;}
+  .booking-note{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brass);
+    border-left:2px solid var(--brass);padding-left:14px;line-height:1.7;
+  }
+  form{display:flex;flex-direction:column;gap:20px;}
+  .form-row{display:flex;flex-wrap:wrap;gap:20px;}
+  .form-row > .field{flex:1 1 180px;}
+  .field label{
+    display:block;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:8px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);
+    color:var(--paper);font-family:'Work Sans',sans-serif;font-size:15px;padding:8px 0;
+    outline:none;transition:border-color .25s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--crimson);}
+  .field textarea{resize:none;height:70px;}
+  .field select option{background:var(--ink-2);}
+  .submit-btn{
+    margin-top:8px;background:var(--crimson);color:var(--paper);border:none;
+    padding:16px;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;
+    cursor:pointer;transition:background .25s;font-family:'Work Sans',sans-serif;
+  }
+  .submit-btn:hover{background:#8a121b;}
+
+  @media(max-width:800px){
+    .booking-wrap{grid-template-columns:1fr;}
+  }
+
+  /* FOOTER / CONTACT */
+  footer{
+    padding:80px 5vw 40px;
+    border-top:1px solid var(--line);
+  }
+  .footer-top{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:50px;margin-bottom:70px;
+  }
+  .footer-title{font-size:clamp(30px,5vw,52px);line-height:1;margin-bottom:20px;}
+  .footer-desc{color:var(--muted);font-size:14px;max-width:320px;line-height:1.7;}
+  .footer-col h4{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--brass);margin-bottom:18px;}
+  .footer-col a, .footer-col p{display:block;font-size:14px;color:var(--muted);margin-bottom:10px;transition:color .2s;}
+  .footer-col a:hover{color:var(--paper);}
+  .footer-bottom{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-top:24px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--muted);flex-wrap:wrap;gap:10px;
+  }
+
+  @media(max-width:800px){
+    .footer-top{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+  }
+
+  /* ARTIST DETAIL OVERLAY */
+  .artist-overlay{
+    position:fixed;inset:0;background:var(--ink);z-index:200;
+    overflow-y:auto;
+    opacity:0;visibility:hidden;transform:translateY(24px);
+    transition:opacity .35s ease, transform .35s ease, visibility 0s linear .35s;
+  }
+  .artist-overlay.open{
+    opacity:1;visibility:visible;transform:translateY(0);
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  .overlay-close{
+    position:fixed;top:22px;right:5vw;z-index:210;
+    width:44px;height:44px;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;background:var(--ink);font-size:20px;color:var(--paper);
+    transition:border-color .2s,color .2s;
+  }
+  .overlay-close:hover{border-color:var(--crimson);color:var(--crimson);}
+  .overlay-inner{max-width:1100px;margin:0 auto;padding:110px 5vw 100px;}
+  .overlay-header{
+    display:flex;gap:40px;align-items:flex-end;flex-wrap:wrap;
+    margin-bottom:60px;border-bottom:1px solid var(--line);padding-bottom:44px;
+  }
+  .overlay-avatar{
+    width:120px;height:120px;flex:none;
+    background:var(--ink-2);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Anton',sans-serif;font-size:44px;color:var(--brass);
+  }
+  #overlayTag{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brass);
+    letter-spacing:0.15em;text-transform:uppercase;display:block;margin-bottom:12px;
+  }
+  #overlayName{font-size:clamp(32px,5vw,56px);}
+  #overlayBio{color:var(--muted);max-width:520px;margin-top:16px;line-height:1.8;font-size:15px;}
+  .overlay-book-btn{margin-top:26px;display:inline-block;}
+  .overlay-works-title{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brass);
+    letter-spacing:0.15em;text-transform:uppercase;margin-bottom:26px;
+  }
+  #overlayWorks{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+    background:var(--line);border:1px solid var(--line);
+  }
+  #overlayWorks .flash-card{min-height:260px;}
+  @media(max-width:700px){
+    #overlayWorks{grid-template-columns:repeat(2,1fr);}
+    .overlay-header{gap:24px;}
+  }
+
+  /* SERVICES */
+  .services-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line);
+  }
+  .service-card{
+    padding:44px 30px;border-right:1px solid var(--line);
+    transition:background .3s;position:relative;
+  }
+  .service-card:last-child{border-right:none;}
+  .service-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brass);letter-spacing:0.1em;display:block;margin-bottom:26px;}
+  .service-card h4{font-size:22px;margin-bottom:12px;}
+  .service-card p{color:var(--muted);font-size:13.5px;line-height:1.75;}
+  .service-link{
+    display:inline-block;margin-top:20px;
+    font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--muted);border-bottom:1px solid var(--muted);padding-bottom:3px;
+    transition:color .2s,border-color .2s;
+  }
+  .service-link:hover{color:var(--paper);border-color:var(--paper);}
+  .service-card:hover{background:var(--ink-2);}
+  @media(max-width:900px){
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .service-card{border-bottom:1px solid var(--line);}
+    .service-card:nth-child(2n){border-right:none;}
+  }
+  @media(max-width:520px){
+    .services-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">HUNNU <span>TATTOO</span> STUDIO</div>
+  <div class="nav-links">
+    <a href="#work">Ажлууд</a>
+    <a href="#services">Үйлчилгээ</a>
+    <a href="#artist">Артистууд</a>
+    <a href="#booking">Цаг захиалга</a>
+    <a href="#contact">Холбоо барих</a>
+  </div>
+  <a href="#booking" class="nav-cta">Цаг захиалах</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Ulaanbaatar · Custom Tattoo Studio</div>
+  <h1 class="display">
+    АРЬСАН<br>
+    <span class="outline">ДЭЭРХ</span> <span class="fill-red">МӨНХ</span><br>
+    ШУГАМ
+  </h1>
+  <p class="hero-sub">HUNNU TATTOO STUDIO — өөр өөр чиглэлээр ажилладаг хэд хэдэн artist нэг дор. Fine-line-с эхлээд өнгөт, blackwork хүртэл — санаандаа тохирсон artist-аа сонго.</p>
+  <div class="hero-actions">
+    <a href="#booking" class="btn-primary">Цаг захиалах</a>
+    <a href="#work" class="btn-ghost">Ажлуудыг үзэх</a>
+  </div>
+  <div class="stitch">
+    <span>001</span>
+    <div class="stitch-line"></div>
+    <span>SINCE 2022</span>
+    <div class="stitch-line"></div>
+    <span>UB, MN</span>
+  </div>
+</section>
+
+<section id="services">
+  <div class="section-head">
+    <div>
+      <span class="section-num">01 — SERVICES</span>
+      <h2 class="section-title display">Үйлчилгээ<span class="accent">нүүд</span></h2>
+    </div>
+    <p class="section-desc">Зөвхөн шивээс биш — studio-д дараах бүх үйлчилгээг авах боломжтой.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-num">01</span>
+      <h4 class="display">Шивээс</h4>
+      <p>Custom fine-line, өнгөт, blackwork, realism — санаагаа хэлээд artist сонго.</p>
+      <a href="#booking" class="service-link" onclick="event.preventDefault(); bookService('tattoo');">Цаг захиалах →</a>
+    </div>
+    <div class="service-card">
+      <span class="service-num">02</span>
+      <h4 class="display">Piercing</h4>
+      <p>Ээж, хамар, chuluu болон бусад piercing, эрүүл ахуйн стандартаар.</p>
+      <a href="#booking" class="service-link" onclick="event.preventDefault(); bookService('piercing');">Цаг захиалах →</a>
+    </div>
+    <div class="service-card">
+      <span class="service-num">03</span>
+      <h4 class="display">Шивээс арилгалт</h4>
+      <p>Laser технологиор хуучин шивээсийг аюулгүй арилгах үйлчилгээ.</p>
+      <a href="#booking" class="service-link" onclick="event.preventDefault(); bookService('removal');">Цаг захиалах →</a>
+    </div>
+    <div class="service-card">
+      <span class="service-num">04</span>
+      <h4 class="display">Сургалт</h4>
+      <p>Шивээсчин болох сонирхолтой хүмүүст зориулсан бэлтгэл сургалт.</p>
+      <a href="#booking" class="service-link" onclick="event.preventDefault(); bookService('course');">Цаг захиалах →</a>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="section-head">
+    <div>
+      <span class="section-num">02 — PORTFOLIO</span>
+      <h2 class="section-title display">Сүүлийн <span class="accent">ажлууд</span></h2>
+    </div>
+    <p class="section-desc">Flash sheet шиг эмхэтгэсэн жишээ загварууд — жинхэнэ зурган портфолио дараа нь энд орно.</p>
+  </div>
+
+  <div class="flash-grid">
+    <div class="flash-card fc-1" data-tag="ROSE / FINE-LINE" data-artist="ml">
+      <svg viewBox="0 0 100 100" fill="none" stroke-width="2"><path d="M50 20 C40 25 38 40 50 45 C62 40 60 25 50 20Z"/><path d="M50 45 V85"/><path d="M50 60 C40 60 35 68 38 75"/><path d="M50 68 C60 68 65 76 62 83"/></svg>
+      <div class="flash-meta"><div class="avatar">ML</div><span class="aname">Mnhja Loco</span></div>
+    </div>
+    <div class="flash-card fc-2" data-tag="SNAKE / COLOR" data-artist="ml">
+      <svg viewBox="0 0 100 140" fill="none" stroke-width="2"><path d="M30 20 Q70 35 30 55 Q-10 75 30 95 Q70 115 40 130"/><circle cx="30" cy="20" r="5"/></svg>
+      <div class="flash-meta"><div class="avatar">ML</div><span class="aname">Mnhja Loco</span></div>
+    </div>
+    <div class="flash-card fc-3" data-tag="DAGGER" data-artist="a2">
+      <svg viewBox="0 0 100 100" fill="none" stroke-width="2"><path d="M50 10 V70"/><path d="M35 25 H65"/><path d="M42 70 L50 90 L58 70Z"/></svg>
+      <div class="flash-meta"><div class="avatar">02</div><span class="aname">Artist 2</span></div>
+    </div>
+    <div class="flash-card fc-4" data-tag="MOON PHASE" data-artist="ml">
+      <svg viewBox="0 0 100 100" fill="none" stroke-width="2"><circle cx="50" cy="50" r="30"/><path d="M50 20 A30 30 0 0 1 50 80" fill="var(--ink-2)"/></svg>
+      <div class="flash-meta"><div class="avatar">ML</div><span class="aname">Mnhja Loco</span></div>
+    </div>
+    <div class="flash-card fc-5" data-tag="WOLF / BLACKWORK" data-artist="a2">
+      <svg viewBox="0 0 100 140" fill="none" stroke-width="2"><path d="M20 60 L50 20 L80 60 L65 60 L65 120 L35 120 L35 60Z"/><circle cx="42" cy="45" r="3" fill="var(--paper)"/><circle cx="58" cy="45" r="3" fill="var(--paper)"/></svg>
+      <div class="flash-meta"><div class="avatar">02</div><span class="aname">Artist 2</span></div>
+    </div>
+    <div class="flash-card fc-6" data-tag="LETTERING" data-artist="a3">
+      <svg viewBox="0 0 100 100" fill="none" stroke-width="2"><path d="M20 70 Q30 20 50 55 Q70 90 80 30"/></svg>
+      <div class="flash-meta"><div class="avatar">03</div><span class="aname">Artist 3</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="artist">
+  <div class="section-head">
+    <div>
+      <span class="section-num">03 — TEAM</span>
+      <h2 class="section-title display">Манай <span class="accent">artist-ууд</span></h2>
+    </div>
+    <p class="section-desc">Артист бүр өөрийн гэсэн style-тай. Хэн нэгэнтэй тодорхой ажиллах гэж байгаа бол booking дээрээ сонгож болно.</p>
+  </div>
+
+  <div class="team-grid">
+    <div class="artist-card" onclick="openArtistPage('ml','Mnhja Loco','Fine-line / Color','Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд. Studio-г үүсгэн байгуулагч.')">
+      <div class="artist-portrait">
+        <span class="initial display">ML</span>
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+      </div>
+      <span class="artist-tag">Fine-line / Color</span>
+      <h3 class="artist-name display">Mnhja Loco</h3>
+      <p class="artist-bio">Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд. Studio-г үүсгэн байгуулагч.</p>
+      <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('ml');">Цаг захиалах →</a>
+    </div>
+    <div class="artist-card" onclick="openArtistPage('a2','Artist 2','Blackwork','Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.')">
+      <div class="artist-portrait">
+        <span class="initial display">02</span>
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+      </div>
+      <span class="artist-tag">Blackwork</span>
+      <h3 class="artist-name display">Artist Name</h3>
+      <p class="artist-bio">Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.</p>
+      <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a2');">Цаг захиалах →</a>
+    </div>
+    <div class="artist-card" onclick="openArtistPage('a3','Artist 3','Realism','Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.')">
+      <div class="artist-portrait">
+        <span class="initial display">03</span>
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+      </div>
+      <span class="artist-tag">Realism</span>
+      <h3 class="artist-name display">Artist Name</h3>
+      <p class="artist-bio">Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.</p>
+      <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a3');">Цаг захиалах →</a>
+    </div>
+    <div class="artist-card" onclick="openArtistPage('a4','Artist 4','Japanese / Irezumi','Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.')">
+      <div class="artist-portrait">
+        <span class="initial display">04</span>
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+      </div>
+      <span class="artist-tag">Japanese / Irezumi</span>
+      <h3 class="artist-name display">Artist Name</h3>
+      <p class="artist-bio">Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.</p>
+      <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a4');">Цаг захиалах →</a>
+    </div>
+    <div class="artist-card" onclick="openArtistPage('a5','Artist 5','Neo-traditional','Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.')">
+      <div class="artist-portrait">
+        <span class="initial display">05</span>
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+      </div>
+      <span class="artist-tag">Neo-traditional</span>
+      <h3 class="artist-name display">Artist Name</h3>
+      <p class="artist-bio">Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.</p>
+      <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a5');">Цаг захиалах →</a>
+    </div>
+    <div class="artist-card" onclick="openArtistPage('a6','Artist 6','Minimal / Dotwork','Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.')">
+      <div class="artist-portrait">
+        <span class="initial display">06</span>
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+      </div>
+      <span class="artist-tag">Minimal / Dotwork</span>
+      <h3 class="artist-name display">Artist Name</h3>
+      <p class="artist-bio">Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.</p>
+      <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a6');">Цаг захиалах →</a>
+    </div>
+  </div>
+
+
+  <div class="studio-stats">
+    <div>
+      <div class="stat-num display" data-start="3" data-target="6">3</div>
+      <div class="stat-label">Artist studio-д</div>
+    </div>
+    <div>
+      <div class="stat-num display" data-start="400" data-target="500" data-suffix="+">400+</div>
+      <div class="stat-label">Хийсэн ажлын тоо</div>
+    </div>
+    <div>
+      <div class="stat-num display" data-start="0" data-target="100" data-suffix="%">0%</div>
+      <div class="stat-label">Custom дизайн</div>
+    </div>
+  </div>
+</section>
+
+<section id="booking">
+  <div class="section-head">
+    <div>
+      <span class="section-num">04 — BOOKING</span>
+      <h2 class="section-title display">Цаг <span class="accent">захиалга</span></h2>
+    </div>
+  </div>
+
+  <div class="booking-wrap">
+    <div class="booking-info">
+      <h3 class="display">Хэрхэн ажилладаг</h3>
+      <p>Формыг бөглөөд илгээнэ. Санаа болон байршлыг харсны дараа Mnhja чат руу шууд холбогдож, урьдчилгаа болон эцсийн цагийг тохирно.</p>
+      <div class="booking-note">
+        * Урьдчилгаа төлбөр шаардлагатай<br>
+        * Хариу 24 цагийн дотор ирнэ
+      </div>
+    </div>
+    <form onsubmit="return false;">
+      <div class="field">
+        <label>Үйлчилгээний төрөл</label>
+        <select id="bookingServiceSelect" onchange="handleServiceChange()">
+          <option value="tattoo">Шивээс</option>
+          <option value="piercing">Piercing</option>
+          <option value="removal">Шивээс арилгалт (Laser)</option>
+          <option value="course">Сургалт</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Нэр</label>
+          <input type="text" placeholder="Таны нэр">
+        </div>
+        <div class="field">
+          <label>Утасны дугаар</label>
+          <input type="tel" placeholder="99xxxxxx">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field" id="artistFieldGroup">
+          <label>Artist сонгох</label>
+          <select id="bookingArtistSelect">
+            <option value="ml">Mnhja Loco</option>
+            <option value="a2">Artist 2 (Blackwork)</option>
+            <option value="a3">Artist 3 (Realism)</option>
+            <option value="a4">Artist 4 (Japanese)</option>
+            <option value="a5">Artist 5 (Neo-traditional)</option>
+            <option value="a6">Artist 6 (Minimal/Dotwork)</option>
+            <option value="any">Хамаагүй — санал болгоорой</option>
+          </select>
+        </div>
+        <div class="field" id="locationFieldGroup">
+          <label id="bookingLocationLabel">Байршил</label>
+          <select id="bookingLocationSelect">
+            <option>Гар</option>
+            <option>Мөр</option>
+            <option>Хөл</option>
+            <option>Нуруу</option>
+            <option>Бусад</option>
+          </select>
+        </div>
+        <div class="field" id="piercingQtyGroup" style="display:none;">
+          <label>Хэдэн ширхэг</label>
+          <select id="bookingQtySelect">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4+</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" id="sizeFieldGroup">
+        <label>Хэмжээ (см орчим)</label>
+        <input type="text" placeholder="жш: 10x10">
+      </div>
+      <div class="field">
+        <label id="bookingNoteLabel">Санааны тайлбар</label>
+        <textarea id="bookingNoteText" placeholder="Ямар шивээс хийлгэх гэж байгаагаа бичээрэй..."></textarea>
+      </div>
+      <button class="submit-btn">Хүсэлт илгээх</button>
+    </form>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-top">
+    <div>
+      <h3 class="footer-title display">Ярилцаад <span style="color:var(--crimson)">эхэлье</span></h3>
+      <p class="footer-desc">Санаагаа бэлдээд ирээрэй — үлдсэнийг хамтдаа зурна.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Холбоо барих</h4>
+      <a href="http://facebook.com/tattoo.mongol" target="_blank" rel="noopener">Facebook</a>
+      <a href="#">+976 9911 xxxx</a>
+    </div>
+    <div class="footer-col">
+      <h4>Байршил</h4>
+      <p>СБД, 5-р хороо, 45-1</p>
+      <p>Зөвхөн урьдчилсан цагаар</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 HUNNU TATTOO STUDIO</span>
+    <span class="mono">DESIGN MOCKUP — V1</span>
+  </div>
+</footer>
+
+<div class="artist-overlay" id="artist-overlay">
+  <div class="overlay-close" onclick="closeArtistPage()">✕</div>
+  <div class="overlay-inner">
+    <div class="overlay-header">
+      <div class="overlay-avatar" id="overlayAvatar">ML</div>
+      <div>
+        <span id="overlayTag">Fine-line / Color</span>
+        <h2 id="overlayName" class="display">Mnhja Loco</h2>
+        <p id="overlayBio">Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд.</p>
+        <a href="#booking" class="btn-primary overlay-book-btn" id="overlayBookBtn" onclick="event.preventDefault(); bookArtist(this.dataset.artist);">Энэ artist-тай цаг захиалах</a>
+      </div>
+    </div>
+    <span class="overlay-works-title">Ажлууд</span>
+    <div id="overlayWorks"></div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.flash-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      document.querySelectorAll('.flash-card').forEach(function(c){
+        if(c !== card) c.classList.remove('show');
+      });
+      card.classList.toggle('show');
+    });
+  });
+
+  // count-up animation for studio stats
+  var statEls = document.querySelectorAll('.stat-num');
+  function animateStat(el){
+    var start = parseInt(el.dataset.start, 10);
+    var target = parseInt(el.dataset.target, 10);
+    var suffix = el.dataset.suffix || '';
+    var duration = 1400;
+    var startTime = null;
+    function step(ts){
+      if(!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = Math.round(start + (target - start) * eased);
+      el.textContent = current + suffix;
+      if(progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var statsObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        statEls.forEach(animateStat);
+        statsObserver.disconnect();
+      }
+    });
+  }, {threshold:0.4});
+  var statsBlock = document.querySelector('.studio-stats');
+  if(statsBlock) statsObserver.observe(statsBlock);
+
+  // per-artist page
+  function openArtistPage(id, name, tag, bio){
+    document.getElementById('overlayAvatar').textContent = id === 'ml' ? 'ML' : id.toUpperCase();
+    document.getElementById('overlayTag').textContent = tag;
+    document.getElementById('overlayName').textContent = name;
+    document.getElementById('overlayBio').textContent = bio;
+    document.getElementById('overlayBookBtn').dataset.artist = id;
+
+    var grid = document.getElementById('overlayWorks');
+    grid.innerHTML = '';
+    document.querySelectorAll('.flash-card[data-artist="' + id + '"]').forEach(function(card){
+      grid.appendChild(card.cloneNode(true));
+    });
+
+    document.getElementById('artist-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    window.scrollTo(0,0);
+  }
+  function closeArtistPage(){
+    document.getElementById('artist-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function bookArtist(id){
+    closeArtistPage();
+    var serviceSelect = document.getElementById('bookingServiceSelect');
+    if(serviceSelect) serviceSelect.value = 'tattoo';
+    handleServiceChange();
+    var select = document.getElementById('bookingArtistSelect');
+    if(select && id) select.value = id;
+    setTimeout(function(){
+      var el = document.getElementById('booking');
+      if(el) el.scrollIntoView({behavior:'smooth'});
+    }, 120);
+  }
+  function bookService(type){
+    var select = document.getElementById('bookingServiceSelect');
+    if(select && type) select.value = type;
+    handleServiceChange();
+    var el = document.getElementById('booking');
+    if(el) el.scrollIntoView({behavior:'smooth'});
+  }
+
+  function handleServiceChange(){
+    var val = document.getElementById('bookingServiceSelect').value;
+    var artistGroup = document.getElementById('artistFieldGroup');
+    var artistSelect = document.getElementById('bookingArtistSelect');
+    var qtyGroup = document.getElementById('piercingQtyGroup');
+    var sizeGroup = document.getElementById('sizeFieldGroup');
+    var locLabel = document.getElementById('bookingLocationLabel');
+    var locSelect = document.getElementById('bookingLocationSelect');
+    var noteLabel = document.getElementById('bookingNoteLabel');
+    var noteText = document.getElementById('bookingNoteText');
+
+    artistGroup.style.display = 'none';
+    qtyGroup.style.display = 'none';
+    sizeGroup.style.display = 'none';
+
+    if(val === 'tattoo'){
+      artistGroup.style.display = '';
+      artistSelect.innerHTML = '<option value="ml">Mnhja Loco</option><option value="a2">Artist 2 (Blackwork)</option><option value="a3">Artist 3 (Realism)</option><option value="a4">Artist 4 (Japanese)</option><option value="a5">Artist 5 (Neo-traditional)</option>';
+      sizeGroup.style.display = '';
+      locLabel.textContent = 'Байршил';
+      locSelect.innerHTML = '<option>Гар</option><option>Мөр</option><option>Хөл</option><option>Нуруу</option><option>Бусад</option>';
+      noteLabel.textContent = 'Санааны тайлбар';
+      noteText.placeholder = 'Ямар шивээс хийлгэх гэж байгаагаа бичээрэй...';
+    } else if(val === 'piercing'){
+      artistGroup.style.display = '';
+      artistSelect.innerHTML = '<option value="a6">Artist 6 (Piercing)</option>';
+      qtyGroup.style.display = '';
+      locLabel.textContent = 'Байршил (piercing цэг)';
+      locSelect.innerHTML = '<option>Чихний дэлбэн (Lobe)</option><option>Chandarhai (Helix)</option><option>Tragus</option><option>Хамар (Nostril)</option><option>Хөмсөг (Eyebrow)</option><option>Уруул (Lip)</option><option>Хүйс (Navel)</option><option>Бусад</option>';
+      noteLabel.textContent = 'Нэмэлт мэдээлэл';
+      noteText.placeholder = 'Асуух зүйл байвал бичээрэй...';
+    } else if(val === 'removal'){
+      sizeGroup.style.display = '';
+      locLabel.textContent = 'Байршил (арилгах шивээс)';
+      locSelect.innerHTML = '<option>Гар</option><option>Мөр</option><option>Хөл</option><option>Нуруу</option><option>Бусад</option>';
+      noteLabel.textContent = 'Шивээсийн тухай';
+      noteText.placeholder = 'Шивээс хэдэн жилийн настай, өнгөтэй эсэх зэргээ бичээрэй...';
+    } else if(val === 'course'){
+      locLabel.textContent = 'Сонирхож буй сургалт';
+      locSelect.innerHTML = '<option>Анхан шатны курс</option><option>Ахисан түвшин</option><option>Тодорхойгүй, зөвлөгөө авмаар байна</option>';
+      noteLabel.textContent = 'Нэмэлт мэдээлэл';
+      noteText.placeholder = 'Асуух зүйл байвал бичээрэй...';
+    }
+  }
+  handleServiceChange();
+</script>
+
+</body>
+</html>
