@@ -66,16 +66,23 @@
   /* HERO */
   .hero{
     min-height:100vh;
-    display:flex;flex-direction:column;justify-content:center;
-    padding:0 5vw;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    padding:118px 5vw 80px;
     position:relative;
     border-bottom:1px solid var(--line);
   }
   .hero-eyebrow{
     font-family:'JetBrains Mono',monospace;
-    font-size:12px;letter-spacing:0.25em;color:var(--brass);
-    margin-bottom:22px;text-transform:uppercase;
-    opacity:0;animation:fadeUp .8s .2s forwards;
+    font-size:12px;
+    letter-spacing:0.25em;
+    color:var(--brass);
+    margin:0 auto 18px;
+    text-align:center;
+    text-transform:uppercase;
+    opacity:0;
+    animation:fadeUp .8s .2s forwards;
   }
   .hero h1{
     font-size:clamp(52px,10vw,150px);
@@ -93,7 +100,9 @@
   opacity:0;
   animation:fadeUp .9s .4s forwards;
 
-  filter:drop-shadow(0 0 40px rgba(163,22,33,0.15));
+  /* PNG-ийн бараан дэвсгэрийг үндсэн background-тэй уусгана */
+  mix-blend-mode:screen;
+  filter:none;
 }
   .hero h1 .outline{
     -webkit-text-stroke:1.5px var(--paper);
@@ -401,6 +410,31 @@
   @media(max-width:520px){
     .services-grid{grid-template-columns:1fr;}
   }
+
+  /* HERO responsive safety */
+  @media(max-width:800px){
+    .hero{
+      padding:96px 20px 64px;
+    }
+    .hero-eyebrow{
+      font-size:10px;
+      letter-spacing:0.18em;
+      margin-bottom:14px;
+      white-space:nowrap;
+    }
+    .hero-logo{
+      width:min(900px,94vw);
+    }
+  }
+
+  @media(max-width:480px){
+    .hero-eyebrow{
+      white-space:normal;
+      line-height:1.5;
+      max-width:90vw;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -694,7 +728,7 @@
     </div>
     <div class="footer-col">
       <h4>Холбоо барих</h4>
-      <a href="http://facebook.com/tattoo.mongol" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://facebook.com/tattoo.mongol" target="_blank" rel="noopener">Facebook</a>
       <a href="#">+976 9911 xxxx</a>
     </div>
     <div class="footer-col">
