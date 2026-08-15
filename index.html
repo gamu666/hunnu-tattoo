@@ -289,8 +289,18 @@
   .booking-info h3{font-size:26px;margin-bottom:16px;}
   .booking-info p{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:26px;}
   .booking-note{
-    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brass);
-    border-left:2px solid var(--brass);padding-left:14px;line-height:1.7;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:#E6B94D;
+    background:rgba(176,141,63,0.08);
+    border-left:3px solid var(--brass);
+    padding:12px 14px;
+    line-height:1.9;
+    letter-spacing:0.02em;
+  }
+  .booking-note strong{
+    font-weight:500;
+    color:#E6B94D;
   }
   form{display:flex;flex-direction:column;gap:20px;}
   .form-row{display:flex;flex-wrap:wrap;gap:20px;}
@@ -519,7 +529,7 @@
     <div class="service-card">
       <span class="service-num">02</span>
       <h4 class="display">Piercing</h4>
-      <p>Ээж, хамар, chuluu болон бусад piercing, эрүүл ахуйн стандартаар.</p>
+      <p>Lobe, Helix, Tragus, Conch, Nostril, Septum, Lip, Navel болон бусад төрлийн piercing үйлчилгээг мэргэжлийн түвшинд хийж гүйцэтгэнэ.</p>
       <a href="#booking" class="service-link" onclick="event.preventDefault(); bookService('piercing');">Цаг захиалах →</a>
     </div>
     <div class="service-card">
@@ -679,11 +689,11 @@
 
   <div class="booking-wrap">
     <div class="booking-info">
-      <h3 class="display">Хэрхэн ажилладаг</h3>
-      <p>Формыг бөглөөд илгээнэ. Санаа болон байршлыг харсны дараа Mnhja чат руу шууд холбогдож, урьдчилгаа болон эцсийн цагийг тохирно.</p>
+      <h3 class="display" id="bookingInfoTitle">Хэрхэн ажилладаг</h3>
+      <p id="bookingInfoText">Формоо илгээсний дараа таны сонгосон artist тантай утас эсвэл чатаар шуурхай холбогдож, шивээсний загвар, хэмжээ, байршил зэрэг дэлгэрэнгүйг тохирно. Тохиролцсоны дараа урьдчилгаа төлбөрөөр цагаа баталгаажуулна.</p>
       <div class="booking-note">
-        * Урьдчилгаа төлбөр шаардлагатай<br>
-        * Хариу 24 цагийн дотор ирнэ
+        <strong id="bookingNoteLine1">Хүсэлт илгээмэгц artist тантай шуурхай холбогдоно</strong><br>
+        <strong id="bookingNoteLine2">Урьдчилгаа төлбөрөөр цаг баталгаажна</strong>
       </div>
     </div>
     <form onsubmit="return false;">
@@ -883,6 +893,10 @@
     var locSelect = document.getElementById('bookingLocationSelect');
     var noteLabel = document.getElementById('bookingNoteLabel');
     var noteText = document.getElementById('bookingNoteText');
+    var infoTitle = document.getElementById('bookingInfoTitle');
+    var infoText = document.getElementById('bookingInfoText');
+    var infoLine1 = document.getElementById('bookingNoteLine1');
+    var infoLine2 = document.getElementById('bookingNoteLine2');
 
     artistGroup.style.display = 'none';
     qtyGroup.style.display = 'none';
@@ -896,25 +910,41 @@
       locSelect.innerHTML = '<option>Гар</option><option>Мөр</option><option>Хөл</option><option>Нуруу</option><option>Бусад</option>';
       noteLabel.textContent = 'Санааны тайлбар';
       noteText.placeholder = 'Ямар шивээс хийлгэх гэж байгаагаа бичээрэй...';
+      infoTitle.textContent = 'Хэрхэн ажилладаг';
+      infoText.textContent = 'Формоо илгээсний дараа таны сонгосон artist тантай утас эсвэл чатаар шуурхай холбогдож, шивээсний загвар, хэмжээ, байршил зэрэг дэлгэрэнгүйг тохирно. Тохиролцсоны дараа урьдчилгаа төлбөрөөр цагаа баталгаажуулна.';
+      infoLine1.textContent = 'Хүсэлт илгээмэгц artist тантай шуурхай холбогдоно';
+      infoLine2.textContent = 'Урьдчилгаа төлбөрөөр цаг баталгаажна';
     } else if(val === 'piercing'){
       artistGroup.style.display = '';
       artistSelect.innerHTML = '<option value="a6">Artist 6 (Piercing)</option>';
       qtyGroup.style.display = '';
-      locLabel.textContent = 'Байршил (piercing цэг)';
-      locSelect.innerHTML = '<option>Чихний дэлбэн (Lobe)</option><option>Chandarhai (Helix)</option><option>Tragus</option><option>Хамар (Nostril)</option><option>Хөмсөг (Eyebrow)</option><option>Уруул (Lip)</option><option>Хүйс (Navel)</option><option>Бусад</option>';
+      locLabel.textContent = 'Piercing төрөл';
+      locSelect.innerHTML = '<option>Lobe</option><option>Helix</option><option>Tragus</option><option>Conch</option><option>Nostril</option><option>Septum</option><option>Lip</option><option>Navel</option><option>Other</option>';
       noteLabel.textContent = 'Нэмэлт мэдээлэл';
       noteText.placeholder = 'Асуух зүйл байвал бичээрэй...';
+      infoTitle.textContent = 'Piercing цаг хэрхэн баталгаажих вэ';
+      infoText.textContent = 'Формоо илгээсний дараа piercing artist тантай утас эсвэл чатаар шуурхай холбогдож, сонгосон piercing төрөл, тоо ширхэг болон шаардлагатай мэдээллийг тодруулна. Тохиролцсоны дараа урьдчилгаа төлбөрөөр цагаа баталгаажуулна.';
+      infoLine1.textContent = 'Хүсэлт илгээмэгц piercing artist тантай шуурхай холбогдоно';
+      infoLine2.textContent = 'Урьдчилгаа төлбөрөөр цаг баталгаажна';
     } else if(val === 'removal'){
       sizeGroup.style.display = '';
       locLabel.textContent = 'Байршил (арилгах шивээс)';
       locSelect.innerHTML = '<option>Гар</option><option>Мөр</option><option>Хөл</option><option>Нуруу</option><option>Бусад</option>';
       noteLabel.textContent = 'Шивээсийн тухай';
       noteText.placeholder = 'Шивээс хэдэн жилийн настай, өнгөтэй эсэх зэргээ бичээрэй...';
+      infoTitle.textContent = 'Арилгалтын хүсэлт хэрхэн ажиллах вэ';
+      infoText.textContent = 'Формоо илгээсний дараа манай баг тантай утас эсвэл чатаар шуурхай холбогдож, арилгах шивээсний хэмжээ, байршил, өнгө болон насжилтын мэдээллийг тодруулна. Үзлэг, зөвлөгөөний дараа тохирох цагийг баталгаажуулна.';
+      infoLine1.textContent = 'Хүсэлт илгээмэгц манай баг тантай шуурхай холбогдоно';
+      infoLine2.textContent = 'Үзлэг, зөвлөгөөний дараа цаг баталгаажна';
     } else if(val === 'course'){
       locLabel.textContent = 'Сонирхож буй сургалт';
       locSelect.innerHTML = '<option>Анхан шатны курс</option><option>Ахисан түвшин</option><option>Тодорхойгүй, зөвлөгөө авмаар байна</option>';
       noteLabel.textContent = 'Нэмэлт мэдээлэл';
       noteText.placeholder = 'Асуух зүйл байвал бичээрэй...';
+      infoTitle.textContent = 'Бүртгэл хэрхэн явагдах вэ';
+      infoText.textContent = 'Формоо илгээсний дараа манай баг тантай утас эсвэл чатаар шуурхай холбогдож, сонгосон сургалт, хуваарь болон бүртгэлийн мэдээллийг тодруулна. Төлбөрийн нөхцөл тохирсны дараа бүртгэл баталгаажна.';
+      infoLine1.textContent = 'Бүртгэлийн хүсэлт илгээмэгц манай баг тантай шуурхай холбогдоно';
+      infoLine2.textContent = 'Төлбөрийн нөхцөл тохирсны дараа бүртгэл баталгаажна';
     }
   }
   handleServiceChange();
