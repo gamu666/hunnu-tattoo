@@ -98,12 +98,40 @@
   margin:0 auto;
 
   opacity:0;
-  animation:fadeUp .9s .4s forwards;
+  filter:blur(14px);
+  transform:scale(0.985);
+  animation:heroLogoReveal 1.8s cubic-bezier(.22,1,.36,1) .2s forwards;
 
   /* Цэвэр transparent PNG — page background шууд харагдана */
   mix-blend-mode:normal;
   filter:none;
 }
+  @keyframes heroLogoReveal{
+    0%{
+      opacity:0;
+      filter:blur(14px);
+      transform:scale(0.985);
+    }
+    55%{
+      opacity:.78;
+      filter:blur(4px);
+      transform:scale(.995);
+    }
+    100%{
+      opacity:1;
+      filter:blur(0);
+      transform:scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .hero-logo{
+      opacity:1;
+      filter:none;
+      transform:none;
+      animation:none;
+    }
+  }
   .hero h1 .outline{
     -webkit-text-stroke:1.5px var(--paper);
     color:transparent;
