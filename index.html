@@ -46,7 +46,10 @@
     display:flex;justify-content:space-between;align-items:center;
     padding:22px 5vw;
     z-index:100;
-    background:linear-gradient(to bottom, rgba(11,11,13,0.9), transparent);
+    background: rgba(11, 11, 13, 0.7); /* Хагас тунгалаг хар өнгө */
+    backdrop-filter: blur(12px); /* Ард талын контентыг бүрсийлгэх эффект */
+    -webkit-backdrop-filter: blur(12px); /* Safari-д зориулсан */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Маш нарийн доод зураас */
   }
   .logo{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:0.03em;}
   .logo span{color:var(--crimson);}
