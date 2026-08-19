@@ -327,7 +327,8 @@
     margin-bottom:60px;
   }
   .artist-card{
-    background:transparent;padding:34px 28px;
+    background:rgba(0,0,0,0.6);padding:34px 28px;
+    border:1px solid rgba(237,233,225,0.6);
     transition:background .3s;
     cursor:pointer;
   }
@@ -379,6 +380,15 @@
 
   @media(max-width:900px){
     .team-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media(max-width:560px){
+    .artist-card{padding:18px 14px;}
+    .artist-portrait{margin-bottom:14px;}
+    .artist-portrait .initial{font-size:36px;}
+    .artist-tag{font-size:9px;margin-bottom:8px;}
+    .artist-name{font-size:16px;margin-bottom:4px;}
+    .artist-bio{font-size:11.5px;line-height:1.6;margin-bottom:12px;}
+    .artist-link{font-size:10px;}
   }
 
   /* BOOKING */
@@ -447,6 +457,21 @@
     display:flex;justify-content:space-between;align-items:center;
     padding-top:24px;border-top:1px solid var(--line);
     font-size:12px;color:var(--muted);flex-wrap:wrap;gap:10px;
+  }
+  @media(max-width:700px){
+    footer{padding:56px 6vw 32px;}
+    .footer-top{
+      grid-template-columns:1fr;
+      gap:36px;
+      margin-bottom:40px;
+    }
+    .footer-title{font-size:clamp(26px,8vw,40px);}
+    .footer-desc{max-width:none;}
+    .footer-bottom{
+      flex-direction:column;
+      align-items:flex-start;
+      gap:6px;
+    }
   }
 
   /* ARTIST DETAIL OVERLAY */
@@ -539,6 +564,7 @@
   }
   @media(max-width:520px){
     .services-grid{grid-template-columns:1fr;}
+    .service-card{border-right:none;}
   }
 
   /* HERO LOGO MORPH — only affects the main white HUNNU logo */
@@ -762,68 +788,68 @@
   </div>
 
   <div class="team-grid">
-    <div class="artist-card" onclick="openArtistPage('ml','Mnhja Loco','Fine-line / Color','Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд. Studio-г үүсгэн байгуулагч.')">
+    <div class="artist-card" onclick="openArtistPage('ml','Mnhja Loco','Tattoo Artist','Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд. Studio-г үүсгэн байгуулагч.')">
       <div class="artist-portrait">
         <span class="initial display">ML</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
-      <span class="artist-tag">Fine-line / Color</span>
+      <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">Mnhja Loco</h3>
       <p class="artist-bio">Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд. Studio-г үүсгэн байгуулагч.</p>
       <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('ml');">Цаг захиалах →</a>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a2','Artist 2','Blackwork','Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.')">
+    <div class="artist-card" onclick="openArtistPage('a2','Artist 2','Tattoo Artist','Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.')">
       <div class="artist-portrait">
         <span class="initial display">02</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
-      <span class="artist-tag">Blackwork</span>
+      <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">Artist Name</h3>
       <p class="artist-bio">Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.</p>
       <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a2');">Цаг захиалах →</a>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a3','Artist 3','Realism','Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.')">
+    <div class="artist-card" onclick="openArtistPage('a3','Artist 3','Tattoo Artist','Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.')">
       <div class="artist-portrait">
         <span class="initial display">03</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
-      <span class="artist-tag">Realism</span>
+      <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">Artist Name</h3>
       <p class="artist-bio">Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.</p>
       <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a3');">Цаг захиалах →</a>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a4','Artist 4','Japanese / Irezumi','Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.')">
+    <div class="artist-card" onclick="openArtistPage('a4','Artist 4','Tattoo Artist','Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.')">
       <div class="artist-portrait">
         <span class="initial display">04</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
-      <span class="artist-tag">Japanese / Irezumi</span>
+      <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">Artist Name</h3>
       <p class="artist-bio">Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.</p>
       <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a4');">Цаг захиалах →</a>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a5','Artist 5','Neo-traditional','Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.')">
+    <div class="artist-card" onclick="openArtistPage('a5','Artist 5','Tattoo Artist','Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.')">
       <div class="artist-portrait">
         <span class="initial display">05</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
-      <span class="artist-tag">Neo-traditional</span>
+      <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">Artist Name</h3>
       <p class="artist-bio">Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.</p>
       <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a5');">Цаг захиалах →</a>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a6','Artist 6','Minimal / Dotwork','Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.')">
+    <div class="artist-card" onclick="openArtistPage('a6','Artist 6','Piercer','Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.')">
       <div class="artist-portrait">
         <span class="initial display">06</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
-      <span class="artist-tag">Minimal / Dotwork</span>
+      <span class="artist-tag">Piercer</span>
       <h3 class="artist-name display">Artist Name</h3>
       <p class="artist-bio">Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.</p>
       <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a6');">Цаг захиалах →</a>
@@ -939,11 +965,11 @@
     <div class="footer-col">
       <h4>Холбоо барих</h4>
       <a href="https://facebook.com/tattoo.mongol" target="_blank" rel="noopener">Facebook</a>
-      <a href="#">+976 9911 xxxx</a>
+      <a href="tel:+97695662813">+976 9566 2813</a>
     </div>
     <div class="footer-col">
       <h4>Байршил</h4>
-      <p>СБД, 5-р хороо, 45-1</p>
+      <a href="https://maps.app.goo.gl/3Rqh6hkvfEQb9PMa6" target="_blank" rel="noopener">СБД, 5-р хороо, 45-1</a>
       <p>Зөвхөн урьдчилсан цагаар</p>
     </div>
   </div>
