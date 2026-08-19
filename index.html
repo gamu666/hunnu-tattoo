@@ -287,6 +287,8 @@
     cursor:pointer;
   }
   .flash-card svg{width:46%;height:46%;stroke:var(--paper);opacity:0.75;transition:opacity .3s, transform .5s;}
+  .flash-card img{width:100%;height:100%;object-fit:contain;transition:transform .5s;}
+  .flash-card:hover img{transform:scale(1.04);}
   .flash-card::before{
     content:attr(data-tag);
     position:absolute;top:10px;left:12px;
@@ -311,7 +313,9 @@
     background:var(--ink);border:1px solid var(--brass);
     display:flex;align-items:center;justify-content:center;
     font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--brass);
+    overflow:hidden;
   }
+  .flash-meta .avatar img{width:100%;height:100%;object-fit:cover;}
   .flash-meta .aname{font-size:12px;letter-spacing:0.03em;color:var(--paper);}
   .fc-1{grid-column:span 2;grid-row:span 2;}
   .fc-2{grid-column:span 2;grid-row:span 3;}
@@ -356,6 +360,7 @@
   .artist-portrait .initial{
     font-family:'Anton',sans-serif;font-size:64px;color:var(--line);
   }
+  .artist-portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
   .artist-portrait .corner{position:absolute;width:14px;height:14px;border:1px solid var(--brass);}
   .artist-portrait .c1{top:10px;left:10px;border-right:none;border-bottom:none;}
   .artist-portrait .c2{bottom:10px;right:10px;border-left:none;border-top:none;}
@@ -364,7 +369,7 @@
     font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--brass);
     letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;display:block;
   }
-  .artist-bio{color:var(--muted);line-height:1.8;font-size:13.5px;margin-bottom:18px;}
+  .artist-bio{color:var(--muted);line-height:1.8;font-size:13.5px;margin-bottom:18px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
   .artist-links{display:flex;flex-wrap:wrap;gap:18px;margin-top:auto;}
   .artist-link{display:inline-block;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--muted);padding-bottom:3px;color:var(--muted);transition:color .2s,border-color .2s;}
   .artist-link:hover{color:var(--paper);border-color:var(--paper);}
@@ -508,26 +513,35 @@
   .overlay-close:hover{border-color:var(--crimson);color:var(--crimson);}
   .overlay-inner{max-width:1100px;margin:0 auto;padding:110px 5vw 100px;}
   .overlay-header{
-    display:flex;gap:40px;align-items:flex-end;flex-wrap:wrap;
+    display:flex;gap:40px;align-items:stretch;flex-wrap:wrap;
     margin-bottom:60px;border-bottom:1px solid var(--line);padding-bottom:44px;
   }
+  .overlay-header > div{flex:1;min-width:260px;}
   .overlay-avatar{
-    width:120px;height:120px;flex:none;
+    width:200px;min-height:280px;flex:none;
     background:var(--ink-2);border:1px solid var(--line);
     display:flex;align-items:center;justify-content:center;
-    font-family:'Anton',sans-serif;font-size:44px;color:var(--brass);
+    font-family:'Anton',sans-serif;font-size:60px;color:var(--brass);
+    overflow:hidden;
   }
+  .overlay-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
   #overlayTag{
     font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brass);
     letter-spacing:0.15em;text-transform:uppercase;display:block;margin-bottom:12px;
   }
+  .overlay-name-row{display:flex;align-items:center;gap:16px;}
   #overlayName{font-size:clamp(32px,5vw,56px);}
-  #overlayBio{color:var(--muted);max-width:520px;margin-top:16px;line-height:1.8;font-size:15px;}
-  .overlay-book-btn{margin-top:26px;display:inline-block;}
-  .overlay-works-title{
-    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brass);
-    letter-spacing:0.15em;text-transform:uppercase;margin-bottom:26px;
+  .overlay-ig{
+    flex:none;width:36px;height:36px;border:1px solid var(--brass);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:var(--brass);
+    box-shadow:0 0 12px rgba(176,141,63,0.55),0 0 2px rgba(176,141,63,0.7);
+    transition:border-color .2s,color .2s,box-shadow .2s;
   }
+  .overlay-ig:hover{border-color:var(--paper);color:var(--paper);box-shadow:0 0 18px rgba(176,141,63,0.85),0 0 4px rgba(176,141,63,0.9);}
+  .overlay-ig svg{width:18px;height:18px;}
+  #overlayBio{color:var(--muted);margin-top:16px;line-height:1.8;font-size:15px;text-align:justify;}
+  .bio-highlight{color:var(--paper);font-weight:600;}
+  .overlay-book-btn{margin-top:26px;display:inline-block;}
   #overlayWorks{
     display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
     background:var(--line);border:1px solid var(--line);
@@ -536,6 +550,7 @@
   @media(max-width:700px){
     #overlayWorks{grid-template-columns:repeat(2,1fr);}
     .overlay-header{gap:24px;}
+    .overlay-avatar{width:140px;min-height:180px;font-size:44px;}
   }
 
   /* SERVICES */
@@ -765,29 +780,29 @@
   </div>
 
   <div class="flash-grid">
-    <div class="flash-card fc-1" data-tag="ROSE / FINE-LINE" data-artist="ml">
-      <svg viewBox="0 0 100 100" fill="none" stroke-width="2"><path d="M50 20 C40 25 38 40 50 45 C62 40 60 25 50 20Z"/><path d="M50 45 V85"/><path d="M50 60 C40 60 35 68 38 75"/><path d="M50 68 C60 68 65 76 62 83"/></svg>
-      <div class="flash-meta"><div class="avatar">ML</div><span class="aname">Mnhja Loco</span></div>
+    <div class="flash-card fc-1" data-tag="SAMURAI / BLACK &amp; GREY" data-artist="ml">
+      <img src="images/mnhja-work-1.jpg" alt="Samurai black &amp; grey шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="images/mnhja-loco.jpg" alt="Mnhja Loco"></div><span class="aname">Mnhja Loco</span></div>
     </div>
-    <div class="flash-card fc-2" data-tag="SNAKE / COLOR" data-artist="ml">
-      <svg viewBox="0 0 100 140" fill="none" stroke-width="2"><path d="M30 20 Q70 35 30 55 Q-10 75 30 95 Q70 115 40 130"/><circle cx="30" cy="20" r="5"/></svg>
-      <div class="flash-meta"><div class="avatar">ML</div><span class="aname">Mnhja Loco</span></div>
+    <div class="flash-card fc-2" data-tag="ЛУУ / BACKPIECE" data-artist="ml">
+      <img src="images/mnhja-work-2.jpg" alt="Луу backpiece шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="images/mnhja-loco.jpg" alt="Mnhja Loco"></div><span class="aname">Mnhja Loco</span></div>
     </div>
-    <div class="flash-card fc-3" data-tag="DAGGER" data-artist="a2">
-      <svg viewBox="0 0 100 100" fill="none" stroke-width="2"><path d="M50 10 V70"/><path d="M35 25 H65"/><path d="M42 70 L50 90 L58 70Z"/></svg>
-      <div class="flash-meta"><div class="avatar">02</div><span class="aname">Artist 2</span></div>
+    <div class="flash-card fc-3" data-tag="МОНГОЛ БИЧИГ" data-artist="ml">
+      <img src="images/mnhja-work-3.jpg" alt="Монгол бичиг fine-line шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="images/mnhja-loco.jpg" alt="Mnhja Loco"></div><span class="aname">Mnhja Loco</span></div>
     </div>
-    <div class="flash-card fc-4" data-tag="MOON PHASE" data-artist="ml">
-      <svg viewBox="0 0 100 100" fill="none" stroke-width="2"><circle cx="50" cy="50" r="30"/><path d="M50 20 A30 30 0 0 1 50 80" fill="var(--ink-2)"/></svg>
-      <div class="flash-meta"><div class="avatar">ML</div><span class="aname">Mnhja Loco</span></div>
+    <div class="flash-card fc-4" data-tag="SAMURAI / FOREARM" data-artist="ml">
+      <img src="images/mnhja-work-4.jpg" alt="Samurai forearm шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="images/mnhja-loco.jpg" alt="Mnhja Loco"></div><span class="aname">Mnhja Loco</span></div>
     </div>
-    <div class="flash-card fc-5" data-tag="WOLF / BLACKWORK" data-artist="a2">
-      <svg viewBox="0 0 100 140" fill="none" stroke-width="2"><path d="M20 60 L50 20 L80 60 L65 60 L65 120 L35 120 L35 60Z"/><circle cx="42" cy="45" r="3" fill="var(--paper)"/><circle cx="58" cy="45" r="3" fill="var(--paper)"/></svg>
-      <div class="flash-meta"><div class="avatar">02</div><span class="aname">Artist 2</span></div>
+    <div class="flash-card fc-5" data-tag="SKULL / HELMET" data-artist="ml">
+      <img src="images/mnhja-work-5.jpg" alt="Skull samurai helmet шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="images/mnhja-loco.jpg" alt="Mnhja Loco"></div><span class="aname">Mnhja Loco</span></div>
     </div>
-    <div class="flash-card fc-6" data-tag="LETTERING" data-artist="a3">
-      <svg viewBox="0 0 100 100" fill="none" stroke-width="2"><path d="M20 70 Q30 20 50 55 Q70 90 80 30"/></svg>
-      <div class="flash-meta"><div class="avatar">03</div><span class="aname">Artist 3</span></div>
+    <div class="flash-card fc-6" data-tag="DEMON MASK" data-artist="ml">
+      <img src="images/mnhja-work-6.jpg" alt="Demon mask realism шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="images/mnhja-loco.jpg" alt="Mnhja Loco"></div><span class="aname">Mnhja Loco</span></div>
     </div>
   </div>
 </section>
@@ -802,17 +817,16 @@
   </div>
 
   <div class="team-grid">
-    <div class="artist-card" onclick="openArtistPage('ml','Mnhja Loco','Tattoo Artist','Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд. Studio-г үүсгэн байгуулагч.')">
+    <div class="artist-card" onclick="openArtistPage('ml','Mnhja Loco','Tattoo Artist','10 жилийн туршлагатай мэргэжлийн артист бөгөөд <span class=bio-highlight>Traditional Asian, Black &amp; Grey болон реалист хөрөг</span> чиглэлээр түлхүү ажилладаг. Уран бүтээлийн онцлог нь нарийн деталь, гүн сүүдэрлэлт, зөв пропорц болон биеийн хэлбэртэй уялдсан том хэмжээний бүтээлүүдээрээ илэрдэг. Ялангуяа бүтэн нуруу, бүтэн гар, цээж, хөл болон биеийн том хэсгийг бүрэн дүүргэх хэмжээний tattoo project дээр ажиллах дуртай. Том хэмжээний шивээсийг нэг удаагийн зураг гэхээсээ илүүтэйгээр биеийн хэлбэр, хөдөлгөөнтэй зохицсон нэгэн цогц урлагийн бүтээл болгон хөгжүүлэхийг зорьдог.')">
       <div class="artist-portrait">
-        <span class="initial display">ML</span>
+        <img src="images/mnhja-loco.jpg" alt="Mnhja Loco">
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
       <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">Mnhja Loco</h3>
-      <p class="artist-bio">Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд. Studio-г үүсгэн байгуулагч.</p>
+      <p class="artist-bio">10 жилийн туршлагатай мэргэжлийн артист бөгөөд <span class="bio-highlight">Traditional Asian, Black &amp; Grey болон реалист хөрөг</span> чиглэлээр түлхүү ажилладаг. Уран бүтээлийн онцлог нь нарийн деталь, гүн сүүдэрлэлт, зөв пропорц болон биеийн хэлбэртэй уялдсан том хэмжээний бүтээлүүдээрээ илэрдэг. Ялангуяа бүтэн нуруу, бүтэн гар, цээж, хөл болон биеийн том хэсгийг бүрэн дүүргэх хэмжээний tattoo project дээр ажиллах дуртай. Том хэмжээний шивээсийг нэг удаагийн зураг гэхээсээ илүүтэйгээр биеийн хэлбэр, хөдөлгөөнтэй зохицсон нэгэн цогц урлагийн бүтээл болгон хөгжүүлэхийг зорьдог.</p>
       <div class="artist-links">
-        <a href="#" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); openArtistPage('ml','Mnhja Loco','Tattoo Artist','Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд. Studio-г үүсгэн байгуулагч.');">Дэлгэрэнгүй →</a>
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('ml');">Цаг захиалах →</a>
       </div>
     </div>
@@ -826,7 +840,6 @@
       <h3 class="artist-name display">Artist Name</h3>
       <p class="artist-bio">Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.</p>
       <div class="artist-links">
-        <a href="#" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); openArtistPage('a2','Artist 2','Tattoo Artist','Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.');">Дэлгэрэнгүй →</a>
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a2');">Цаг захиалах →</a>
       </div>
     </div>
@@ -840,7 +853,6 @@
       <h3 class="artist-name display">Artist Name</h3>
       <p class="artist-bio">Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.</p>
       <div class="artist-links">
-        <a href="#" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); openArtistPage('a3','Artist 3','Tattoo Artist','Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.');">Дэлгэрэнгүй →</a>
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a3');">Цаг захиалах →</a>
       </div>
     </div>
@@ -854,7 +866,6 @@
       <h3 class="artist-name display">Artist Name</h3>
       <p class="artist-bio">Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.</p>
       <div class="artist-links">
-        <a href="#" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); openArtistPage('a4','Artist 4','Tattoo Artist','Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.');">Дэлгэрэнгүй →</a>
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a4');">Цаг захиалах →</a>
       </div>
     </div>
@@ -868,7 +879,6 @@
       <h3 class="artist-name display">Artist Name</h3>
       <p class="artist-bio">Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.</p>
       <div class="artist-links">
-        <a href="#" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); openArtistPage('a5','Artist 5','Tattoo Artist','Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.');">Дэлгэрэнгүй →</a>
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a5');">Цаг захиалах →</a>
       </div>
     </div>
@@ -882,7 +892,6 @@
       <h3 class="artist-name display">Artist Name</h3>
       <p class="artist-bio">Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.</p>
       <div class="artist-links">
-        <a href="#" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); openArtistPage('a6','Artist 6','Piercer','Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.');">Дэлгэрэнгүй →</a>
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a6');">Цаг захиалах →</a>
       </div>
     </div>
@@ -1018,12 +1027,19 @@
       <div class="overlay-avatar" id="overlayAvatar">ML</div>
       <div>
         <span id="overlayTag">Fine-line / Color</span>
-        <h2 id="overlayName" class="display">Mnhja Loco</h2>
+        <div class="overlay-name-row">
+          <h2 id="overlayName" class="display">Mnhja Loco</h2>
+          <a href="#" target="_blank" rel="noopener" class="overlay-ig" id="overlayIG" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" class="overlay-ig" id="overlayPhone" aria-label="Утасдах">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 3.5c.6 0 1.1.4 1.3 1l1 2.6c.2.5.1 1.1-.3 1.5L7 10c1 2.4 2.6 4 5 5l1.4-1.5c.4-.4 1-.5 1.5-.3l2.6 1c.6.2 1 .7 1 1.3v2.3c0 .9-.8 1.6-1.7 1.5-3.5-.4-6.7-2-9.2-4.5S3.4 9.7 3 6.2C2.9 5.3 3.6 4.5 4.5 4.5h2z"/></svg>
+          </a>
+        </div>
         <p id="overlayBio">Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд.</p>
         <a href="#booking" class="btn-primary overlay-book-btn" id="overlayBookBtn" onclick="event.preventDefault(); bookArtist(this.dataset.artist);">Энэ artist-тай цаг захиалах</a>
       </div>
     </div>
-    <span class="overlay-works-title">Ажлууд</span>
     <div id="overlayWorks"></div>
   </div>
 </div>
@@ -1055,8 +1071,22 @@
     }
   })();
 
+  var flashCardArtistData = {
+    ml: { name:'Mnhja Loco', tag:'Tattoo Artist', bio:'10 жилийн туршлагатай мэргэжлийн артист бөгөөд <span class=bio-highlight>Traditional Asian, Black &amp; Grey болон реалист хөрөг</span> чиглэлээр түлхүү ажилладаг. Уран бүтээлийн онцлог нь нарийн деталь, гүн сүүдэрлэлт, зөв пропорц болон биеийн хэлбэртэй уялдсан том хэмжээний бүтээлүүдээрээ илэрдэг. Ялангуяа бүтэн нуруу, бүтэн гар, цээж, хөл болон биеийн том хэсгийг бүрэн дүүргэх хэмжээний tattoo project дээр ажиллах дуртай. Том хэмжээний шивээсийг нэг удаагийн зураг гэхээсээ илүүтэйгээр биеийн хэлбэр, хөдөлгөөнтэй зохицсон нэгэн цогц урлагийн бүтээл болгон хөгжүүлэхийг зорьдог.' },
+    a2: { name:'Artist 2', tag:'Tattoo Artist', bio:'Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.' },
+    a3: { name:'Artist 3', tag:'Tattoo Artist', bio:'Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.' },
+    a4: { name:'Artist 4', tag:'Tattoo Artist', bio:'Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.' },
+    a5: { name:'Artist 5', tag:'Tattoo Artist', bio:'Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.' },
+    a6: { name:'Artist 6', tag:'Piercer', bio:'Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.' }
+  };
   document.querySelectorAll('.flash-card').forEach(function(card){
     card.addEventListener('click', function(){
+      var id = card.dataset.artist;
+      var data = flashCardArtistData[id];
+      if(data){
+        openArtistPage(id, data.name, data.tag, data.bio);
+        return;
+      }
       document.querySelectorAll('.flash-card').forEach(function(c){
         if(c !== card) c.classList.remove('show');
       });
@@ -1094,11 +1124,34 @@
   if(statsBlock) statsObserver.observe(statsBlock);
 
   // per-artist page
+  var artistContacts = {
+    ml: { ig: 'https://www.instagram.com/hunnutattoo/', phone: '+97695662813' }
+  };
   function openArtistPage(id, name, tag, bio){
-    document.getElementById('overlayAvatar').textContent = id === 'ml' ? 'ML' : id.toUpperCase();
+    var contact = artistContacts[id];
+    var igEl = document.getElementById('overlayIG');
+    var phoneEl = document.getElementById('overlayPhone');
+    if(contact && contact.ig){
+      igEl.href = contact.ig;
+      igEl.style.display = '';
+    } else {
+      igEl.style.display = 'none';
+    }
+    if(contact && contact.phone){
+      phoneEl.href = 'tel:' + contact.phone;
+      phoneEl.style.display = '';
+    } else {
+      phoneEl.style.display = 'none';
+    }
+    var overlayAvatarEl = document.getElementById('overlayAvatar');
+    if(id === 'ml'){
+      overlayAvatarEl.innerHTML = '<img src="images/mnhja-loco.jpg" alt="Mnhja Loco">';
+    } else {
+      overlayAvatarEl.textContent = id.toUpperCase();
+    }
     document.getElementById('overlayTag').textContent = tag;
     document.getElementById('overlayName').textContent = name;
-    document.getElementById('overlayBio').textContent = bio;
+    document.getElementById('overlayBio').innerHTML = bio;
     document.getElementById('overlayBookBtn').dataset.artist = id;
 
     var grid = document.getElementById('overlayWorks');
@@ -1109,16 +1162,19 @@
 
     document.getElementById('artist-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
-    window.scrollTo(0,0);
+    window.scrollTo({top:0, left:0, behavior:'instant'});
+    if(window.__heroLogoRender) window.__heroLogoRender();
   }
   function closeArtistPage(){
     document.getElementById('artist-overlay').classList.remove('open');
     document.body.style.overflow = '';
+    window.scrollTo({top:0, left:0, behavior:'instant'});
+    if(window.__heroLogoRender) window.__heroLogoRender();
   }
   function bookArtist(id){
     closeArtistPage();
     var serviceSelect = document.getElementById('bookingServiceSelect');
-    if(serviceSelect) serviceSelect.value = 'tattoo';
+    if(serviceSelect) serviceSelect.value = (id === 'a6') ? 'piercing' : 'tattoo';
     handleServiceChange();
     var select = document.getElementById('bookingArtistSelect');
     if(select && id) select.value = id;
@@ -1280,6 +1336,8 @@
         render();
       }
     }, {passive:true});
+
+    window.__heroLogoRender = render;
 
     if(document.readyState === 'loading'){
       document.addEventListener('DOMContentLoaded', init, {once:true});
