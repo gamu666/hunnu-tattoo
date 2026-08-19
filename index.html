@@ -73,21 +73,41 @@
       grid-template-areas:
         "logo cta"
         "links links";
-      row-gap:14px;
+      row-gap:12px;
+      column-gap:10px;
       align-items:center;
-      padding:16px 5vw;
+      padding:14px 4vw;
     }
-    .logo{grid-area:logo;font-size:17px;}
-    .nav-cta{grid-area:cta;padding:8px 14px;font-size:11px;}
+    .logo{
+      grid-area:logo;
+      font-size:clamp(12px,4.2vw,17px);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      min-width:0;
+    }
+    .nav-cta{
+      grid-area:cta;
+      padding:clamp(6px,1.8vw,8px) clamp(10px,3vw,14px);
+      font-size:clamp(9px,2.4vw,11px);
+      white-space:nowrap;
+    }
     .nav-links{
       grid-area:links;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:center;
+      display:flex;
+      flex-wrap:nowrap;
+      gap:clamp(4px,1.6vw,8px);
+      width:100%;
     }
     .nav-links a{
-      font-size:10.5px;
-      padding:7px 13px;
+      flex:1 1 0;
+      min-width:0;
+      text-align:center;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      font-size:clamp(8px,2.3vw,10.5px);
+      padding:clamp(6px,1.8vw,7px) clamp(4px,2.2vw,13px);
       border:1px solid var(--line);
       border-radius:999px;
       transition:background .25s, border-color .25s, color .25s;
@@ -315,6 +335,8 @@
   .artist-portrait{
     aspect-ratio:3/4;
     background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
     transition:background .3s;
     border:1px solid var(--line);
     display:flex;align-items:center;justify-content:center;
@@ -486,6 +508,8 @@
   .service-card{
     padding:44px 30px;border-right:1px solid var(--line);
     background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
     transition:background .3s;position:relative;
   }
   .service-card:last-child{border-right:none;}
@@ -536,6 +560,12 @@
     }
     .hero-logo-stage{
       width:min(900px,94vw);
+    }
+  }
+
+  @media(max-width:700px){
+    .hero{
+      padding-top:150px;
     }
   }
 
