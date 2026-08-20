@@ -1234,17 +1234,27 @@
     var grid = document.querySelector('#work .flash-grid');
     if(!grid) return;
     var cards = Array.prototype.slice.call(grid.querySelectorAll('.flash-card'));
-    for(var i = cards.length - 1; i > 0; i--){
+    var byArtist = {};
+    cards.forEach(function(card){
+      var id = card.dataset.artist;
+      if(!byArtist[id]) byArtist[id] = [];
+      byArtist[id].push(card);
+    });
+    var chosen = Object.keys(byArtist).map(function(id){
+      var arr = byArtist[id];
+      return arr[Math.floor(Math.random() * arr.length)];
+    });
+    for(var i = chosen.length - 1; i > 0; i--){
       var j = Math.floor(Math.random() * (i + 1));
-      var temp = cards[i]; cards[i] = cards[j]; cards[j] = temp;
+      var temp = chosen[i]; chosen[i] = chosen[j]; chosen[j] = temp;
     }
-    cards.forEach(function(card, idx){
+    cards.forEach(function(card){ card.classList.add('flash-card-more'); });
+    chosen.forEach(function(card){
       grid.appendChild(card);
-      if(idx < 6){
-        card.classList.remove('flash-card-more');
-      } else {
-        card.classList.add('flash-card-more');
-      }
+      card.classList.remove('flash-card-more');
+    });
+    cards.forEach(function(card){
+      if(chosen.indexOf(card) === -1) grid.appendChild(card);
     });
   })();
 
