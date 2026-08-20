@@ -441,6 +441,26 @@
   .field textarea{resize:none;height:70px;}
   .field select option{background:var(--ink-2);}
   .field-hint{display:block;margin-top:6px;font-size:11.5px;color:var(--muted);line-height:1.5;}
+  .field-phone-wrap{position:relative;}
+  .field-phone-wrap input{padding-left:26px !important;}
+  .field-phone-icon{
+    position:absolute;left:0;bottom:11px;width:16px;height:16px;
+    stroke:var(--muted);pointer-events:none;transition:stroke .25s;
+  }
+  .field-phone-wrap:focus-within .field-phone-icon{stroke:var(--crimson);}
+  .field-phone-wrap.error input{border-color:var(--crimson);}
+  .field-phone-wrap.error .field-phone-icon{stroke:var(--crimson);}
+  .field-error-msg{
+    display:none;margin-top:6px;font-size:11.5px;color:var(--crimson);line-height:1.5;
+  }
+  .field-error-msg.show{display:block;}
+  @keyframes fieldShake{
+    10%,90%{transform:translateX(-1px);}
+    20%,80%{transform:translateX(2px);}
+    30%,50%,70%{transform:translateX(-4px);}
+    40%,60%{transform:translateX(4px);}
+  }
+  .field-phone-wrap.shake{animation:fieldShake .5s;}
   .submit-btn{
     margin-top:8px;background:var(--crimson);color:var(--paper);border:none;
     padding:16px;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;
@@ -1062,8 +1082,12 @@
           <input type="text" id="bookingNameInput" placeholder="Таны нэр">
         </div>
         <div class="field">
-          <label>Утасны дугаар</label>
-          <input type="tel" id="bookingPhoneInput" placeholder="99xxxxxx">
+          <label>Утасны дугаар *</label>
+          <div class="field-phone-wrap" id="bookingPhoneWrap">
+            <svg class="field-phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 3.5c.6 0 1.1.4 1.3 1l1 2.6c.2.5.1 1.1-.3 1.5L7 10c1 2.4 2.6 4 5 5l1.4-1.5c.4-.4 1-.5 1.5-.3l2.6 1c.6.2 1 .7 1 1.3v2.3c0 .9-.8 1.6-1.7 1.5-3.5-.4-6.7-2-9.2-4.5S3.4 9.7 3 6.2C2.9 5.3 3.6 4.5 4.5 4.5h2z"/></svg>
+            <input type="tel" id="bookingPhoneInput" placeholder="Жишээ: 99112233" required>
+          </div>
+          <span class="field-error-msg" id="bookingPhoneError">Утасны дугаараа заавал бичнэ үү</span>
         </div>
       </div>
       <div class="form-row">
@@ -1430,50 +1454,69 @@
     if(el) el.scrollIntoView({behavior:'smooth'});
   }
 
+  function clearPhoneError(){
+    var phoneWrap = document.getElementById('bookingPhoneWrap');
+    var phoneError = document.getElementById('bookingPhoneError');
+    phoneWrap.classList.remove('error');
+    phoneError.classList.remove('show');
+  }
+
   function submitBookingForm(e){
     e.preventDefault();
-    var divider = '------------------------';
+    var divider = '━━━━━━━━━━━━━━━━━━';
     var serviceSelect = document.getElementById('bookingServiceSelect');
     var lines = [
-      'ШИНЭ ЦАГ ЗАХИАЛГЫН ХҮСЭЛТ',
+      '🆕 ШИНЭ ЦАГ ЗАХИАЛГЫН ХҮСЭЛТ',
       divider,
-      'Үйлчилгээ: ' + serviceSelect.options[serviceSelect.selectedIndex].text
+      '🎨 Үйлчилгээ: ' + serviceSelect.options[serviceSelect.selectedIndex].text
     ];
 
     var name = document.getElementById('bookingNameInput').value.trim();
     var phone = document.getElementById('bookingPhoneInput').value.trim();
-    if(name) lines.push('Нэр: ' + name);
-    if(phone) lines.push('Утас: ' + phone);
+    var phoneWrap = document.getElementById('bookingPhoneWrap');
+    var phoneError = document.getElementById('bookingPhoneError');
+    if(!phone){
+      phoneWrap.classList.add('error');
+      phoneError.classList.add('show');
+      phoneWrap.classList.remove('shake');
+      void phoneWrap.offsetWidth;
+      phoneWrap.classList.add('shake');
+      document.getElementById('bookingPhoneInput').focus();
+      return;
+    }
+    clearPhoneError();
+    if(name) lines.push('👤 Нэр: ' + name);
+    lines.push('📞 Утас: ' + phone);
 
     var artistGroup = document.getElementById('artistFieldGroup');
     if(artistGroup.style.display !== 'none'){
       var artistSelect = document.getElementById('bookingArtistSelect');
-      lines.push('Artist: ' + artistSelect.options[artistSelect.selectedIndex].text);
+      lines.push('🖌️ Artist: ' + artistSelect.options[artistSelect.selectedIndex].text);
     }
 
     var locationGroup = document.getElementById('locationFieldGroup');
     if(locationGroup.style.display !== 'none'){
       var locLabel = document.getElementById('bookingLocationLabel').textContent;
       var locSelect = document.getElementById('bookingLocationSelect');
-      lines.push(locLabel + ': ' + locSelect.options[locSelect.selectedIndex].text);
+      lines.push('📍 ' + locLabel + ': ' + locSelect.options[locSelect.selectedIndex].text);
     }
 
     var qtyGroup = document.getElementById('piercingQtyGroup');
     if(qtyGroup.style.display !== 'none'){
       var qtySelect = document.getElementById('bookingQtySelect');
-      lines.push('Хэдэн ширхэг: ' + qtySelect.options[qtySelect.selectedIndex].text);
+      lines.push('🔢 Хэдэн ширхэг: ' + qtySelect.options[qtySelect.selectedIndex].text);
     }
 
     var sizeGroup = document.getElementById('sizeFieldGroup');
     if(sizeGroup.style.display !== 'none'){
       var size = document.getElementById('bookingSizeInput').value.trim();
-      if(size) lines.push('Хэмжээ: ' + size);
+      if(size) lines.push('📏 Хэмжээ: ' + size);
     }
 
     var note = document.getElementById('bookingNoteText').value.trim();
     if(note){
       var noteLabel = document.getElementById('bookingNoteLabel').textContent;
-      lines.push(divider, noteLabel + ':', note);
+      lines.push(divider, '📝 ' + noteLabel + ':', note);
     }
 
     lines.push(divider);
@@ -1582,6 +1625,7 @@
     }
   }
   handleServiceChange();
+  document.getElementById('bookingPhoneInput').addEventListener('input', clearPhoneError);
 
   /* MAIN WHITE HERO LOGO: intro reveal + scroll-to-background morph */
   (function(){
