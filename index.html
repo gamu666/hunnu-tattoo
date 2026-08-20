@@ -286,7 +286,7 @@
     cursor:pointer;
   }
   .flash-card svg{width:46%;height:46%;stroke:var(--paper);opacity:0.75;transition:opacity .3s, transform .5s;}
-  .flash-card img{width:100%;height:100%;object-fit:contain;transition:transform .5s;}
+  .flash-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
   .flash-card:hover img{transform:scale(1.04);}
   .flash-card::before{
     content:attr(data-tag);
@@ -517,39 +517,44 @@
   }
   .overlay-header > div{flex:1;min-width:260px;}
   .overlay-avatar{
-    width:200px;min-height:280px;flex:none;
+    width:200px;aspect-ratio:4/5;flex:none;
     background:var(--ink-2);border:1px solid var(--line);
     display:flex;align-items:center;justify-content:center;
     font-family:'Anton',sans-serif;font-size:60px;color:var(--brass);
-    overflow:hidden;
+    overflow:hidden;position:relative;
   }
-  .overlay-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+  .overlay-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
   #overlayTag{
-    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brass);
+    font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--brass);
     letter-spacing:0.15em;text-transform:uppercase;display:block;margin-bottom:12px;
   }
   .overlay-name-row{display:flex;align-items:center;gap:16px;}
   #overlayName{font-size:clamp(32px,5vw,56px);}
   .overlay-ig{
-    flex:none;width:36px;height:36px;border:1px solid var(--brass);border-radius:50%;
-    display:flex;align-items:center;justify-content:center;color:var(--brass);
-    box-shadow:0 0 12px rgba(176,141,63,0.55),0 0 2px rgba(176,141,63,0.7);
+    flex:none;width:36px;height:36px;border:1px solid var(--paper);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:var(--paper);
+    box-shadow:0 0 12px rgba(245,245,245,0.55),0 0 2px rgba(245,245,245,0.7);
     transition:border-color .2s,color .2s,box-shadow .2s;
   }
-  .overlay-ig:hover{border-color:var(--paper);color:var(--paper);box-shadow:0 0 18px rgba(176,141,63,0.85),0 0 4px rgba(176,141,63,0.9);}
+  .overlay-ig:hover{border-color:var(--paper);color:var(--paper);box-shadow:0 0 18px rgba(245,245,245,0.85),0 0 4px rgba(245,245,245,0.9);}
   .overlay-ig svg{width:18px;height:18px;}
   #overlayBio{color:var(--muted);margin-top:16px;line-height:1.8;font-size:15px;text-align:justify;}
   .bio-highlight{color:var(--paper);font-weight:600;}
   .overlay-book-btn{margin-top:26px;display:inline-block;}
   #overlayWorks{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+    column-count:3;column-gap:2px;
     background:var(--line);border:1px solid var(--line);
+    padding:2px 0 0 2px;
   }
-  #overlayWorks .flash-card{min-height:260px;}
+  #overlayWorks .flash-card{
+    grid-column:unset;grid-row:unset;
+    break-inside:avoid;margin:0 2px 2px 0;
+  }
+  #overlayWorks .flash-card img{position:static;height:auto;object-fit:unset;display:block;}
   @media(max-width:700px){
-    #overlayWorks{grid-template-columns:repeat(2,1fr);}
+    #overlayWorks{column-count:2;}
     .overlay-header{gap:24px;}
-    .overlay-avatar{width:140px;min-height:180px;font-size:44px;}
+    .overlay-avatar{width:140px;aspect-ratio:4/5;font-size:44px;}
   }
 
   /* SERVICES */
@@ -709,8 +714,8 @@
 <nav>
   <a href="#" class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">HUNNU <span>TATTOO</span> STUDIO</a>
   <div class="nav-links">
-    <a href="#work">Ажлууд</a>
     <a href="#services">Үйлчилгээ</a>
+    <a href="#work">Ажлууд</a>
     <a href="#artist">Артистууд</a>
     <a href="#contact">Холбоо барих</a>
   </div>
@@ -829,15 +834,15 @@
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('ml');">Цаг захиалах →</a>
       </div>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a2','Artist 2','Tattoo Artist','Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.')">
+    <div class="artist-card" onclick="openArtistPage('a2','Jamuh','Tattoo Artist','4 жилийн туршлагатай tattoo артист бөгөөд <span class=bio-highlight>Sigilism, Blackwork болон Fine Line</span> чиглэлээр түлхүү ажилладаг. Уран бүтээлийн онцлог нь хурц, органик, симметр бус хэлбэр бүхий occult, symbolic элементтэй sigil дизайнуудаараа илэрдэг. Мөн Ornamental / Ornamental Blackwork чиглэлээр гоёлын, симметртэй, нарийн хээ угалзтай бүтээл хийхэд дуртай. Fine Line, Ornamental болон Dark Art стилиудыг хослуулан, дизайн бүрдээ өвөрмөц бэлгэдлийн шинж чанар оруулахыг зорьдог.')">
       <div class="artist-portrait">
         <span class="initial display">02</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
       <span class="artist-tag">Tattoo Artist</span>
-      <h3 class="artist-name display">Artist Name</h3>
-      <p class="artist-bio">Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.</p>
+      <h3 class="artist-name display">Jamuh</h3>
+      <p class="artist-bio">4 жилийн туршлагатай tattoo артист бөгөөд <span class="bio-highlight">Sigilism, Blackwork болон Fine Line</span> чиглэлээр түлхүү ажилладаг. Уран бүтээлийн онцлог нь хурц, органик, симметр бус хэлбэр бүхий occult, symbolic элементтэй sigil дизайнуудаараа илэрдэг. Мөн Ornamental / Ornamental Blackwork чиглэлээр гоёлын, симметртэй, нарийн хээ угалзтай бүтээл хийхэд дуртай. Fine Line, Ornamental болон Dark Art стилиудыг хослуулан, дизайн бүрдээ өвөрмөц бэлгэдлийн шинж чанар оруулахыг зорьдог.</p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a2');">Цаг захиалах →</a>
       </div>
@@ -1124,7 +1129,8 @@
 
   // per-artist page
   var artistContacts = {
-    ml: { ig: 'https://www.instagram.com/hunnutattoo/', phone: '+97695662813' }
+    ml: { ig: 'https://www.instagram.com/hunnutattoo/', phone: '+97695662813' },
+    a2: { ig: 'https://www.instagram.com/jamuh_____/', phone: '+97685259013' }
   };
   function openArtistPage(id, name, tag, bio){
     var contact = artistContacts[id];
