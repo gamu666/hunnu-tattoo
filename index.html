@@ -1109,7 +1109,7 @@
       <div class="field" id="photoFieldGroup">
         <label id="bookingPhotoLabel">Хүссэн шивээсний зураг хавсаргах</label>
         <input type="file" id="bookingPhotoInput" accept="image/*">
-        <span class="field-hint">Хүсэлт илгээхэд Messenger нээгдэнэ — зургаа тэнд бас хавсаргаж илгээнэ үү</span>
+        <span class="field-hint">Хүсэлт илгээхэд зургийг тань бид шууд хүлээн авна</span>
       </div>
       <button class="submit-btn">Хүсэлт илгээх</button>
     </form>
@@ -1476,16 +1476,38 @@
       lines.push(divider, noteLabel + ':', note);
     }
 
-    var photoGroup = document.getElementById('photoFieldGroup');
-    var photoInput = document.getElementById('bookingPhotoInput');
-    if(photoGroup.style.display !== 'none' && photoInput.files && photoInput.files.length){
-      lines.push(divider, '📎 Зураг хавсаргасан — та энэ зургаа Messenger чатад бас илгээнэ үү.');
-    }
     lines.push(divider);
 
     var message = lines.join('\n');
-    var url = 'https://m.me/tattoo.mongol?text=' + encodeURIComponent(message);
-    window.open(url, '_blank');
+    var photoInput = document.getElementById('bookingPhotoInput');
+    var formData = new FormData();
+    formData.append('message', message);
+    if(photoInput.files && photoInput.files.length){
+      formData.append('photo', photoInput.files[0]);
+    }
+
+    var submitBtn = e.target.querySelector('.submit-btn');
+    var originalBtnText = submitBtn.textContent;
+    submitBtn.textContent = 'Илгээж байна...';
+    submitBtn.disabled = true;
+
+    fetch('https://hunnu-booking.gaorm0206.workers.dev/', {
+      method: 'POST',
+      body: formData
+    }).then(function(res){ return res.json(); }).then(function(data){
+      if(!data.ok) throw new Error(data.error || 'Send failed');
+      submitBtn.textContent = 'Илгээгдлээ ✓';
+      e.target.reset();
+      handleServiceChange();
+      setTimeout(function(){
+        submitBtn.textContent = originalBtnText;
+        submitBtn.disabled = false;
+      }, 3500);
+    }).catch(function(){
+      submitBtn.textContent = originalBtnText;
+      submitBtn.disabled = false;
+      alert('Уучлаарай, хvсэлт илгээхэд алдаа гарлаа. Messenger-ээр шууд бичнэ vv: https://m.me/tattoo.mongol');
+    });
   }
 
   function handleServiceChange(){
