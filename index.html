@@ -273,13 +273,13 @@
   /* GALLERY — flash sheet */
   .flash-grid{
     display:grid;
-    grid-template-columns:repeat(6,1fr);
-    grid-auto-rows:110px;
+    grid-template-columns:repeat(3,1fr);
     gap:2px;
     border:1px solid var(--line);
     background:var(--line);
   }
   .flash-card{
+    aspect-ratio:4/5;
     background:var(--ink-2);
     display:flex;align-items:center;justify-content:center;
     position:relative;overflow:hidden;
@@ -288,25 +288,18 @@
   .flash-card svg{width:46%;height:46%;stroke:var(--paper);opacity:0.75;transition:opacity .3s, transform .5s;}
   .flash-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
   .flash-card:hover img{transform:scale(1.04);}
-  .flash-card::before{
-    content:attr(data-tag);
-    position:absolute;top:10px;left:12px;
-    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--brass);
-    letter-spacing:0.1em;opacity:0;transition:opacity .3s;
-  }
   .flash-card:hover{background:#1e1c22;}
   .flash-card:hover svg{opacity:1;transform:scale(1.08) rotate(-2deg);}
-  .flash-card:hover::before{opacity:1;}
 
   .flash-meta{
     position:absolute;bottom:0;left:0;right:0;
     background:linear-gradient(to top, rgba(11,11,13,0.95), transparent 100%);
     padding:14px 12px 10px;
     display:flex;align-items:center;gap:9px;
-    transform:translateY(100%);
-    transition:transform .35s ease;
+    cursor:pointer;
+    z-index:1;
   }
-  .flash-card:hover .flash-meta, .flash-card.show .flash-meta{transform:translateY(0);}
+  .flash-meta:hover .aname{color:var(--brass);}
   .flash-meta .avatar{
     width:24px;height:24px;border-radius:50%;flex:none;
     background:var(--ink);border:1px solid var(--brass);
@@ -316,17 +309,19 @@
   }
   .flash-meta .avatar img{width:100%;height:100%;object-fit:cover;}
   .flash-meta .aname{font-size:12px;letter-spacing:0.03em;color:var(--paper);}
-  .fc-1{grid-column:span 2;grid-row:span 2;}
-  .fc-2{grid-column:span 2;grid-row:span 3;}
-  .fc-3{grid-column:span 2;grid-row:span 2;}
-  .fc-4{grid-column:span 2;grid-row:span 2;}
-  .fc-5{grid-column:span 2;grid-row:span 3;}
-  .fc-6{grid-column:span 2;grid-row:span 2;}
-
   @media(max-width:720px){
     .flash-grid{grid-template-columns:repeat(2,1fr);}
-    .fc-1,.fc-2,.fc-3,.fc-4,.fc-5,.fc-6{grid-column:span 1;grid-row:span 2;}
   }
+
+  .flash-card-more{display:none;}
+  #allWorksGrid .flash-card-more{display:flex;}
+  .flash-more-wrap{display:flex;justify-content:center;margin-top:28px;}
+  .flash-more-btn{
+    background:transparent;color:var(--paper);border:1px solid var(--line);
+    padding:14px 36px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;
+    font-family:'Inter',sans-serif;cursor:pointer;transition:border-color .25s,color .25s;
+  }
+  .flash-more-btn:hover{border-color:var(--paper);}
 
   /* TEAM — multiple artists */
   .team-grid{
@@ -368,7 +363,7 @@
     font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--brass);
     letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;display:block;
   }
-  .artist-bio{color:var(--muted);line-height:1.8;font-size:13.5px;margin-bottom:18px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .artist-bio{color:var(--muted);line-height:1.8;font-size:13.5px;margin-bottom:18px;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
   .artist-links{display:flex;flex-wrap:wrap;gap:18px;margin-top:auto;}
   .artist-link{display:inline-block;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--muted);padding-bottom:3px;color:var(--muted);transition:color .2s,border-color .2s;}
   .artist-link:hover{color:var(--paper);border-color:var(--paper);}
@@ -491,16 +486,33 @@
     }
   }
 
+  /* LIGHTBOX — enlarged work image */
+  .lightbox{
+    position:fixed;inset:0;background:rgba(11,11,13,0.94);z-index:250;
+    display:flex;align-items:center;justify-content:center;padding:6vh 5vw;
+    opacity:0;visibility:hidden;transition:opacity .3s ease, visibility 0s linear .3s;
+  }
+  .lightbox.open{opacity:1;visibility:visible;transition:opacity .3s ease;}
+  .lightbox img{max-width:100%;max-height:100%;object-fit:contain;box-shadow:0 20px 60px rgba(0,0,0,0.6);}
+  .lightbox-close{
+    position:fixed;top:22px;right:5vw;z-index:260;
+    width:44px;height:44px;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;background:var(--ink);font-size:20px;color:var(--paper);
+    transition:border-color .2s,color .2s;
+  }
+  .lightbox-close:hover{border-color:var(--crimson);color:var(--crimson);}
+
   /* ARTIST DETAIL OVERLAY */
   .artist-overlay{
     position:fixed;inset:0;background:var(--ink);z-index:200;
     overflow-y:auto;
-    opacity:0;visibility:hidden;transform:translateY(24px);
-    transition:opacity .35s ease, transform .35s ease, visibility 0s linear .35s;
+    opacity:0;visibility:hidden;
+    transition:opacity .35s ease, visibility 0s linear .35s;
   }
   .artist-overlay.open{
-    opacity:1;visibility:visible;transform:translateY(0);
-    transition:opacity .35s ease, transform .35s ease;
+    opacity:1;visibility:visible;
+    transition:opacity .35s ease;
   }
   .overlay-close{
     position:fixed;top:22px;right:5vw;z-index:210;
@@ -538,21 +550,42 @@
   }
   .overlay-ig:hover{border-color:var(--paper);color:var(--paper);box-shadow:0 0 18px rgba(245,245,245,0.85),0 0 4px rgba(245,245,245,0.9);}
   .overlay-ig svg{width:18px;height:18px;}
+  #overlayPhone{position:relative;}
+  .phone-tip{
+    position:absolute;bottom:calc(100% + 10px);left:50%;
+    transform:translateX(-50%) translateY(4px);
+    background:var(--paper);color:var(--ink);
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.02em;
+    padding:7px 14px;border-radius:6px;white-space:nowrap;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease, visibility 0s linear .2s;
+  }
+  .phone-tip::after{
+    content:"";position:absolute;top:100%;left:50%;
+    transform:translateX(-50%);
+    border:5px solid transparent;border-top-color:var(--paper);
+  }
+  .phone-tip.show{
+    opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);
+    transition:opacity .2s ease, transform .2s ease;
+  }
   #overlayBio{color:var(--muted);margin-top:16px;line-height:1.8;font-size:15px;text-align:justify;}
+  .overlay-price{
+    margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:17px;
+    letter-spacing:0.03em;color:var(--paper);
+  }
+  .overlay-price strong{color:var(--brass);font-weight:700;font-size:19px;}
   .bio-highlight{color:var(--paper);font-weight:600;}
   .overlay-book-btn{margin-top:26px;display:inline-block;}
   #overlayWorks{
-    column-count:3;column-gap:2px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
     background:var(--line);border:1px solid var(--line);
-    padding:2px 0 0 2px;
   }
   #overlayWorks .flash-card{
-    grid-column:unset;grid-row:unset;
-    break-inside:avoid;margin:0 2px 2px 0;
+    aspect-ratio:4/5;
   }
-  #overlayWorks .flash-card img{position:static;height:auto;object-fit:unset;display:block;}
   @media(max-width:700px){
-    #overlayWorks{column-count:2;}
+    #overlayWorks{grid-template-columns:repeat(2,1fr);}
     .overlay-header{gap:24px;}
     .overlay-avatar{width:140px;aspect-ratio:4/5;font-size:44px;}
   }
@@ -808,6 +841,29 @@
       <img src="images/mnhja-work-6.jpg" alt="Demon mask realism шивээс">
       <div class="flash-meta"><div class="avatar"><img src="images/mnhja-loco.jpg" alt="Mnhja Loco"></div><span class="aname">Mnhja Loco</span></div>
     </div>
+    <div class="flash-card flash-card-more" data-tag="SIGIL / DARK ART" data-artist="a2">
+      <img src="images/jamuh-work-1.jpg" alt="Sigil dark art шивээс">
+      <div class="flash-meta"><div class="avatar">A2</div><span class="aname">Jamuh</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="ORNAMENTAL BLACKWORK" data-artist="a2">
+      <img src="images/jamuh-work-2.jpg" alt="Ornamental blackwork шивээс">
+      <div class="flash-meta"><div class="avatar">A2</div><span class="aname">Jamuh</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="FINE LINE / ORNAMENTAL" data-artist="a4">
+      <img src="images/lili-work-1.jpg" alt="Fine line ornamental шивээс">
+      <div class="flash-meta"><div class="avatar">L</div><span class="aname">LILI</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="NEO-TRADITIONAL" data-artist="a5">
+      <img src="images/a5-work-1.jpg" alt="Neo-traditional шивээс">
+      <div class="flash-meta"><div class="avatar">Z</div><span class="aname">Zuugii</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="DOTWORK MINIMAL" data-artist="a6">
+      <img src="images/a6-work-1.jpg" alt="Dotwork minimal piercing/шивээс">
+      <div class="flash-meta"><div class="avatar">C</div><span class="aname">Caos</span></div>
+    </div>
+  </div>
+  <div class="flash-more-wrap">
+    <button class="flash-more-btn" id="flashMoreBtn" onclick="openWorksOverlay()">Цааш үзэх</button>
   </div>
 </section>
 
@@ -847,53 +903,53 @@
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a2');">Цаг захиалах →</a>
       </div>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a3','Artist 3','Tattoo Artist','Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.')">
+    <div class="artist-card" onclick="openArtistPage('a3','Gerlee','Piercer','2021 онд Японд мэргэжлийн дадлага хийж, тэндхийн олон улсын жишигт нийцсэн ажиллагааны стандарт, ариун цэврийн нарийн шаардлагыг судалж эзэмшсэн туршлагатай Piercer. 2022 оноос хойш Монголдоо ирж, өнөөг хүртэл тасралтгүй 4 жилийн турш зөвхөн piercing чиглэлээр дагнан ажиллаж байна. Lobe, Helix, Tragus, Conch, Nostril, Septum, Navel зэрэг олон төрлийн piercing-ийг өндөр нарийвчлал, аюулгүй байдлын стандартын дагуу гүйцэтгэдэг бөгөөд харилцагч бүрт тохирсон материал, байршлыг зөвлөж, тав тухтай, мэргэжлийн орчинд үйлчилдэг.')">
       <div class="artist-portrait">
         <span class="initial display">03</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
-      <span class="artist-tag">Tattoo Artist</span>
-      <h3 class="artist-name display">Artist Name</h3>
-      <p class="artist-bio">Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.</p>
+      <span class="artist-tag">Piercer</span>
+      <h3 class="artist-name display">Gerlee</h3>
+      <p class="artist-bio">2021 онд Японд мэргэжлийн дадлага хийж, тэндхийн олон улсын жишигт нийцсэн ажиллагааны стандарт, ариун цэврийн нарийн шаардлагыг судалж эзэмшсэн туршлагатай Piercer. 2022 оноос хойш Монголдоо ирж, өнөөг хүртэл тасралтгүй 4 жилийн турш зөвхөн piercing чиглэлээр дагнан ажиллаж байна. Lobe, Helix, Tragus, Conch, Nostril, Septum, Navel зэрэг олон төрлийн piercing-ийг өндөр нарийвчлал, аюулгүй байдлын стандартын дагуу гүйцэтгэдэг бөгөөд харилцагч бүрт тохирсон материал, байршлыг зөвлөж, тав тухтай, мэргэжлийн орчинд үйлчилдэг.</p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a3');">Цаг захиалах →</a>
       </div>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a4','Artist 4','Tattoo Artist','Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.')">
+    <div class="artist-card" onclick="openArtistPage('a4','LILI','Tattoo Artist','Шивээсний чиглэлээр 3 жил тасралтгүй ажиллаж буй артист бөгөөд голчлон жижиг болон дунд хэмжээний, нарийн детальтай шивээсэнд төвлөрдөг. <span class=bio-highlight>Fine line, delicate linework, ornamental, geometric болон blackwork</span> төрлийн дизайнд түлхүү ажилладаг бөгөөд шугам бүрийг нарийн, цэвэрхэн гүйцэтгэхийг эрхэмлэдэг. Үйлчлүүлэгчийн хүсэл сонирхол болон биеийн хэлбэрт тохируулан өвөрмөц custom tattoo design судлан гаргаж өгдөг бөгөөд хэмжээнээс үл хамааран утга учиртай, нарийн уран бүтээл бүтээхийг зорьдог.')">
       <div class="artist-portrait">
         <span class="initial display">04</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
       <span class="artist-tag">Tattoo Artist</span>
-      <h3 class="artist-name display">Artist Name</h3>
-      <p class="artist-bio">Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.</p>
+      <h3 class="artist-name display">LILI</h3>
+      <p class="artist-bio">Шивээсний чиглэлээр 3 жил тасралтгүй ажиллаж буй артист бөгөөд голчлон жижиг болон дунд хэмжээний, нарийн детальтай шивээсэнд төвлөрдөг. <span class="bio-highlight">Fine line, delicate linework, ornamental, geometric болон blackwork</span> төрлийн дизайнд түлхүү ажилладаг бөгөөд шугам бүрийг нарийн, цэвэрхэн гүйцэтгэхийг эрхэмлэдэг. Үйлчлүүлэгчийн хүсэл сонирхол болон биеийн хэлбэрт тохируулан өвөрмөц custom tattoo design судлан гаргаж өгдөг бөгөөд хэмжээнээс үл хамааран утга учиртай, нарийн уран бүтээл бүтээхийг зорьдог.</p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a4');">Цаг захиалах →</a>
       </div>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a5','Artist 5','Tattoo Artist','Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.')">
+    <div class="artist-card" onclick="openArtistPage('a5','Zuugii','Tattoo Artist','Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.')">
       <div class="artist-portrait">
         <span class="initial display">05</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
       <span class="artist-tag">Tattoo Artist</span>
-      <h3 class="artist-name display">Artist Name</h3>
+      <h3 class="artist-name display">Zuugii</h3>
       <p class="artist-bio">Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.</p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a5');">Цаг захиалах →</a>
       </div>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a6','Artist 6','Piercer','Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.')">
+    <div class="artist-card" onclick="openArtistPage('a6','Caos','Tattoo Artist','Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.')">
       <div class="artist-portrait">
         <span class="initial display">06</span>
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
-      <span class="artist-tag">Piercer</span>
-      <h3 class="artist-name display">Artist Name</h3>
+      <span class="artist-tag">Tattoo Artist</span>
+      <h3 class="artist-name display">Caos</h3>
       <p class="artist-bio">Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.</p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a6');">Цаг захиалах →</a>
@@ -935,7 +991,7 @@
         <strong id="bookingNoteLine2">Урьдчилгаа төлбөрөөр цаг баталгаажна</strong>
       </div>
     </div>
-    <form onsubmit="return false;">
+    <form onsubmit="submitBookingForm(event)">
       <div class="field">
         <label>Үйлчилгээний төрөл</label>
         <select id="bookingServiceSelect" onchange="handleServiceChange()">
@@ -948,11 +1004,11 @@
       <div class="form-row">
         <div class="field">
           <label>Нэр</label>
-          <input type="text" placeholder="Таны нэр">
+          <input type="text" id="bookingNameInput" placeholder="Таны нэр">
         </div>
         <div class="field">
           <label>Утасны дугаар</label>
-          <input type="tel" placeholder="99xxxxxx">
+          <input type="tel" id="bookingPhoneInput" placeholder="99xxxxxx">
         </div>
       </div>
       <div class="form-row">
@@ -960,11 +1016,10 @@
           <label>Artist сонгох</label>
           <select id="bookingArtistSelect">
             <option value="ml">Mnhja Loco</option>
-            <option value="a2">Artist 2 (Blackwork)</option>
-            <option value="a3">Artist 3 (Realism)</option>
-            <option value="a4">Artist 4 (Japanese)</option>
-            <option value="a5">Artist 5 (Neo-traditional)</option>
-            <option value="a6">Artist 6 (Minimal/Dotwork)</option>
+            <option value="a2">Jamuh</option>
+            <option value="a4">LILI</option>
+            <option value="a5">Zuugii</option>
+            <option value="a6">Caos</option>
             <option value="any">Хамаагүй — санал болгоорой</option>
           </select>
         </div>
@@ -990,7 +1045,7 @@
       </div>
       <div class="field" id="sizeFieldGroup">
         <label>Хэмжээ (см орчим)</label>
-        <input type="text" placeholder="жш: 10x10">
+        <input type="text" id="bookingSizeInput" placeholder="жш: 10x10">
       </div>
       <div class="field">
         <label id="bookingNoteLabel">Санааны тайлбар</label>
@@ -1036,16 +1091,36 @@
           <a href="#" target="_blank" rel="noopener" class="overlay-ig" id="overlayIG" aria-label="Instagram">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
           </a>
-          <a href="#" class="overlay-ig" id="overlayPhone" aria-label="Утасдах">
+          <a href="#" class="overlay-ig" id="overlayPhone" aria-label="Утасдах" onclick="handlePhoneIconClick(event)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 3.5c.6 0 1.1.4 1.3 1l1 2.6c.2.5.1 1.1-.3 1.5L7 10c1 2.4 2.6 4 5 5l1.4-1.5c.4-.4 1-.5 1.5-.3l2.6 1c.6.2 1 .7 1 1.3v2.3c0 .9-.8 1.6-1.7 1.5-3.5-.4-6.7-2-9.2-4.5S3.4 9.7 3 6.2C2.9 5.3 3.6 4.5 4.5 4.5h2z"/></svg>
+            <span class="phone-tip" id="phoneTip"></span>
           </a>
         </div>
         <p id="overlayBio">Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд.</p>
+        <p class="overlay-price">Цагийн үнэлгээ: <strong>999,000₮</strong></p>
         <a href="#booking" class="btn-primary overlay-book-btn" id="overlayBookBtn" onclick="event.preventDefault(); bookArtist(this.dataset.artist);">Энэ artist-тай цаг захиалах</a>
       </div>
     </div>
     <div id="overlayWorks"></div>
   </div>
+</div>
+
+<div class="artist-overlay" id="works-overlay">
+  <div class="overlay-close" onclick="closeWorksOverlay()">✕</div>
+  <div class="overlay-inner">
+    <div class="section-head">
+      <div>
+        <span class="section-num">02 — PORTFOLIO</span>
+        <h2 class="section-title display">Бүх <span class="accent">ажлууд</span></h2>
+      </div>
+    </div>
+    <div id="allWorksGrid" class="flash-grid"></div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+  <img id="lightboxImg" src="" alt="" onclick="event.stopPropagation();">
 </div>
 
 <script>
@@ -1077,26 +1152,60 @@
 
   var flashCardArtistData = {
     ml: { name:'Mnhja Loco', tag:'Tattoo Artist', bio:'10 жилийн туршлагатай мэргэжлийн артист бөгөөд <span class=bio-highlight>Traditional Asian, Black &amp; Grey болон реалист хөрөг</span> чиглэлээр түлхүү ажилладаг. Уран бүтээлийн онцлог нь нарийн деталь, гүн сүүдэрлэлт, зөв пропорц болон биеийн хэлбэртэй уялдсан том хэмжээний бүтээлүүдээрээ илэрдэг. Ялангуяа бүтэн нуруу, бүтэн гар, цээж, хөл болон биеийн том хэсгийг бүрэн дүүргэх хэмжээний tattoo project дээр ажиллах дуртай. Том хэмжээний шивээсийг нэг удаагийн зураг гэхээсээ илүүтэйгээр биеийн хэлбэр, хөдөлгөөнтэй зохицсон нэгэн цогц урлагийн бүтээл болгон хөгжүүлэхийг зорьдог.' },
-    a2: { name:'Artist 2', tag:'Tattoo Artist', bio:'Том, тодорхой blackwork болон geometric дизайнаар мэргэшсэн.' },
-    a3: { name:'Artist 3', tag:'Tattoo Artist', bio:'Хөрөг болон реалистик дизайнд төвлөрдөг, том хэмжээний ажлуудад дуртай.' },
-    a4: { name:'Artist 4', tag:'Tattoo Artist', bio:'Уламжлалт япон стиль, том хэмжээний sleeve ажлуудад мэргэшсэн.' },
-    a5: { name:'Artist 5', tag:'Tattoo Artist', bio:'Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.' },
-    a6: { name:'Artist 6', tag:'Piercer', bio:'Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.' }
+    a2: { name:'Jamuh', tag:'Tattoo Artist', bio:'4 жилийн туршлагатай tattoo артист бөгөөд <span class=bio-highlight>Sigilism, Blackwork болон Fine Line</span> чиглэлээр түлхүү ажилладаг. Уран бүтээлийн онцлог нь хурц, органик, симметр бус хэлбэр бүхий occult, symbolic элементтэй sigil дизайнуудаараа илэрдэг. Мөн Ornamental / Ornamental Blackwork чиглэлээр гоёлын, симметртэй, нарийн хээ угалзтай бүтээл хийхэд дуртай. Fine Line, Ornamental болон Dark Art стилиудыг хослуулан, дизайн бүрдээ өвөрмөц бэлгэдлийн шинж чанар оруулахыг зорьдог.' },
+    a3: { name:'Gerlee', tag:'Piercer', bio:'2021 онд Японд мэргэжлийн дадлага хийж, тэндхийн олон улсын жишигт нийцсэн ажиллагааны стандарт, ариун цэврийн нарийн шаардлагыг судалж эзэмшсэн туршлагатай Piercer. 2022 оноос хойш Монголдоо ирж, өнөөг хүртэл тасралтгүй 4 жилийн турш зөвхөн piercing чиглэлээр дагнан ажиллаж байна. Lobe, Helix, Tragus, Conch, Nostril, Septum, Navel зэрэг олон төрлийн piercing-ийг өндөр нарийвчлал, аюулгүй байдлын стандартын дагуу гүйцэтгэдэг бөгөөд харилцагч бүрт тохирсон материал, байршлыг зөвлөж, тав тухтай, мэргэжлийн орчинд үйлчилдэг.' },
+    a4: { name:'LILI', tag:'Tattoo Artist', bio:'Шивээсний чиглэлээр 3 жил тасралтгүй ажиллаж буй артист бөгөөд голчлон жижиг болон дунд хэмжээний, нарийн детальтай шивээсэнд төвлөрдөг. <span class=bio-highlight>Fine line, delicate linework, ornamental, geometric болон blackwork</span> төрлийн дизайнд түлхүү ажилладаг бөгөөд шугам бүрийг нарийн, цэвэрхэн гүйцэтгэхийг эрхэмлэдэг. Үйлчлүүлэгчийн хүсэл сонирхол болон биеийн хэлбэрт тохируулан өвөрмөц custom tattoo design судлан гаргаж өгдөг бөгөөд хэмжээнээс үл хамааран утга учиртай, нарийн уран бүтээл бүтээхийг зорьдог.' },
+    a5: { name:'Zuugii', tag:'Tattoo Artist', bio:'Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.' },
+    a6: { name:'Caos', tag:'Tattoo Artist', bio:'Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.' }
   };
-  document.querySelectorAll('.flash-card').forEach(function(card){
-    card.addEventListener('click', function(){
-      var id = card.dataset.artist;
-      var data = flashCardArtistData[id];
-      if(data){
-        openArtistPage(id, data.name, data.tag, data.bio);
-        return;
+  function bindFlashCardInteractions(root){
+    root.querySelectorAll('.flash-card').forEach(function(card){
+      var meta = card.querySelector('.flash-meta');
+      if(meta){
+        meta.addEventListener('click', function(e){
+          e.stopPropagation();
+          var id = card.dataset.artist;
+          var data = flashCardArtistData[id];
+          if(data) openArtistPage(id, data.name, data.tag, data.bio);
+        });
       }
-      document.querySelectorAll('.flash-card').forEach(function(c){
-        if(c !== card) c.classList.remove('show');
+      card.addEventListener('click', function(){
+        var img = card.querySelector('img');
+        if(img) openLightbox(img.src, img.alt);
       });
-      card.classList.toggle('show');
     });
-  });
+  }
+  bindFlashCardInteractions(document);
+
+  function openLightbox(src, alt){
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightboxImg').alt = alt || '';
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openWorksOverlay(){
+    var grid = document.getElementById('allWorksGrid');
+    grid.innerHTML = '';
+    document.querySelectorAll('#work .flash-card').forEach(function(card){
+      grid.appendChild(card.cloneNode(true));
+    });
+    bindFlashCardInteractions(grid);
+    document.getElementById('works-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    window.scrollTo({top:0, left:0, behavior:'instant'});
+    if(window.__heroLogoRender) window.__heroLogoRender();
+  }
+  function closeWorksOverlay(){
+    document.getElementById('works-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+    window.scrollTo({top:0, left:0, behavior:'instant'});
+    if(window.__heroLogoRender) window.__heroLogoRender();
+  }
 
   // count-up animation for studio stats
   var statEls = document.querySelectorAll('.stat-num');
@@ -1130,8 +1239,28 @@
   // per-artist page
   var artistContacts = {
     ml: { ig: 'https://www.instagram.com/hunnutattoo/', phone: '+97695662813' },
-    a2: { ig: 'https://www.instagram.com/jamuh_____/', phone: '+97685259013' }
+    a2: { ig: 'https://www.instagram.com/jamuh_____/', phone: '+97685259013' },
+    a3: { ig: 'https://www.instagram.com/gerlee_knnn/', phone: '+97694129127' },
+    a4: { ig: 'https://www.instagram.com/lili_tattooist/', phone: '+97694738067' },
+    a5: { ig: 'https://www.instagram.com/tattooed_by_zuugii/', phone: '+97694709912' },
+    a6: { ig: 'https://www.instagram.com/talnutgiinxvv/', phone: '+97699855189' }
   };
+  function handlePhoneIconClick(e){
+    var isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if(!isDesktop) return;
+    e.preventDefault();
+    var el = e.currentTarget;
+    var raw = el.dataset.phone;
+    if(!raw) return;
+    var digits = raw.replace('+976', '');
+    var display = digits.length === 8 ? ('+976 ' + digits.slice(0,4) + ' ' + digits.slice(4)) : raw;
+    var tip = document.getElementById('phoneTip');
+    tip.textContent = display;
+    tip.classList.add('show');
+    clearTimeout(window.__phoneTipTimer);
+    window.__phoneTipTimer = setTimeout(function(){ tip.classList.remove('show'); }, 3000);
+  }
+
   function openArtistPage(id, name, tag, bio){
     var contact = artistContacts[id];
     var igEl = document.getElementById('overlayIG');
@@ -1144,6 +1273,7 @@
     }
     if(contact && contact.phone){
       phoneEl.href = 'tel:' + contact.phone;
+      phoneEl.dataset.phone = contact.phone;
       phoneEl.style.display = '';
     } else {
       phoneEl.style.display = 'none';
@@ -1164,6 +1294,7 @@
     document.querySelectorAll('.flash-card[data-artist="' + id + '"]').forEach(function(card){
       grid.appendChild(card.cloneNode(true));
     });
+    bindFlashCardInteractions(grid);
 
     document.getElementById('artist-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1179,7 +1310,7 @@
   function bookArtist(id){
     closeArtistPage();
     var serviceSelect = document.getElementById('bookingServiceSelect');
-    if(serviceSelect) serviceSelect.value = (id === 'a6') ? 'piercing' : 'tattoo';
+    if(serviceSelect) serviceSelect.value = (id === 'a3') ? 'piercing' : 'tattoo';
     handleServiceChange();
     var select = document.getElementById('bookingArtistSelect');
     if(select && id) select.value = id;
@@ -1194,6 +1325,58 @@
     handleServiceChange();
     var el = document.getElementById('booking');
     if(el) el.scrollIntoView({behavior:'smooth'});
+  }
+
+  function submitBookingForm(e){
+    e.preventDefault();
+    var divider = '------------------------';
+    var serviceSelect = document.getElementById('bookingServiceSelect');
+    var lines = [
+      'ШИНЭ ЦАГ ЗАХИАЛГЫН ХҮСЭЛТ',
+      divider,
+      'Үйлчилгээ: ' + serviceSelect.options[serviceSelect.selectedIndex].text
+    ];
+
+    var name = document.getElementById('bookingNameInput').value.trim();
+    var phone = document.getElementById('bookingPhoneInput').value.trim();
+    if(name) lines.push('Нэр: ' + name);
+    if(phone) lines.push('Утас: ' + phone);
+
+    var artistGroup = document.getElementById('artistFieldGroup');
+    if(artistGroup.style.display !== 'none'){
+      var artistSelect = document.getElementById('bookingArtistSelect');
+      lines.push('Artist: ' + artistSelect.options[artistSelect.selectedIndex].text);
+    }
+
+    var locationGroup = document.getElementById('locationFieldGroup');
+    if(locationGroup.style.display !== 'none'){
+      var locLabel = document.getElementById('bookingLocationLabel').textContent;
+      var locSelect = document.getElementById('bookingLocationSelect');
+      lines.push(locLabel + ': ' + locSelect.options[locSelect.selectedIndex].text);
+    }
+
+    var qtyGroup = document.getElementById('piercingQtyGroup');
+    if(qtyGroup.style.display !== 'none'){
+      var qtySelect = document.getElementById('bookingQtySelect');
+      lines.push('Хэдэн ширхэг: ' + qtySelect.options[qtySelect.selectedIndex].text);
+    }
+
+    var sizeGroup = document.getElementById('sizeFieldGroup');
+    if(sizeGroup.style.display !== 'none'){
+      var size = document.getElementById('bookingSizeInput').value.trim();
+      if(size) lines.push('Хэмжээ: ' + size);
+    }
+
+    var note = document.getElementById('bookingNoteText').value.trim();
+    if(note){
+      var noteLabel = document.getElementById('bookingNoteLabel').textContent;
+      lines.push(divider, noteLabel + ':', note);
+    }
+    lines.push(divider);
+
+    var message = lines.join('\n');
+    var url = 'https://m.me/tattoo.mongol?text=' + encodeURIComponent(message);
+    window.open(url, '_blank');
   }
 
   function handleServiceChange(){
@@ -1217,7 +1400,7 @@
 
     if(val === 'tattoo'){
       artistGroup.style.display = '';
-      artistSelect.innerHTML = '<option value="ml">Mnhja Loco</option><option value="a2">Artist 2 (Blackwork)</option><option value="a3">Artist 3 (Realism)</option><option value="a4">Artist 4 (Japanese)</option><option value="a5">Artist 5 (Neo-traditional)</option>';
+      artistSelect.innerHTML = '<option value="ml">Mnhja Loco</option><option value="a2">Jamuh</option><option value="a4">LILI</option><option value="a5">Zuugii</option><option value="a6">Caos</option>';
       sizeGroup.style.display = '';
       locLabel.textContent = 'Байршил';
       locSelect.innerHTML = '<option>Гар</option><option>Мөр</option><option>Хөл</option><option>Нуруу</option><option>Бусад</option>';
@@ -1229,7 +1412,7 @@
       infoLine2.textContent = 'Урьдчилгаа төлбөрөөр цаг баталгаажна';
     } else if(val === 'piercing'){
       artistGroup.style.display = '';
-      artistSelect.innerHTML = '<option value="a6">Artist 6 (Piercing)</option>';
+      artistSelect.innerHTML = '<option value="a3">Gerlee</option>';
       qtyGroup.style.display = '';
       locLabel.textContent = 'Piercing төрөл';
       locSelect.innerHTML = '<option>Lobe</option><option>Helix</option><option>Tragus</option><option>Conch</option><option>Nostril</option><option>Septum</option><option>Lip</option><option>Navel</option><option>Other</option>';
