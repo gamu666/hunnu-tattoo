@@ -1213,15 +1213,15 @@
       grid.appendChild(card.cloneNode(true));
     });
     bindFlashCardInteractions(grid);
-    document.getElementById('works-overlay').classList.add('open');
+    var worksOverlayEl = document.getElementById('works-overlay');
+    worksOverlayEl.classList.add('open');
+    worksOverlayEl.scrollTop = 0;
     document.body.style.overflow = 'hidden';
-    window.scrollTo({top:0, left:0, behavior:'instant'});
     if(window.__heroLogoRender) window.__heroLogoRender();
   }
   function closeWorksOverlay(){
     document.getElementById('works-overlay').classList.remove('open');
     document.body.style.overflow = '';
-    window.scrollTo({top:0, left:0, behavior:'instant'});
     if(window.__heroLogoRender) window.__heroLogoRender();
   }
 
@@ -1314,15 +1314,15 @@
     });
     bindFlashCardInteractions(grid);
 
-    document.getElementById('artist-overlay').classList.add('open');
+    var artistOverlayEl = document.getElementById('artist-overlay');
+    artistOverlayEl.classList.add('open');
+    artistOverlayEl.scrollTop = 0;
     document.body.style.overflow = 'hidden';
-    window.scrollTo({top:0, left:0, behavior:'instant'});
     if(window.__heroLogoRender) window.__heroLogoRender();
   }
   function closeArtistPage(){
     document.getElementById('artist-overlay').classList.remove('open');
     document.body.style.overflow = '';
-    window.scrollTo({top:0, left:0, behavior:'instant'});
     if(window.__heroLogoRender) window.__heroLogoRender();
   }
   function bookArtist(id){
