@@ -1177,6 +1177,24 @@
   }
   bindFlashCardInteractions(document);
 
+  (function shuffleWorkGrid(){
+    var grid = document.querySelector('#work .flash-grid');
+    if(!grid) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.flash-card'));
+    for(var i = cards.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = cards[i]; cards[i] = cards[j]; cards[j] = temp;
+    }
+    cards.forEach(function(card, idx){
+      grid.appendChild(card);
+      if(idx < 6){
+        card.classList.remove('flash-card-more');
+      } else {
+        card.classList.add('flash-card-more');
+      }
+    });
+  })();
+
   function openLightbox(src, alt){
     document.getElementById('lightboxImg').src = src;
     document.getElementById('lightboxImg').alt = alt || '';
