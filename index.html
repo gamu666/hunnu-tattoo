@@ -6,7 +6,7 @@
 <title>HUNNU TATTOO STUDIO — Tattoo Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;700&family=Roboto+Condensed:wght@600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;700&family=Roboto+Condensed:wght@600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink: #0B0B0D;
@@ -528,6 +528,193 @@
   }
   .lightbox-close:hover{border-color:var(--crimson);color:var(--crimson);}
 
+  /* PROMO MODAL — сарын урамшуулал / event зар */
+  .promo-overlay{
+    position:fixed;inset:0;z-index:300;
+    background:rgba(8,8,10,.84);
+    display:flex;align-items:center;justify-content:center;
+    padding:5vh 5vw;
+    opacity:0;visibility:hidden;
+    pointer-events:none;
+    backdrop-filter:blur(12px) saturate(.82);
+    -webkit-backdrop-filter:blur(12px) saturate(.82);
+    transition:opacity .42s ease,visibility 0s linear .42s,background .48s ease;
+  }
+  .promo-overlay.open{
+    opacity:1;visibility:visible;
+    pointer-events:auto;
+    transition:opacity .42s ease,background .48s ease;
+  }
+  .promo-overlay.is-minimizing{
+    opacity:0;
+    visibility:visible;
+    pointer-events:none;
+    background:rgba(8,8,10,0);
+    transition:opacity .52s ease,background .52s ease;
+  }
+  .promo-card{
+    position:relative;
+    width:min(476px,100%);
+    overflow:hidden;
+    isolation:isolate;
+    background:
+      radial-gradient(circle at 50% -15%,rgba(163,22,33,.24),transparent 48%),
+      linear-gradient(145deg,#1d1b20 0%,#121115 70%);
+    border:1px solid rgba(237,233,225,.28);
+    border-radius:18px;
+    padding:48px 40px 40px;
+    text-align:center;
+    box-shadow:0 34px 100px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,255,255,.05);
+    opacity:0;
+    filter:blur(9px);
+    transform:translate3d(0,24px,0) scale(.965);
+    transform-origin:center center;
+    transition:
+      transform .68s cubic-bezier(.16,1,.3,1),
+      opacity .42s ease,
+      filter .55s ease;
+  }
+  .promo-overlay.open .promo-card{
+    opacity:1;
+    filter:blur(0);
+    transform:translate3d(0,0,0) scale(1);
+  }
+  .promo-overlay.is-minimizing .promo-card{
+    opacity:0;
+    filter:blur(10px);
+    transform:translate3d(var(--promo-exit-x,52vw),var(--promo-exit-y,0),0) scale(.74);
+    transition:
+      transform .56s cubic-bezier(.55,.02,.25,1),
+      opacity .42s ease .08s,
+      filter .48s ease;
+  }
+  .promo-card::before{
+    content:"";
+    position:absolute;left:12%;right:12%;top:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--brass),transparent);
+    opacity:.7;
+    pointer-events:none;
+  }
+  .promo-card .corner{position:absolute;width:16px;height:16px;border:1px solid var(--brass);}
+  .promo-card .c1{top:16px;left:16px;border-right:none;border-bottom:none;}
+  .promo-card .c2{bottom:16px;right:16px;border-left:none;border-top:none;}
+  .promo-close{
+    position:absolute;top:14px;right:14px;z-index:2;
+    width:34px;height:34px;padding:0;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--muted);font-size:15px;
+    font-family:'Inter',sans-serif;
+    border:1px solid rgba(237,233,225,.12);
+    border-radius:50%;
+    background:rgba(255,255,255,.025);
+    transition:color .22s,border-color .22s,background .22s,transform .28s cubic-bezier(.16,1,.3,1);
+  }
+  .promo-close:hover{color:var(--paper);border-color:rgba(237,233,225,.38);background:rgba(255,255,255,.06);transform:rotate(6deg);}
+  .promo-subtitle{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--brass);
+    letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:13px;
+  }
+  .promo-title{
+    font-family:'Unbounded','Oswald',sans-serif;font-weight:800;
+    font-size:clamp(24px,5vw,36px);line-height:1.16;
+    letter-spacing:-.025em;margin-bottom:17px;
+    text-shadow:none;
+  }
+  .promo-title .accent{color:var(--crimson);}
+  .promo-desc{color:#aaa6ae;font-size:14px;line-height:1.72;margin:0 auto 28px;max-width:360px;}
+  .promo-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:210px;border-radius:8px;
+    box-shadow:0 12px 30px rgba(163,22,33,.18);
+  }
+  @media(max-width:520px){
+    .promo-card{padding:42px 24px 32px;border-radius:15px;}
+  }
+
+  /* PROMO MINI — premium offer tab, no looping glow */
+  .promo-mini{
+    position:fixed;
+    top:50%;
+    right:14px;
+    width:172px;height:62px;
+    padding:8px 10px 8px 8px;
+    border:1px solid rgba(176,141,63,.36);
+    border-radius:16px;
+    background:linear-gradient(145deg,rgba(34,31,36,.98),rgba(17,16,20,.98));
+    display:grid;grid-template-columns:42px 1fr 16px;align-items:center;gap:9px;
+    cursor:pointer;
+    z-index:290;
+    opacity:0;visibility:hidden;
+    color:var(--paper);
+    font-family:'Inter',sans-serif;text-align:left;
+    box-shadow:0 18px 48px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.04);
+    transform:translate3d(calc(100% + 32px),-50%,0) scale(.94);
+    transition:
+      opacity .34s ease,
+      visibility 0s linear .46s,
+      transform .62s cubic-bezier(.16,1,.3,1),
+      border-color .25s ease,
+      background .25s ease,
+      box-shadow .25s ease;
+  }
+  .promo-mini.show{
+    opacity:1;visibility:visible;
+    transform:translate3d(0,-50%,0) scale(1);
+    transition:
+      opacity .34s ease .08s,
+      transform .62s cubic-bezier(.16,1,.3,1),
+      border-color .25s ease,
+      background .25s ease,
+      box-shadow .25s ease;
+  }
+  body.artist-detail-open .promo-mini{
+    opacity:0 !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+    transform:translate3d(calc(100% + 32px),-50%,0) scale(.94) !important;
+    transition:
+      opacity .24s ease,
+      transform .42s cubic-bezier(.4,0,.2,1),
+      visibility 0s linear .42s;
+  }
+  .promo-mini:hover{
+    transform:translate3d(-5px,-50%,0) scale(1);
+    border-color:rgba(176,141,63,.72);
+    background:linear-gradient(145deg,#29242a,#17151a);
+    box-shadow:0 22px 58px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.06);
+  }
+  .promo-mini:focus-visible{outline:2px solid var(--brass);outline-offset:3px;}
+  .promo-mini-icon{
+    width:42px;height:42px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(145deg,#b51a27,#741019);
+    border:1px solid rgba(237,233,225,.16);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+    transition:transform .32s cubic-bezier(.16,1,.3,1);
+  }
+  .promo-mini:hover .promo-mini-icon{transform:rotate(-4deg) scale(1.045);}
+  .promo-mini-icon svg{width:23px;height:23px;stroke:var(--paper);pointer-events:none;}
+  .promo-mini-icon .gift-spark{stroke:var(--brass);}
+  .promo-mini-copy{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  .promo-mini-copy small{
+    color:var(--brass);font-family:'JetBrains Mono',monospace;
+    font-size:8px;line-height:1;letter-spacing:.12em;white-space:nowrap;
+  }
+  .promo-mini-copy strong{
+    color:var(--paper);font-family:'Roboto Condensed',sans-serif;
+    font-size:12px;line-height:1.08;letter-spacing:.035em;white-space:nowrap;
+  }
+  .promo-mini-arrow{color:var(--muted);font-size:18px;line-height:1;transition:transform .25s,color .25s;}
+  .promo-mini:hover .promo-mini-arrow{color:var(--brass);transform:translateX(2px);}
+  @media(max-width:620px){
+    .promo-mini{
+      right:8px;width:58px;height:58px;padding:7px;
+      grid-template-columns:1fr;border-radius:16px;
+    }
+    .promo-mini-icon{width:42px;height:42px;margin:auto;}
+    .promo-mini-copy,.promo-mini-arrow{display:none;}
+  }
+
   /* ARTIST DETAIL OVERLAY */
   .artist-overlay{
     position:fixed;inset:0;background:var(--ink);z-index:200;
@@ -535,6 +722,35 @@
     opacity:0;visibility:hidden;
     transition:opacity .35s ease, visibility 0s linear .35s;
   }
+  #artist-overlay{
+    isolation:isolate;
+    background:
+      radial-gradient(circle at 50% 35%,rgba(38,35,42,.55),transparent 56%),
+      var(--ink);
+  }
+  .artist-overlay-watermark{
+    position:fixed;
+    left:50%;top:50%;
+    width:min(900px,84vw);height:auto;
+    z-index:0;
+    pointer-events:none;
+    user-select:none;
+    opacity:0;
+    filter:blur(9px) grayscale(1);
+    transform:translate3d(-50%,-47%,0) scale(.94);
+    transform-origin:center center;
+    transition:
+      opacity .95s ease .08s,
+      filter 1.05s ease,
+      transform 1.15s cubic-bezier(.16,1,.3,1);
+  }
+  #artist-overlay.open .artist-overlay-watermark{
+    opacity:.065;
+    filter:blur(.4px) grayscale(1);
+    transform:translate3d(-50%,-50%,0) scale(1);
+  }
+  #artist-overlay .overlay-inner{position:relative;z-index:2;}
+  #artist-overlay .overlay-close{z-index:211;}
   .artist-overlay.open{
     opacity:1;visibility:visible;
     transition:opacity .35s ease;
@@ -614,6 +830,8 @@
     #overlayWorks{grid-template-columns:repeat(2,1fr);}
     .overlay-header{gap:24px;}
     .overlay-avatar{width:140px;aspect-ratio:4/5;font-size:44px;}
+    .artist-overlay-watermark{width:118vw;opacity:0;}
+    #artist-overlay.open .artist-overlay-watermark{opacity:.048;}
   }
 
   /* SERVICES */
@@ -763,6 +981,110 @@
     .stitch{
       position:relative;
       z-index:3;
+    }
+  }
+
+  /* ELASTIC INK MOTION — native, dependency-free scroll choreography */
+  html{scroll-padding-top:92px;}
+
+  nav{
+    transition:
+      padding .48s cubic-bezier(.16,1,.3,1),
+      background .35s ease,
+      border-color .35s ease,
+      box-shadow .35s ease;
+  }
+  nav.motion-compact{
+    padding-top:13px;
+    padding-bottom:13px;
+    background:rgba(11,11,13,.9);
+    border-bottom-color:rgba(237,233,225,.11);
+    box-shadow:0 14px 40px rgba(0,0,0,.22);
+  }
+
+  .hero-logo{
+    left:0;
+    top:0;
+    animation:none !important;
+    transform-origin:center center;
+    backface-visibility:hidden;
+    will-change:transform,opacity,filter;
+  }
+
+  section:not(.hero),
+  footer{
+    position:relative;
+    z-index:2;
+  }
+
+  body.motion-ready .motion-reveal{
+    --motion-y:0px;
+    --motion-scale-y:1;
+    opacity:0;
+    filter:blur(11px);
+    transform:translate3d(0,64px,0) scaleY(1.105);
+    transform-origin:center bottom;
+    transition:
+      opacity .62s ease var(--motion-delay,0ms),
+      filter .86s ease var(--motion-delay,0ms),
+      transform .96s cubic-bezier(.16,1,.3,1) var(--motion-delay,0ms);
+    will-change:transform,filter,opacity;
+  }
+  body.motion-ready .motion-reveal.is-inview{
+    opacity:1;
+    filter:blur(0);
+    transform:translate3d(0,var(--motion-y),0) scaleY(var(--motion-scale-y));
+  }
+  body.motion-ready .motion-reveal.is-inview.motion-settled{
+    transition:transform .3s cubic-bezier(.22,1,.36,1);
+  }
+
+  .motion-parallax{
+    --parallax-y:0px;
+    transform:translate3d(0,var(--parallax-y),0) scale(1.055);
+    transform-origin:center center;
+    will-change:transform;
+  }
+  .flash-card:hover > .motion-parallax{
+    transform:translate3d(0,var(--parallax-y),0) scale(1.095);
+  }
+
+  @media(max-width:700px){
+    html{scroll-padding-top:100px;}
+    nav.motion-compact{
+      padding-top:9px;
+      padding-bottom:9px;
+      row-gap:8px;
+    }
+    body.motion-ready .motion-reveal{
+      filter:blur(8px);
+      transform:translate3d(0,42px,0) scaleY(1.075);
+      transition-duration:.55s,.72s,.82s;
+    }
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    nav{transition:none;}
+    body.motion-ready .motion-reveal,
+    body.motion-ready .motion-reveal.is-inview{
+      opacity:1;
+      filter:none;
+      transform:none;
+      transition:none;
+    }
+    .motion-parallax,
+    .flash-card:hover > .motion-parallax{
+      transform:none;
+    }
+    .hero-logo{
+      position:absolute;
+      left:50%;
+      top:50%;
+      opacity:1 !important;
+      filter:none !important;
+      transform:translate3d(-50%,-50%,0) !important;
+      will-change:auto;
     }
   }
 
@@ -1342,6 +1664,34 @@
   <img id="lightboxImg" src="" alt="" onclick="event.stopPropagation();">
 </div>
 
+<div class="promo-overlay" id="promo-overlay">
+  <div class="promo-card">
+    <button type="button" class="promo-close" onclick="minimizePromo()" aria-label="Урамшууллын цонхыг багасгах">✕</button>
+    <div class="corner c1"></div>
+    <div class="corner c2"></div>
+    <span class="promo-subtitle">Энэ сарын онцгой</span>
+    <h3 class="promo-title display">Урамшуулал <span class="accent">EVENT</span></h3>
+    <p class="promo-desc">Манай studio-д сар бүр онцгой урамшуулал, EVENT зохион байгуулагддаг тул манай Facebook хуудсаар зочилж, дэлгэрэнгүйг үзээрэй.</p>
+    <a href="https://facebook.com/tattoo.mongol" target="_blank" rel="noopener" class="btn-primary promo-btn">Дэлгэрэнгүй үзэх</a>
+  </div>
+</div>
+
+<button type="button" class="promo-mini" id="promo-mini" onclick="openPromo()" title="Урамшуулал EVENT" aria-label="Энэ сарын онцгой саналыг нээх">
+  <span class="promo-mini-icon" aria-hidden="true">
+    <svg viewBox="0 0 32 32" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7">
+      <rect x="6" y="13" width="20" height="14" rx="2"/>
+      <path d="M4.5 9.5h23v5h-23zM16 9.5V27"/>
+      <path d="M16 9.5h-4.2a3.2 3.2 0 1 1 3.1-4c.8 1.7 1.1 4 1.1 4ZM16 9.5h4.2a3.2 3.2 0 1 0-3.1-4c-.8 1.7-1.1 4-1.1 4Z"/>
+      <path class="gift-spark" d="M25.5 3v3M24 4.5h3"/>
+    </svg>
+  </span>
+  <span class="promo-mini-copy" aria-hidden="true">
+    <small>ЭНЭ САРЫН</small>
+    <strong>ОНЦГОЙ САНАЛ</strong>
+  </span>
+  <span class="promo-mini-arrow" aria-hidden="true">›</span>
+</button>
+
 <script>
   (function(){
     var navLinks = document.querySelectorAll('.nav-links a');
@@ -1397,6 +1747,18 @@
   }
   bindFlashCardInteractions(document);
 
+  (function setupArtistOverlayWatermark(){
+    var sourceLogo = document.querySelector('.hero-logo');
+    var artistOverlay = document.getElementById('artist-overlay');
+    if(!sourceLogo || !artistOverlay || artistOverlay.querySelector('.artist-overlay-watermark')) return;
+    var watermark = sourceLogo.cloneNode(false);
+    watermark.className = 'artist-overlay-watermark';
+    watermark.alt = '';
+    watermark.setAttribute('aria-hidden','true');
+    watermark.removeAttribute('style');
+    artistOverlay.insertBefore(watermark,artistOverlay.firstChild);
+  })();
+
   (function shuffleWorkGrid(){
     var grid = document.querySelector('#work .flash-grid');
     if(!grid) return;
@@ -1429,6 +1791,52 @@
       if(chosen.indexOf(card) === -1) grid.appendChild(card);
     });
   })();
+
+  function openPromo(){
+    var overlay = document.getElementById('promo-overlay');
+    var card = document.querySelector('.promo-card');
+    var mini = document.getElementById('promo-mini');
+    clearTimeout(window.__promoMiniTimer);
+    clearTimeout(window.__promoCloseTimer);
+    overlay.classList.remove('is-minimizing');
+    card.style.removeProperty('--promo-exit-x');
+    card.style.removeProperty('--promo-exit-y');
+    overlay.classList.add('open');
+    mini.classList.remove('show');
+  }
+  function minimizePromo(){
+    var overlay = document.getElementById('promo-overlay');
+    var card = document.querySelector('.promo-card');
+    var mini = document.getElementById('promo-mini');
+    if(!overlay.classList.contains('open') || overlay.classList.contains('is-minimizing')) return;
+
+    var cardRect = card.getBoundingClientRect();
+    var miniW = mini.offsetWidth || (window.innerWidth <= 620 ? 58 : 172);
+    var miniRight = window.innerWidth <= 620 ? 8 : 14;
+    var miniCenterX = window.innerWidth - miniRight - (miniW / 2);
+    var miniCenterY = window.innerHeight / 2;
+    var cardCenterX = cardRect.left + (cardRect.width / 2);
+    var cardCenterY = cardRect.top + (cardRect.height / 2);
+    var dx = miniCenterX - cardCenterX;
+    var dy = miniCenterY - cardCenterY;
+
+    card.style.setProperty('--promo-exit-x',dx.toFixed(1) + 'px');
+    card.style.setProperty('--promo-exit-y',dy.toFixed(1) + 'px');
+    overlay.classList.add('is-minimizing');
+
+    clearTimeout(window.__promoMiniTimer);
+    clearTimeout(window.__promoCloseTimer);
+    window.__promoMiniTimer = setTimeout(function(){
+      mini.classList.add('show');
+    }, 170);
+    window.__promoCloseTimer = setTimeout(function(){
+      overlay.classList.remove('open','is-minimizing');
+      card.style.removeProperty('--promo-exit-x');
+      card.style.removeProperty('--promo-exit-y');
+    }, 580);
+
+    sessionStorage.setItem('promoState', 'minimized');
+  }
 
   function openLightbox(src, alt){
     document.getElementById('lightboxImg').src = src;
@@ -1586,11 +1994,13 @@
     var artistOverlayEl = document.getElementById('artist-overlay');
     artistOverlayEl.classList.add('open');
     artistOverlayEl.scrollTop = 0;
+    document.body.classList.add('artist-detail-open');
     document.body.style.overflow = 'hidden';
     if(window.__heroLogoRender) window.__heroLogoRender();
   }
   function closeArtistPage(){
     document.getElementById('artist-overlay').classList.remove('open');
+    document.body.classList.remove('artist-detail-open');
     document.body.style.overflow = '';
     if(window.__heroLogoRender) window.__heroLogoRender();
   }
@@ -1787,92 +2197,249 @@
   handleServiceChange();
   document.getElementById('bookingPhoneInput').addEventListener('input', clearPhoneError);
 
-  /* MAIN WHITE HERO LOGO: intro reveal + scroll-to-background morph */
+  if(sessionStorage.getItem('promoState') === 'minimized'){
+    document.getElementById('promo-mini').classList.add('show');
+  } else {
+    setTimeout(openPromo, 1800);
+  }
+
+  /* ELASTIC INK MOTION: blur reveal + velocity stretch + parallax + hero morph */
   (function(){
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var logo = document.querySelector('.hero-logo');
     var stage = document.querySelector('.hero-logo-stage');
-    if(!logo || !stage) return;
+    var nav = document.querySelector('nav');
+    var revealEls = [];
+    var elasticEls = [];
+    var parallaxEls = [];
+    var lastScrollY = window.scrollY || window.pageYOffset || 0;
+    var targetVelocity = 0;
+    var motionVelocity = 0;
+    var rafId = 0;
+    var heroReady = false;
+    var heroStartY = 0;
+    var heroStartW = 1;
+    var heroMorphDistance = 600;
 
-    var introDuration = 1750;
-    var introDone = false;
-    var ticking = false;
-    var startX = 0;
-    var startY = 0;
-    var startW = 0;
-    var morphDistance = Math.max(420, Math.min(window.innerHeight * 0.9, 760));
+    function clamp(v,min,max){ return Math.max(min,Math.min(max,v)); }
+    function easeInOut(v){ return v < .5 ? 2*v*v : 1-Math.pow(-2*v+2,2)/2; }
+    function isVisible(el){
+      var rect = el.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0 && rect.bottom > -80 && rect.top < window.innerHeight + 80;
+    }
 
-    function clamp(v,min,max){ return Math.max(min, Math.min(max,v)); }
-    function easeInOut(v){ return v < 0.5 ? 2*v*v : 1-Math.pow(-2*v+2,2)/2; }
+    function prepareGroup(selector,step,elastic){
+      var group = Array.prototype.slice.call(document.querySelectorAll(selector));
+      group.forEach(function(el,index){
+        if(el.classList.contains('motion-reveal')) return;
+        el.classList.add('motion-reveal');
+        if(elastic) el.classList.add('motion-elastic');
+        el.style.setProperty('--motion-delay', Math.min(index,6) * step + 'ms');
+        revealEls.push(el);
+        if(elastic) elasticEls.push(el);
+      });
+    }
 
-    function captureStart(){
-       var rect = stage.getBoundingClientRect();
-       startX = window.innerWidth / 2;
-       startY = rect.top + (rect.height / 2);
-       startW = Math.min(680, window.innerWidth * 0.68);
-       logo.style.left = startX + 'px';
-       logo.style.top = startY + 'px';
-       logo.style.width = startW + 'px';
-     }
+    function prepareReveals(){
+      prepareGroup('section:not(.hero) .section-head',0,true);
+      prepareGroup('.services-grid .service-card',72,false);
+      prepareGroup('#work > .flash-grid .flash-card:not(.flash-card-more)',58,false);
+      prepareGroup('.team-grid .artist-card',58,false);
+      prepareGroup('.studio-stats > div',92,true);
+      prepareGroup('.booking-wrap > *',105,true);
+      prepareGroup('.footer-top > *',88,true);
 
-    function render(){
-      ticking = false;
-      if(!introDone) return;
+      parallaxEls = Array.prototype.slice.call(document.querySelectorAll(
+        '#work > .flash-grid .flash-card:not(.flash-card-more) > img, .artist-portrait > img'
+      ));
+      parallaxEls.forEach(function(img){ img.classList.add('motion-parallax'); });
 
+      if(!('IntersectionObserver' in window) || reduceMotion){
+        revealEls.forEach(function(el){ el.classList.add('is-inview','motion-settled'); });
+        document.body.classList.add('motion-ready');
+        return;
+      }
+
+      var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(!entry.isIntersecting) return;
+          var el = entry.target;
+          el.classList.add('is-inview');
+          var delay = parseInt(el.style.getPropertyValue('--motion-delay'),10) || 0;
+          window.setTimeout(function(){ el.classList.add('motion-settled'); }, delay + 980);
+          observer.unobserve(el);
+        });
+      },{threshold:.09,rootMargin:'0px 0px -10% 0px'});
+
+      revealEls.forEach(function(el){ observer.observe(el); });
+      document.body.classList.add('motion-ready');
+    }
+
+    function captureHero(){
+      if(!logo || !stage) return;
+      var rect = stage.getBoundingClientRect();
+      heroStartY = rect.top + (window.scrollY || window.pageYOffset || 0) + rect.height / 2;
+      heroStartW = Math.max(rect.width,1);
+      heroMorphDistance = Math.max(430,Math.min(window.innerHeight * .92,780));
+      logo.style.width = heroStartW + 'px';
+      logo.style.left = '0px';
+      logo.style.top = '0px';
+    }
+
+    function getHeroState(velocityOverride){
       var scrollY = window.scrollY || window.pageYOffset || 0;
-      var p = clamp(scrollY / morphDistance, 0, 1);
-      var e = easeInOut(p);
+      var progress = clamp(scrollY / heroMorphDistance,0,1);
+      var eased = easeInOut(progress);
+      var endScale = Math.max((window.innerWidth * .94) / heroStartW,1);
+      var baseScale = 1 + (endScale - 1) * eased;
+      var velocity = typeof velocityOverride === 'number' ? velocityOverride : motionVelocity;
+      var rubber = reduceMotion ? 0 : Math.min(Math.abs(velocity) * .0015,.052);
+      var scaleX = baseScale * (1 - rubber * .2);
+      var scaleY = baseScale * (1 + rubber);
+      var x = window.innerWidth / 2;
+      var y = heroStartY + (window.innerHeight * .5 - heroStartY) * eased;
+      y += reduceMotion ? 0 : clamp(-velocity * .055,-9,9);
+      return {
+        x:x,
+        y:y,
+        scaleX:scaleX,
+        scaleY:scaleY,
+        opacity:1 - .88 * eased,
+        blur:2.1 * eased
+      };
+    }
 
-      var endX = window.innerWidth / 2;
-      var endY = window.innerHeight * 0.50;
+    function heroTransform(state,scaleX,scaleY,yOffset){
+      return 'translate3d(' + state.x.toFixed(2) + 'px,' + (state.y + (yOffset || 0)).toFixed(2) + 'px,0) ' +
+        'translate3d(-50%,-50%,0) scale(' + scaleX.toFixed(4) + ',' + scaleY.toFixed(4) + ')';
+    }
 
-      /* Never shrink while morphing: it grows from the current hero size to almost full viewport width. */
-      var endW = Math.max(window.innerWidth * 0.96, startW);
-      var width = startW + (endW - startW) * e;
+    function renderHero(){
+      if(!heroReady || !logo || reduceMotion) return;
+      var state = getHeroState();
+      logo.style.transform = heroTransform(state,state.scaleX,state.scaleY,0);
+      logo.style.opacity = state.opacity.toFixed(3);
+      logo.style.filter = 'blur(' + state.blur.toFixed(2) + 'px)';
+    }
 
-      var x = startX + (endX - startX) * e;
-      var y = startY + (endY - startY) * e;
-      var opacity = 1 - (0.88 * e);
-      var blur = 1.8 * e;
+    function introHero(){
+      if(!logo || !stage || reduceMotion) return;
+      captureHero();
+      var state = getHeroState(0);
+      var endTransform = heroTransform(state,state.scaleX,state.scaleY,0);
+      logo.style.transform = endTransform;
+      logo.style.opacity = state.opacity.toFixed(3);
+      logo.style.filter = 'blur(' + state.blur.toFixed(2) + 'px)';
 
-      logo.style.left = x + 'px';
-      logo.style.top = y + 'px';
-      logo.style.width = width + 'px';
-      logo.style.opacity = opacity.toFixed(3);
-      logo.style.filter = 'blur(' + blur.toFixed(2) + 'px)';
-      logo.style.transform = 'translate3d(-50%,-50%,0) scale(1)';
+      if(!logo.animate){
+        heroReady = true;
+        renderHero();
+        return;
+      }
+
+      var intro = logo.animate([
+        {
+          opacity:0,
+          filter:'blur(18px)',
+          transform:heroTransform(state,state.scaleX * .94,state.scaleY * 1.16,22)
+        },
+        {
+          offset:.72,
+          opacity:1,
+          filter:'blur(2px)',
+          transform:heroTransform(state,state.scaleX * 1.025,state.scaleY * .985,-4)
+        },
+        {
+          opacity:state.opacity,
+          filter:'blur(' + state.blur.toFixed(2) + 'px)',
+          transform:endTransform
+        }
+      ],{
+        duration:1380,
+        easing:'cubic-bezier(.16,1,.3,1)',
+        fill:'none'
+      });
+      intro.onfinish = function(){
+        heroReady = true;
+        renderHero();
+      };
+    }
+
+    function renderElastic(){
+      var stretch = 1 + Math.min(Math.abs(motionVelocity) * .00085,.044);
+      var shift = clamp(-motionVelocity * .045,-7,7);
+      elasticEls.forEach(function(el){
+        if(!el.classList.contains('motion-settled') || !isVisible(el)) return;
+        el.style.setProperty('--motion-scale-y',stretch.toFixed(4));
+        el.style.setProperty('--motion-y',shift.toFixed(2) + 'px');
+      });
+    }
+
+    function renderParallax(){
+      if(reduceMotion) return;
+      var viewportCenter = window.innerHeight / 2;
+      parallaxEls.forEach(function(el){
+        if(!isVisible(el)) return;
+        var rect = el.parentElement.getBoundingClientRect();
+        var center = rect.top + rect.height / 2;
+        var offset = clamp((viewportCenter - center) / window.innerHeight * 22,-16,16);
+        el.style.setProperty('--parallax-y',offset.toFixed(2) + 'px');
+      });
+    }
+
+    function renderNav(){
+      if(nav) nav.classList.toggle('motion-compact',(window.scrollY || window.pageYOffset || 0) > 72);
+    }
+
+    function frame(){
+      rafId = 0;
+      motionVelocity += (targetVelocity - motionVelocity) * .2;
+      targetVelocity *= .72;
+      renderHero();
+      renderElastic();
+      renderParallax();
+      renderNav();
+      if(Math.abs(targetVelocity) > .08 || Math.abs(motionVelocity) > .08){
+        rafId = requestAnimationFrame(frame);
+      } else {
+        motionVelocity = 0;
+        targetVelocity = 0;
+        renderHero();
+        renderElastic();
+      }
+    }
+
+    function requestTick(){
+      if(!rafId) rafId = requestAnimationFrame(frame);
     }
 
     function onScroll(){
-      if(!introDone || ticking) return;
-      ticking = true;
-      requestAnimationFrame(render);
+      var nextY = window.scrollY || window.pageYOffset || 0;
+      targetVelocity = clamp(targetVelocity + nextY - lastScrollY,-150,150);
+      lastScrollY = nextY;
+      requestTick();
     }
 
-    function init(){
-      captureStart();
-      setTimeout(function(){
-        introDone = true;
-        logo.style.animation = 'none';
-        render();
-      }, introDuration);
+    function onResize(){
+      captureHero();
+      lastScrollY = window.scrollY || window.pageYOffset || 0;
+      requestTick();
     }
 
-    window.addEventListener('scroll', onScroll, {passive:true});
-    window.addEventListener('resize', function(){
-      morphDistance = Math.max(420, Math.min(window.innerHeight * 0.9, 760));
-      if(!introDone){
-        captureStart();
-      } else {
-        render();
-      }
-    }, {passive:true});
-
-    window.__heroLogoRender = render;
+    function initMotion(){
+      prepareReveals();
+      renderNav();
+      renderParallax();
+      if(!reduceMotion) introHero();
+      window.addEventListener('scroll',onScroll,{passive:true});
+      window.addEventListener('resize',onResize,{passive:true});
+      window.__heroLogoRender = function(){ captureHero(); requestTick(); };
+    }
 
     if(document.readyState === 'loading'){
-      document.addEventListener('DOMContentLoaded', init, {once:true});
+      document.addEventListener('DOMContentLoaded',initMotion,{once:true});
     } else {
-      init();
+      initMotion();
     }
   })();
 </script>
