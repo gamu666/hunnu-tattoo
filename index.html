@@ -316,6 +316,8 @@
   .flash-card-more{display:none;}
   #allWorksGrid .flash-card-more{display:flex;}
   #overlayWorks .flash-card-more{display:flex;}
+  #allRemovalGrid .flash-card-more{display:flex;}
+  .removal-note{margin:0 0 32px;width:100%;}
   .flash-more-wrap{display:flex;justify-content:center;margin-top:28px;}
   .flash-more-btn{
     background:transparent;color:var(--paper);border:1px solid var(--line);
@@ -1008,6 +1010,36 @@
   <div class="flash-more-wrap">
     <button class="flash-more-btn" id="flashMoreBtn" onclick="openWorksOverlay()">Цааш үзэх</button>
   </div>
+
+  <div class="section-head" style="margin-top:70px;">
+    <div>
+      <span class="section-num">02.1 — LASER REMOVAL</span>
+      <h2 class="section-title display">Лазер арилгалтын <span class="accent">үр дүн</span></h2>
+    </div>
+  </div>
+  <div class="flash-grid" id="removalGrid">
+    <div class="flash-card" data-tag="ӨМНӨХ / ДАРАА">
+      <img src="Laser%20Removal%201.jpeg" alt="Лазер арилгалтын үр дүн">
+    </div>
+    <div class="flash-card" data-tag="ӨМНӨХ / ДАРАА">
+      <img src="Laser%20Removal%202.jpeg" alt="Лазер арилгалтын үр дүн">
+    </div>
+    <div class="flash-card" data-tag="ӨМНӨХ / ДАРАА">
+      <img src="Laser%20Removal%203.jpeg" alt="Лазер арилгалтын үр дүн">
+    </div>
+    <div class="flash-card flash-card-more" data-tag="ӨМНӨХ / ДАРАА">
+      <img src="Laser%20Removal%204.jpeg" alt="Лазер арилгалтын үр дүн">
+    </div>
+    <div class="flash-card flash-card-more" data-tag="ӨМНӨХ / ДАРАА">
+      <img src="Laser%20Removal%205.jpeg" alt="Лазер арилгалтын үр дүн">
+    </div>
+    <div class="flash-card flash-card-more" data-tag="ӨМНӨХ / ДАРАА">
+      <img src="Laser%20Removal%206.jpeg" alt="Лазер арилгалтын үр дүн">
+    </div>
+  </div>
+  <div class="flash-more-wrap">
+    <button class="flash-more-btn" onclick="openRemovalOverlay()">Цааш үзэх</button>
+  </div>
 </section>
 
 <section id="artist">
@@ -1285,6 +1317,26 @@
   </div>
 </div>
 
+<div class="artist-overlay" id="removal-overlay">
+  <div class="overlay-close" onclick="closeRemovalOverlay()">✕</div>
+  <div class="overlay-inner">
+    <div class="section-head">
+      <div>
+        <span class="section-num">02.1 — LASER REMOVAL</span>
+        <h2 class="section-title display">Лазер арилгалтын <span class="accent">бүх үр дүн</span></h2>
+      </div>
+    </div>
+    <div class="flash-more-wrap" style="margin-top:0;margin-bottom:32px;">
+      <a href="#booking" class="btn-primary" onclick="event.preventDefault(); closeRemovalOverlay(); bookService('removal');">Лазер арилгалтын цаг захиалах</a>
+    </div>
+    <div class="booking-note removal-note">
+      <strong>Анхаарах зүйлс:</strong><br>
+      Арилгалт ихэвчлэн хэд хэдэн сеансаар хийгддэг бөгөөд үр дүн хүн бүрт ялгаатай байдаг. Үнэ болон сеансын тоог зөвхөн үзлэгээр тодорхойлно.
+    </div>
+    <div id="allRemovalGrid" class="flash-grid"></div>
+  </div>
+</div>
+
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <div class="lightbox-close" onclick="closeLightbox()">✕</div>
   <img id="lightboxImg" src="" alt="" onclick="event.stopPropagation();">
@@ -1404,6 +1456,25 @@
   }
   function closeWorksOverlay(){
     document.getElementById('works-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+    if(window.__heroLogoRender) window.__heroLogoRender();
+  }
+
+  function openRemovalOverlay(){
+    var grid = document.getElementById('allRemovalGrid');
+    grid.innerHTML = '';
+    document.querySelectorAll('#removalGrid .flash-card').forEach(function(card){
+      grid.appendChild(card.cloneNode(true));
+    });
+    bindFlashCardInteractions(grid);
+    var overlayEl = document.getElementById('removal-overlay');
+    overlayEl.classList.add('open');
+    overlayEl.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    if(window.__heroLogoRender) window.__heroLogoRender();
+  }
+  function closeRemovalOverlay(){
+    document.getElementById('removal-overlay').classList.remove('open');
     document.body.style.overflow = '';
     if(window.__heroLogoRender) window.__heroLogoRender();
   }
