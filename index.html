@@ -1870,9 +1870,23 @@
   function openWorksOverlay(){
     var grid = document.getElementById('allWorksGrid');
     grid.innerHTML = '';
-    document.querySelectorAll('#work .flash-card').forEach(function(card){
-      grid.appendChild(card.cloneNode(true));
+    var cards = Array.prototype.slice.call(
+      document.querySelectorAll('#work > .flash-grid:not(#removalGrid) .flash-card')
+    ).map(function(card){
+      return card.cloneNode(true);
     });
+
+    /* Full Fisher-Yates shuffle: opening the gallery creates a fresh order. */
+    for(var i = cards.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = cards[i];
+      cards[i] = cards[j];
+      cards[j] = temp;
+    }
+
+    var fragment = document.createDocumentFragment();
+    cards.forEach(function(card){ fragment.appendChild(card); });
+    grid.appendChild(fragment);
     bindFlashCardInteractions(grid);
     var worksOverlayEl = document.getElementById('works-overlay');
     worksOverlayEl.classList.add('open');
