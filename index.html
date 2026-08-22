@@ -327,7 +327,7 @@
   /* TEAM — multiple artists */
   .team-grid{
     display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
-    background:var(--line);border:1px solid var(--line);
+    background:transparent;border:1px solid var(--line);
     margin-bottom:60px;
   }
   .artist-card{
@@ -364,10 +364,11 @@
     font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--brass);
     letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;display:block;
   }
-  .artist-bio{color:var(--muted);line-height:1.8;font-size:13.5px;margin-bottom:18px;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .artist-bio{color:var(--muted);line-height:1.8;font-size:13.5px;margin-bottom:18px;max-height:3.6em;overflow:hidden;}
   .artist-links{display:flex;flex-wrap:wrap;gap:18px;margin-top:auto;}
   .artist-link{display:inline-block;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--muted);padding-bottom:3px;color:var(--muted);transition:color .2s,border-color .2s;}
   .artist-link:hover{color:var(--paper);border-color:var(--paper);}
+  .bio-more{color:var(--paper);font-weight:700;white-space:nowrap;}
 
   .studio-stats{
     display:grid;grid-template-columns:repeat(3,1fr);
@@ -836,7 +837,6 @@
       <span class="section-num">02 — PORTFOLIO</span>
       <h2 class="section-title display">Сүүлийн <span class="accent">ажлууд</span></h2>
     </div>
-    <p class="section-desc">Эдгээр нь тухайн artist өөрийн зохиосон эх sketch-ийг ашиглан хийсэн бүтээлүүд бөгөөд Оюуны өмчийн эрхээр хамгаалагдсан болно. <strong style="color:var(--crimson);font-weight:600;">Анхаар: Artist-ийн зөвшөөрөлгүйгээр ашиглахыг хатуу хориглоно.</strong></p>
   </div>
 
   <div class="flash-grid">
@@ -900,13 +900,81 @@
       <img src="LILI%20work%205.jpeg" alt="Custom design шивээс">
       <div class="flash-meta"><div class="avatar"><img src="LILI%20profile.jpeg" alt="LILI"></div><span class="aname">LILI</span></div>
     </div>
-    <div class="flash-card flash-card-more" data-tag="NEO-TRADITIONAL" data-artist="a5">
-      <img src="images/a5-work-1.jpg" alt="Neo-traditional шивээс">
-      <div class="flash-meta"><div class="avatar">Z</div><span class="aname">Zuugii</span></div>
+    <div class="flash-card flash-card-more" data-tag="BLACK &amp; GREY" data-artist="a5">
+      <img src="Zuugii%20work%201.jpeg" alt="Black &amp; grey realism portrait шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zuugii%20profile.jpeg" alt="Zuugii"></div><span class="aname">Zuugii</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="REALISM PORTRAIT" data-artist="a5">
+      <img src="Zuugii%20work%202.jpeg" alt="Black &amp; grey realism portrait шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zuugii%20profile.jpeg" alt="Zuugii"></div><span class="aname">Zuugii</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="BLACK &amp; GREY REALISM" data-artist="a5">
+      <img src="Zuugii%20work%203.jpeg" alt="Black &amp; grey realism portrait шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zuugii%20profile.jpeg" alt="Zuugii"></div><span class="aname">Zuugii</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="PORTRAIT TATTOO" data-artist="a5">
+      <img src="Zuugii%20work%204.jpeg" alt="Black &amp; grey realism portrait шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zuugii%20profile.jpeg" alt="Zuugii"></div><span class="aname">Zuugii</span></div>
     </div>
     <div class="flash-card flash-card-more" data-tag="DOTWORK MINIMAL" data-artist="a6">
-      <img src="images/a6-work-1.jpg" alt="Dotwork minimal piercing/шивээс">
-      <div class="flash-meta"><div class="avatar">C</div><span class="aname">Caos</span></div>
+      <img src="Caos%20work%201.jpeg" alt="Dotwork minimal шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Caos%20profile.jpeg" alt="Caos"></div><span class="aname">Caos</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="DOTWORK" data-artist="a6">
+      <img src="Caos%20work%202.jpeg" alt="Dotwork minimal шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Caos%20profile.jpeg" alt="Caos"></div><span class="aname">Caos</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="GEOMETRIC MINIMAL" data-artist="a6">
+      <img src="Caos%20work%203.jpeg" alt="Dotwork minimal шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Caos%20profile.jpeg" alt="Caos"></div><span class="aname">Caos</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="MINIMAL" data-artist="a6">
+      <img src="Caos%20work%204.jpeg" alt="Dotwork minimal шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Caos%20profile.jpeg" alt="Caos"></div><span class="aname">Caos</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="DOTWORK GEOMETRIC" data-artist="a6">
+      <img src="Caos%20work%205.jpeg" alt="Dotwork minimal шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Caos%20profile.jpeg" alt="Caos"></div><span class="aname">Caos</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="MINIMAL DESIGN" data-artist="a6">
+      <img src="Caos%20work%206.jpeg" alt="Dotwork minimal шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Caos%20profile.jpeg" alt="Caos"></div><span class="aname">Caos</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="TATTOO" data-artist="a7">
+      <img src="Zulka%20work%201.jpeg" alt="Zulka шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zulka%20profile.jpg" alt="Zulka"></div><span class="aname">Zulka</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="TATTOO" data-artist="a7">
+      <img src="Zulka%20work%202.jpeg" alt="Zulka шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zulka%20profile.jpg" alt="Zulka"></div><span class="aname">Zulka</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="TATTOO" data-artist="a7">
+      <img src="Zulka%20work%203.jpeg" alt="Zulka шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zulka%20profile.jpg" alt="Zulka"></div><span class="aname">Zulka</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="TATTOO" data-artist="a7">
+      <img src="Zulka%20work%204.jpeg" alt="Zulka шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zulka%20profile.jpg" alt="Zulka"></div><span class="aname">Zulka</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="TATTOO" data-artist="a7">
+      <img src="Zulka%20work%205.jpeg" alt="Zulka шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zulka%20profile.jpg" alt="Zulka"></div><span class="aname">Zulka</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="TATTOO" data-artist="a7">
+      <img src="Zulka%20work%206.jpeg" alt="Zulka шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zulka%20profile.jpg" alt="Zulka"></div><span class="aname">Zulka</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="TATTOO" data-artist="a7">
+      <img src="Zulka%20work%207.jpeg" alt="Zulka шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zulka%20profile.jpg" alt="Zulka"></div><span class="aname">Zulka</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="TATTOO" data-artist="a7">
+      <img src="Zulka%20work%208.jpeg" alt="Zulka шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zulka%20profile.jpg" alt="Zulka"></div><span class="aname">Zulka</span></div>
+    </div>
+    <div class="flash-card flash-card-more" data-tag="TATTOO" data-artist="a7">
+      <img src="Zulka%20work%209.jpeg" alt="Zulka шивээс">
+      <div class="flash-meta"><div class="avatar"><img src="Zulka%20profile.jpg" alt="Zulka"></div><span class="aname">Zulka</span></div>
     </div>
     <div class="flash-card flash-card-more" data-tag="DERMAL PIERCING" data-artist="a3">
       <img src="Gerlee%20work%201%20.jpeg" alt="Dermal piercing">
@@ -960,7 +1028,7 @@
       </div>
       <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">Mnhja Loco</h3>
-      <p class="artist-bio">10 жилийн туршлагатай мэргэжлийн артист бөгөөд <span class="bio-highlight">Traditional Asian, Black &amp; Grey болон реалист хөрөг</span> чиглэлээр түлхүү ажилладаг. Уран бүтээлийн онцлог нь нарийн деталь, гүн сүүдэрлэлт, зөв пропорц болон биеийн хэлбэртэй уялдсан том хэмжээний бүтээлүүдээрээ илэрдэг. Ялангуяа бүтэн нуруу, бүтэн гар, цээж, хөл болон биеийн том хэсгийг бүрэн дүүргэх хэмжээний tattoo project дээр ажиллах дуртай. Том хэмжээний шивээсийг нэг удаагийн зураг гэхээсээ илүүтэйгээр биеийн хэлбэр, хөдөлгөөнтэй зохицсон нэгэн цогц урлагийн бүтээл болгон хөгжүүлэхийг зорьдог.</p>
+      <p class="artist-bio">10 жилийн туршлагатай, <span class="bio-highlight">Traditional Asian, Black &amp; Grey</span> болон реалист хөрөг чиглэлээр ажилладаг. Уран бүтээлийн... <span class="bio-more">Дэлгэрэнгүй үзэх</span></p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('ml');">Цаг захиалах →</a>
       </div>
@@ -973,7 +1041,7 @@
       </div>
       <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">Jamuh</h3>
-      <p class="artist-bio">4 жилийн туршлагатай tattoo артист бөгөөд <span class="bio-highlight">Sigilism, Blackwork болон Fine Line</span> чиглэлээр түлхүү ажилладаг. Уран бүтээлийн онцлог нь хурц, органик, симметр бус хэлбэр бүхий occult, symbolic элементтэй sigil дизайнуудаараа илэрдэг. Мөн Ornamental / Ornamental Blackwork чиглэлээр гоёлын, симметртэй, нарийн хээ угалзтай бүтээл хийхэд дуртай. Fine Line, Ornamental болон Dark Art стилиудыг хослуулан, дизайн бүрдээ өвөрмөц бэлгэдлийн шинж чанар оруулахыг зорьдог.</p>
+      <p class="artist-bio">4 жилийн туршлагатай, <span class="bio-highlight">Sigilism, Blackwork болон Fine Line</span> чиглэлээр ажилладаг. Уран бүтээлийн онцлог нь хурц харагддаг... <span class="bio-more">Дэлгэрэнгүй үзэх</span></p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a2');">Цаг захиалах →</a>
       </div>
@@ -986,7 +1054,7 @@
       </div>
       <span class="artist-tag">Piercer</span>
       <h3 class="artist-name display">Gerlee</h3>
-      <p class="artist-bio">2021 онд Японд мэргэжлийн дадлага хийж, тэндхийн олон улсын жишигт нийцсэн ажиллагааны стандарт, ариун цэврийн нарийн шаардлагыг судалж эзэмшсэн туршлагатай Piercer. 2022 оноос хойш Монголдоо ирж, өнөөг хүртэл тасралтгүй 4 жилийн турш зөвхөн piercing чиглэлээр дагнан ажиллаж байна. Lobe, Helix, Tragus, Conch, Nostril, Septum, Navel зэрэг олон төрлийн piercing-ийг өндөр нарийвчлал, аюулгүй байдлын стандартын дагуу гүйцэтгэдэг бөгөөд харилцагч бүрт тохирсон материал, байршлыг зөвлөж, тав тухтай, мэргэжлийн орчинд үйлчилдэг.</p>
+      <p class="artist-bio">Японд мэргэжлийн дадлага хийсэн, <span class="bio-highlight">4 жилийн туршлагатай</span> Piercer. 2022 оноос хойш Монголдоо ирж, тогтмол ажилладаг... <span class="bio-more">Дэлгэрэнгүй үзэх</span></p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a3');">Цаг захиалах →</a>
       </div>
@@ -999,35 +1067,48 @@
       </div>
       <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">LILI</h3>
-      <p class="artist-bio">Шивээсний чиглэлээр 3 жил тасралтгүй ажиллаж буй артист бөгөөд голчлон жижиг болон дунд хэмжээний, нарийн детальтай шивээсэнд төвлөрдөг. <span class="bio-highlight">Fine line, delicate linework, ornamental, geometric болон blackwork</span> төрлийн дизайнд түлхүү ажилладаг бөгөөд шугам бүрийг нарийн, цэвэрхэн гүйцэтгэхийг эрхэмлэдэг. Үйлчлүүлэгчийн хүсэл сонирхол болон биеийн хэлбэрт тохируулан өвөрмөц custom tattoo design судлан гаргаж өгдөг бөгөөд хэмжээнээс үл хамааран утга учиртай, нарийн уран бүтээл бүтээхийг зорьдог.</p>
+      <p class="artist-bio">Шивээсний чиглэлээр 3 жил ажиллаж буй, <span class="bio-highlight">Fine line, ornamental, geometric</span> дизайнд төвлөрдөг. Шугам бүрийг нарийн... <span class="bio-more">Дэлгэрэнгүй үзэх</span></p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a4');">Цаг захиалах →</a>
       </div>
     </div>
-    <div class="artist-card" onclick="openArtistPage('a5','Zuugii','Tattoo Artist','Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.')">
+    <div class="artist-card" onclick="openArtistPage('a5','Zuugii','Tattoo Artist','22 настай, шивээс хийгээд 2 жилийн туршлагатай залуу артист бөгөөд голчлон <span class=bio-highlight>Black &amp; Grey Realism Portrait</span> чиглэлээр ажилладаг. Гэрэл сүүдрийг нарийн тодотгож, хүний нүүр царай, дүрсийг бодит амьдрал шиг гүн, гөлгөр шилжилттэйгээр дүрслэхийг эрхэмлэдэг. Деталь бүрийг цаг зарцуулан нямбай гүйцэтгэснээр үйлчлүүлэгчийн хүссэн дүрс, хөрөгийг цаг хугацаанд тэсвэртэй, өндөр чанартай шивээс болгон бүтээхийг зорьдог.')">
       <div class="artist-portrait">
-        <span class="initial display">05</span>
+        <img src="Zuugii%20profile.jpeg" alt="Zuugii">
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
       <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">Zuugii</h3>
-      <p class="artist-bio">Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.</p>
+      <p class="artist-bio">22 настай, 2 жилийн туршлагатай, <span class="bio-highlight">Black &amp; Grey Realism Portrait</span> чиглэлээр ажилладаг. Гэрэл сүүдрийг нарийн... <span class="bio-more">Дэлгэрэнгүй үзэх</span></p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a5');">Цаг захиалах →</a>
       </div>
     </div>
     <div class="artist-card" onclick="openArtistPage('a6','Caos','Tattoo Artist','Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.')">
       <div class="artist-portrait">
-        <span class="initial display">06</span>
+        <img src="Caos%20profile.jpeg" alt="Caos">
         <div class="corner c1"></div>
         <div class="corner c2"></div>
       </div>
       <span class="artist-tag">Tattoo Artist</span>
       <h3 class="artist-name display">Caos</h3>
-      <p class="artist-bio">Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.</p>
+      <p class="artist-bio">Энгийн, нарийн <span class="bio-highlight">dotwork болон geometric minimal</span> дизайнд дуртай. Minimal хэлбэр, цэвэр шугамаар ажилладаг... <span class="bio-more">Дэлгэрэнгүй үзэх</span></p>
       <div class="artist-links">
         <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a6');">Цаг захиалах →</a>
+      </div>
+    </div>
+    <div class="artist-card" onclick="openArtistPage('a7','Zulka','Tattoo Artist','Өвөрмөц загвар, өнгө найруулгаараа онцлог tattoo artist.')">
+      <div class="artist-portrait">
+        <img src="Zulka%20profile.jpg" alt="Zulka">
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+      </div>
+      <span class="artist-tag">Tattoo Artist</span>
+      <h3 class="artist-name display">Zulka</h3>
+      <p class="artist-bio">Өвөрмөц загвар, өнгө найруулгаараа онцлог tattoo artist. <span class="bio-more">Дэлгэрэнгүй үзэх</span></p>
+      <div class="artist-links">
+        <a href="#booking" class="artist-link" onclick="event.stopPropagation(); event.preventDefault(); bookArtist('a7');">Цаг захиалах →</a>
       </div>
     </div>
   </div>
@@ -1035,7 +1116,7 @@
 
   <div class="studio-stats">
     <div>
-      <div class="stat-num display" data-start="3" data-target="6">3</div>
+      <div class="stat-num display" data-start="3" data-target="7">3</div>
       <div class="stat-label">Artist studio-д</div>
     </div>
     <div>
@@ -1099,6 +1180,7 @@
             <option value="a4">LILI</option>
             <option value="a5">Zuugii</option>
             <option value="a6">Caos</option>
+            <option value="a7">Zulka</option>
             <option value="any">Хамаагүй — санал болгоорой</option>
           </select>
         </div>
@@ -1240,8 +1322,9 @@
     a2: { name:'Jamuh', tag:'Tattoo Artist', bio:'4 жилийн туршлагатай tattoo артист бөгөөд <span class=bio-highlight>Sigilism, Blackwork болон Fine Line</span> чиглэлээр түлхүү ажилладаг. Уран бүтээлийн онцлог нь хурц, органик, симметр бус хэлбэр бүхий occult, symbolic элементтэй sigil дизайнуудаараа илэрдэг. Мөн Ornamental / Ornamental Blackwork чиглэлээр гоёлын, симметртэй, нарийн хээ угалзтай бүтээл хийхэд дуртай. Fine Line, Ornamental болон Dark Art стилиудыг хослуулан, дизайн бүрдээ өвөрмөц бэлгэдлийн шинж чанар оруулахыг зорьдог.' },
     a3: { name:'Gerlee', tag:'Piercer', bio:'2021 онд Японд мэргэжлийн дадлага хийж, тэндхийн олон улсын жишигт нийцсэн ажиллагааны стандарт, ариун цэврийн нарийн шаардлагыг судалж эзэмшсэн туршлагатай Piercer. 2022 оноос хойш Монголдоо ирж, өнөөг хүртэл тасралтгүй 4 жилийн турш зөвхөн piercing чиглэлээр дагнан ажиллаж байна. Lobe, Helix, Tragus, Conch, Nostril, Septum, Navel зэрэг олон төрлийн piercing-ийг өндөр нарийвчлал, аюулгүй байдлын стандартын дагуу гүйцэтгэдэг бөгөөд харилцагч бүрт тохирсон материал, байршлыг зөвлөж, тав тухтай, мэргэжлийн орчинд үйлчилдэг.' },
     a4: { name:'LILI', tag:'Tattoo Artist', bio:'Шивээсний чиглэлээр 3 жил тасралтгүй ажиллаж буй артист бөгөөд голчлон жижиг болон дунд хэмжээний, нарийн детальтай шивээсэнд төвлөрдөг. <span class=bio-highlight>Fine line, delicate linework, ornamental, geometric болон blackwork</span> төрлийн дизайнд түлхүү ажилладаг бөгөөд шугам бүрийг нарийн, цэвэрхэн гүйцэтгэхийг эрхэмлэдэг. Үйлчлүүлэгчийн хүсэл сонирхол болон биеийн хэлбэрт тохируулан өвөрмөц custom tattoo design судлан гаргаж өгдөг бөгөөд хэмжээнээс үл хамааран утга учиртай, нарийн уран бүтээл бүтээхийг зорьдог.' },
-    a5: { name:'Zuugii', tag:'Tattoo Artist', bio:'Тод өнгө, зузаан контуртай neo-traditional дизайнаар ажилладаг.' },
-    a6: { name:'Caos', tag:'Tattoo Artist', bio:'Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.' }
+    a5: { name:'Zuugii', tag:'Tattoo Artist', bio:'22 настай, шивээс хийгээд 2 жилийн туршлагатай залуу артист бөгөөд голчлон <span class=bio-highlight>Black &amp; Grey Realism Portrait</span> чиглэлээр ажилладаг. Гэрэл сүүдрийг нарийн тодотгож, хүний нүүр царай, дүрсийг бодит амьдрал шиг гүн, гөлгөр шилжилттэйгээр дүрслэхийг эрхэмлэдэг. Деталь бүрийг цаг зарцуулан нямбай гүйцэтгэснээр үйлчлүүлэгчийн хүссэн дүрс, хөрөгийг цаг хугацаанд тэсвэртэй, өндөр чанартай шивээс болгон бүтээхийг зорьдог.' },
+    a6: { name:'Caos', tag:'Tattoo Artist', bio:'Энгийн, нарийн dotwork болон geometric minimal дизайнд дуртай.' },
+    a7: { name:'Zulka', tag:'Tattoo Artist', bio:'Өвөрмөц загвар, өнгө найруулгаараа онцлог tattoo artist.' }
   };
   function bindFlashCardInteractions(root){
     root.querySelectorAll('.flash-card').forEach(function(card){
@@ -1272,7 +1355,12 @@
       if(!byArtist[id]) byArtist[id] = [];
       byArtist[id].push(card);
     });
-    var chosen = Object.keys(byArtist).map(function(id){
+    var artistIds = Object.keys(byArtist);
+    for(var k = artistIds.length - 1; k > 0; k--){
+      var l = Math.floor(Math.random() * (k + 1));
+      var tempId = artistIds[k]; artistIds[k] = artistIds[l]; artistIds[l] = tempId;
+    }
+    var chosen = artistIds.slice(0, 6).map(function(id){
       var arr = byArtist[id];
       return arr[Math.floor(Math.random() * arr.length)];
     });
@@ -1364,7 +1452,8 @@
     a3: 'Үнэлгээ: <strong>40,000₮ - 100,000₮</strong>',
     a4: 'Цагийн үнэлгээ: <strong>100,000₮</strong>',
     a5: 'Цагийн үнэлгээ: <strong>100,000₮</strong>',
-    a6: 'Цагийн үнэлгээ: <strong>100,000₮</strong>'
+    a6: 'Цагийн үнэлгээ: <strong>100,000₮</strong>',
+    a7: 'Цагийн үнэлгээ: <strong>100,000₮</strong>'
   };
   var artistPricingNote = {
     a3: 'Сонгосон piercing төрлөөс хамаарч үнэ өөрчлөгдөж болно.'
@@ -1403,7 +1492,7 @@
       phoneEl.style.display = 'none';
     }
     var overlayAvatarEl = document.getElementById('overlayAvatar');
-    var artistProfileImages = { ml: 'Mnhja%20Pro.jpg', a2: 'Jamuh%20profile%20.png', a3: 'Gerlee%20profile.jpeg', a4: 'LILI%20profile.jpeg' };
+    var artistProfileImages = { ml: 'Mnhja%20Pro.jpg', a2: 'Jamuh%20profile%20.png', a3: 'Gerlee%20profile.jpeg', a4: 'LILI%20profile.jpeg', a5: 'Zuugii%20profile.jpeg', a6: 'Caos%20profile.jpeg', a7: 'Zulka%20profile.jpg' };
     if(artistProfileImages[id]){
       overlayAvatarEl.innerHTML = '<img src="' + artistProfileImages[id] + '" alt="' + name + '">';
     } else {
@@ -1577,7 +1666,7 @@
 
     if(val === 'tattoo'){
       artistGroup.style.display = '';
-      artistSelect.innerHTML = '<option value="ml">Mnhja Loco</option><option value="a2">Jamuh</option><option value="a4">LILI</option><option value="a5">Zuugii</option><option value="a6">Caos</option>';
+      artistSelect.innerHTML = '<option value="ml">Mnhja Loco</option><option value="a2">Jamuh</option><option value="a4">LILI</option><option value="a5">Zuugii</option><option value="a6">Caos</option><option value="a7">Zulka</option>';
       sizeGroup.style.display = '';
       locLabel.textContent = 'Байршил';
       locSelect.innerHTML = '<option>Гар</option><option>Мөр</option><option>Хөл</option><option>Нуруу</option><option>Бусад</option>';
