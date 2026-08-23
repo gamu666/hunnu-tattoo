@@ -44,31 +44,57 @@
   nav{
     position:fixed;top:0;left:0;right:0;
     display:flex;justify-content:space-between;align-items:center;
-    padding:22px 5vw;
+    padding:16px 5vw;
     z-index:100;
-    background: rgba(11, 11, 13, 0.7); /* Хагас тунгалаг хар өнгө */
-    backdrop-filter: blur(12px); /* Ард талын контентыг бүрсийлгэх эффект */
-    -webkit-backdrop-filter: blur(12px); /* Safari-д зориулсан */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Маш нарийн доод зураас */
+    background:rgba(8,8,10,.78);
+    backdrop-filter:blur(18px) saturate(1.12);
+    -webkit-backdrop-filter:blur(18px) saturate(1.12);
+    border-bottom:1px solid rgba(176,141,63,.12);
+    box-shadow:0 1px 0 rgba(255,255,255,.018),0 12px 40px rgba(0,0,0,.08);
   }
-  .logo{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:0.03em;}
+  .logo{
+    display:inline-flex;align-items:center;
+    font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.035em;
+    transition:transform .35s cubic-bezier(.16,1,.3,1),filter .3s ease;
+  }
+  .logo:hover{transform:translate3d(0,-1px,0);filter:drop-shadow(0 0 12px rgba(176,24,37,.18));}
   .logo span{color:var(--crimson);}
-  .nav-links{display:flex;gap:36px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;}
-  .nav-links a{position:relative;padding:8px 14px;border-radius:999px;background:transparent;transition:background .25s, color .25s;}
-  .nav-links a::after{content:"";position:absolute;left:14px;bottom:2px;width:0;height:1px;background:var(--crimson);transition:width .3s;}
-  .nav-links a:hover{color:var(--paper);}
-  .nav-links a:hover::after{width:calc(100% - 28px);}
+  .nav-links{display:flex;gap:34px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;}
+  .nav-links a{
+    position:relative;padding:10px 3px;color:rgba(237,233,225,.7);
+    background:transparent;transition:color .28s,transform .35s cubic-bezier(.16,1,.3,1),letter-spacing .35s ease;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:50%;bottom:2px;width:0;height:2px;
+    border-radius:999px;background:var(--crimson);
+    box-shadow:0 0 0 rgba(176,24,37,0);
+    transform:translateX(-50%);transition:width .38s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
+  }
+  .nav-links a:hover{color:var(--paper);transform:translate3d(0,-1px,0);letter-spacing:.115em;}
+  .nav-links a:hover::after{width:62%;}
   .nav-links a.active{
-    background:var(--crimson);
-    color:var(--paper);
+    background:transparent;color:var(--paper);
   }
-  .nav-links a.active::after{display:none;}
+  .nav-links a.active::after{width:100%;box-shadow:0 0 14px rgba(176,24,37,.5);}
   .nav-cta{
-    border:1px solid var(--paper);
-    padding:9px 20px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
-    transition:all .25s;
+    position:relative;display:inline-flex;align-items:center;gap:10px;overflow:hidden;
+    border:1px solid rgba(214,39,54,.88);background:var(--crimson);
+    padding:10px 18px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    box-shadow:0 10px 28px rgba(176,24,37,.16),inset 0 1px 0 rgba(255,255,255,.1);
+    transition:transform .38s cubic-bezier(.16,1,.3,1),background .25s,border-color .25s,box-shadow .3s;
   }
-  .nav-cta:hover, .nav-cta.active{background:var(--crimson);border-color:var(--crimson);}
+  .nav-cta::before{
+    content:"";position:absolute;inset:-1px;pointer-events:none;
+    background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.15) 48%,transparent 72%);
+    transform:translateX(-120%);transition:transform .65s cubic-bezier(.16,1,.3,1);
+  }
+  .nav-cta-arrow{position:relative;font-size:15px;line-height:1;transition:transform .35s cubic-bezier(.16,1,.3,1);}
+  .nav-cta:hover,.nav-cta.active{
+    background:#c51d2d;border-color:#d72b3b;
+    transform:translate3d(0,-2px,0);box-shadow:0 14px 34px rgba(176,24,37,.28),inset 0 1px 0 rgba(255,255,255,.12);
+  }
+  .nav-cta:hover::before{transform:translateX(120%);}
+  .nav-cta:hover .nav-cta-arrow{transform:translate3d(2px,-2px,0);}
   .burger{display:none;font-size:22px;cursor:pointer;}
 
   @media(max-width:700px){
@@ -78,10 +104,10 @@
       grid-template-areas:
         "logo cta"
         "links links";
-      row-gap:12px;
+      row-gap:10px;
       column-gap:10px;
       align-items:center;
-      padding:14px 4vw;
+      padding:12px 4vw 10px;
     }
     .logo{
       grid-area:logo;
@@ -111,17 +137,13 @@
       text-align:center;
       white-space:nowrap;
       font-size:clamp(7.5px,2.15vw,10.5px);
-      padding:clamp(5px,1.4vw,7px) clamp(3px,1.6vw,13px);
-      border:1px solid var(--line);
-      border-radius:999px;
-      transition:background .25s, border-color .25s, color .25s;
+      padding:clamp(5px,1.4vw,7px) clamp(3px,1.6vw,10px);
+      border:0;border-radius:0;background:transparent;
     }
-    .nav-links a::after{display:none;}
-    .nav-links a:hover{border-color:var(--muted);}
+    .nav-links a::after{display:block;bottom:0;height:1px;}
+    .nav-links a:hover{transform:none;letter-spacing:.1em;}
     .nav-links a.active{
-      background:var(--crimson);
-      border-color:var(--crimson);
-      color:var(--paper);
+      background:transparent;color:var(--paper);
     }
   }
 
@@ -136,16 +158,22 @@
     border-bottom:1px solid var(--line);
   }
   .hero-eyebrow{
+    display:flex;align-items:center;gap:14px;width:max-content;max-width:100%;
     font-family:'JetBrains Mono',monospace;
     font-size:12px;
     letter-spacing:0.25em;
     color:var(--brass);
-    margin:0 auto 30px;
+    margin:0 auto 18px;
     text-align:center;
     text-transform:uppercase;
     opacity:0;
     animation:fadeUp .8s .2s forwards;
   }
+  .hero-eyebrow::before,.hero-eyebrow::after{
+    content:"";width:clamp(28px,4vw,70px);height:1px;flex:none;
+    background:linear-gradient(90deg,transparent,rgba(176,141,63,.72));
+  }
+  .hero-eyebrow::after{transform:scaleX(-1);}
   .hero h1{
     font-size:clamp(52px,10vw,150px);
     line-height:0.88;
@@ -337,21 +365,24 @@
     border:1px solid rgba(237,233,225,0.6);
     transition:background .3s;
     cursor:pointer;
-    display:flex;flex-direction:column;align-items:flex-start;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-rows:auto auto minmax(0,1fr) auto;
+    column-gap:12px;align-items:start;
     height:100%;
   }
   .artist-card:hover{background:rgba(0,0,0,0.15);}
   .artist-portrait{
     aspect-ratio:3/4;
     width:100%;
-    flex:none;
+    grid-column:1/-1;
     background:rgba(0,0,0,0.5);
     backdrop-filter:blur(6px);
     -webkit-backdrop-filter:blur(6px);
     transition:background .3s;
     border:1px solid var(--line);
     display:flex;align-items:center;justify-content:center;
-    position:relative;margin-bottom:22px;
+    position:relative;margin-bottom:20px;
   }
   .artist-card:hover .artist-portrait{background:rgba(0,0,0,0.8);}
   .artist-portrait .initial{
@@ -361,13 +392,32 @@
   .artist-portrait .corner{position:absolute;width:14px;height:14px;border:1px solid var(--brass);}
   .artist-portrait .c1{top:10px;left:10px;border-right:none;border-bottom:none;}
   .artist-portrait .c2{bottom:10px;right:10px;border-left:none;border-top:none;}
-  .artist-name{font-size:22px;margin-bottom:6px;}
-  .artist-tag{
-    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--brass);
-    letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;display:block;
+  .artist-name{
+    grid-column:1;grid-row:2;
+    font-size:22px;line-height:1.1;margin:0;
+    align-self:center;min-width:0;
   }
-  .artist-bio{color:var(--muted);line-height:1.8;font-size:13.5px;margin-bottom:18px;max-height:3.6em;overflow:hidden;}
-  .artist-links{display:flex;flex-wrap:wrap;gap:18px;margin-top:auto;}
+  .artist-tag{
+    grid-column:2;grid-row:2;align-self:center;
+    display:inline-flex;align-items:center;gap:7px;
+    font-family:'JetBrains Mono',monospace;font-size:9px;color:#d8bc78;
+    letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;
+    margin:0;padding:7px 10px;border-radius:999px;
+    border:1px solid rgba(176,141,63,.34);
+    background:linear-gradient(135deg,rgba(176,141,63,.11),rgba(255,255,255,.025));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    transition:color .28s,border-color .28s,background .28s,box-shadow .28s;
+  }
+  .artist-tag::before{
+    content:"";width:5px;height:5px;flex:none;border-radius:50%;
+    background:var(--crimson);box-shadow:0 0 0 3px rgba(163,22,33,.13);
+  }
+  .artist-bio{
+    grid-column:1/-1;grid-row:3;
+    color:var(--muted);line-height:1.8;font-size:13.5px;
+    margin:12px 0 15px;max-height:3.6em;overflow:hidden;
+  }
+  .artist-links{grid-column:1/-1;grid-row:4;display:flex;flex-wrap:wrap;gap:18px;margin-top:auto;}
   .artist-link{display:inline-block;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--muted);padding-bottom:3px;color:var(--muted);transition:color .2s,border-color .2s;}
   .artist-link:hover{color:var(--paper);border-color:var(--paper);}
   .bio-more{color:var(--paper);font-weight:700;white-space:nowrap;}
@@ -395,12 +445,13 @@
     .team-grid{grid-template-columns:repeat(2,1fr);}
   }
   @media(max-width:560px){
-    .artist-card{padding:18px 14px;}
+    .artist-card{padding:18px 14px;column-gap:6px;}
     .artist-portrait{margin-bottom:14px;}
     .artist-portrait .initial{font-size:36px;}
-    .artist-tag{font-size:9px;margin-bottom:8px;}
-    .artist-name{font-size:16px;margin-bottom:4px;}
-    .artist-bio{font-size:11.5px;line-height:1.6;margin-bottom:12px;}
+    .artist-tag{font-size:5.5px;gap:3px;padding:4px 5px;letter-spacing:.03em;margin:0;}
+    .artist-tag::before{width:3px;height:3px;box-shadow:0 0 0 2px rgba(163,22,33,.13);}
+    .artist-name{font-size:12.5px;margin:0;white-space:nowrap;}
+    .artist-bio{font-size:11.5px;line-height:1.6;margin:9px 0 12px;}
     .artist-links{flex-direction:column;gap:10px;}
     .artist-link{font-size:12px;}
   }
@@ -481,26 +532,86 @@
     border-top:1px solid var(--line);
   }
   .footer-top{
-    display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:50px;margin-bottom:70px;
+    display:grid;grid-template-columns:minmax(320px,1.1fr) minmax(0,1.9fr);
+    column-gap:clamp(50px,6vw,110px);row-gap:42px;margin-bottom:32px;
   }
   .footer-title{font-size:clamp(30px,5vw,52px);line-height:1;margin-bottom:20px;}
   .footer-desc{color:var(--muted);font-size:14px;max-width:320px;line-height:1.7;}
-  .footer-col h4{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--brass);margin-bottom:18px;}
+  .footer-info-grid{
+    display:grid;
+    grid-template-areas:
+      "contact-title contact-title location-title"
+      "facebook phone location";
+    grid-template-columns:minmax(150px,.75fr) minmax(200px,1fr) minmax(280px,1.35fr);
+    column-gap:clamp(26px,3vw,58px);row-gap:0;align-items:start;
+  }
+  .footer-info-heading{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--brass);margin-bottom:18px;}
+  .footer-contact-title{grid-area:contact-title;}
+  .footer-location-title{grid-area:location-title;}
+  .footer-facebook{grid-area:facebook;}
+  .footer-phone{grid-area:phone;}
+  .footer-location-block{grid-area:location;min-width:0;}
   .footer-col a, .footer-col p{display:block;font-size:17px;color:var(--muted);margin-bottom:10px;transition:color .2s;}
   .footer-col a strong{font-weight:700;}
   .footer-col a[href^="tel:"]{font-weight:400;color:var(--paper);}
   .footer-col a:hover{color:var(--paper);}
+  .footer-action-link{
+    display:inline-flex !important;flex-direction:column;align-items:flex-start;gap:9px;
+    width:max-content;max-width:100%;box-sizing:border-box;
+    padding:11px 13px 10px;border:1px solid transparent;border-radius:10px;
+    margin-left:-13px;transition:color .25s,border-color .3s,background .3s,transform .38s cubic-bezier(.16,1,.3,1) !important;
+  }
+  .footer-action-main{display:flex;align-items:center;gap:9px;color:var(--paper);font-weight:700;}
+  .footer-action-icon{
+    width:18px;height:18px;flex:none;color:var(--brass);
+    filter:drop-shadow(0 0 8px rgba(176,141,63,.18));
+  }
+  .footer-action-cue{
+    display:inline-flex;align-items:center;gap:7px;
+    font-family:'JetBrains Mono',monospace;font-size:8px;line-height:1;
+    letter-spacing:.13em;text-transform:uppercase;color:rgba(176,141,63,.78);
+  }
+  .footer-action-arrow{font-size:12px;transition:transform .3s cubic-bezier(.16,1,.3,1);}
+  .footer-action-link:hover{
+    border-color:rgba(176,141,63,.3);background:rgba(176,141,63,.055);
+    transform:translate3d(3px,0,0);
+  }
+  .footer-action-link:hover .footer-action-cue{color:var(--brass);}
+  .footer-action-link:hover .footer-action-arrow{transform:translate3d(2px,-2px,0);}
+  .appointment-note{
+    grid-column:1/-1;display:block;
+    width:100%;margin:0 !important;
+    font-family:'JetBrains Mono',monospace;font-size:12px !important;
+    font-weight:400;line-height:1.5;letter-spacing:.04em;
+    text-align:center;text-transform:none;white-space:normal;color:rgba(237,232,223,.58) !important;
+  }
   .footer-bottom{
     display:flex;justify-content:space-between;align-items:center;
     padding-top:24px;border-top:1px solid var(--line);
     font-size:12px;color:var(--muted);flex-wrap:wrap;gap:10px;
   }
+  @media(max-width:1150px) and (min-width:701px){
+    .footer-top{grid-template-columns:1fr;column-gap:0;row-gap:44px;}
+  }
   @media(max-width:700px){
     footer{padding:56px 6vw 32px;}
     .footer-top{
       grid-template-columns:1fr;
-      gap:36px;
-      margin-bottom:40px;
+      column-gap:0;row-gap:36px;
+      margin-bottom:28px;
+    }
+    .footer-info-grid{
+      grid-template-areas:
+        "contact-title contact-title"
+        "facebook phone"
+        "location-title location-title"
+        "location location";
+      grid-template-columns:max-content max-content;
+      justify-content:space-between;column-gap:10px;row-gap:0;
+    }
+    .footer-location-title{margin-top:26px;}
+    .appointment-note{
+      font-size:11px !important;letter-spacing:.02em;
     }
     .footer-title{font-size:clamp(26px,8vw,40px);}
     .footer-desc{max-width:none;}
@@ -786,19 +897,37 @@
   .overlay-ig{
     flex:none;width:36px;height:36px;border:1px solid var(--paper);border-radius:50%;
     display:flex;align-items:center;justify-content:center;color:var(--paper);
+    position:relative;
     box-shadow:0 0 12px rgba(245,245,245,0.55),0 0 2px rgba(245,245,245,0.7);
     transition:border-color .2s,color .2s,box-shadow .2s;
   }
   .overlay-ig:hover{border-color:var(--paper);color:var(--paper);box-shadow:0 0 18px rgba(245,245,245,0.85),0 0 4px rgba(245,245,245,0.9);}
   .overlay-ig svg{width:18px;height:18px;}
-  #overlayPhone{position:relative;}
+  .overlay-ig[data-tooltip]::after{
+    content:attr(data-tooltip);
+    position:absolute;bottom:calc(100% + 11px);left:50%;z-index:8;
+    transform:translate3d(-50%,5px,0);
+    padding:7px 10px;border-radius:6px;white-space:nowrap;
+    border:1px solid rgba(176,141,63,.38);
+    background:rgba(17,16,20,.96);color:var(--paper);
+    box-shadow:0 12px 32px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.04);
+    font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.11em;text-transform:uppercase;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .22s ease,transform .32s cubic-bezier(.16,1,.3,1),visibility 0s linear .22s;
+  }
+  .overlay-ig[data-tooltip]:hover::after,
+  .overlay-ig[data-tooltip]:focus-visible::after{
+    opacity:1;visibility:visible;transform:translate3d(-50%,0,0);
+    transition:opacity .22s ease,transform .32s cubic-bezier(.16,1,.3,1);
+  }
+  #overlayPhone.tip-open::after{opacity:0;visibility:hidden;}
   .phone-tip{
     position:absolute;bottom:calc(100% + 10px);left:50%;
     transform:translateX(-50%) translateY(4px);
     background:var(--paper);color:var(--ink);
     font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.02em;
     padding:7px 14px;border-radius:6px;white-space:nowrap;
-    opacity:0;visibility:hidden;pointer-events:none;
+    z-index:10;opacity:0;visibility:hidden;pointer-events:none;
     transition:opacity .2s ease, transform .2s ease, visibility 0s linear .2s;
   }
   .phone-tip::after{
@@ -998,7 +1127,7 @@
   }
 
   /* ELASTIC INK MOTION — native, dependency-free scroll choreography */
-  html{scroll-padding-top:92px;}
+  html{scroll-padding-top:78px;}
 
   nav{
     transition:
@@ -1008,11 +1137,10 @@
       box-shadow .35s ease;
   }
   nav.motion-compact{
-    padding-top:13px;
-    padding-bottom:13px;
-    background:rgba(11,11,13,.9);
-    border-bottom-color:rgba(237,233,225,.11);
-    box-shadow:0 14px 40px rgba(0,0,0,.22);
+    padding-top:10px;padding-bottom:10px;
+    background:rgba(8,8,10,.92);
+    border-bottom-color:rgba(176,141,63,.18);
+    box-shadow:0 16px 44px rgba(0,0,0,.28);
   }
 
   .hero-logo{
@@ -1195,6 +1323,11 @@
     .artist-card:hover::after{right:28px;}
     .artist-card:hover .artist-name::after{width:48px;}
     .artist-card:hover .artist-portrait{border-color:rgba(176,141,63,.42);}
+    .artist-card:hover .artist-tag{
+      color:var(--paper);border-color:rgba(176,141,63,.68);
+      background:linear-gradient(135deg,rgba(176,141,63,.19),rgba(163,22,33,.08));
+      box-shadow:0 8px 22px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.06);
+    }
     .artist-card:hover .artist-portrait > img{filter:contrast(1.035) brightness(1.03);}
     .artist-card:hover .artist-portrait > img.motion-parallax{
       transform:translate3d(0,var(--parallax-y),0) scale(1.09);
@@ -1253,7 +1386,7 @@
     <a href="#artist">Артистууд</a>
     <a href="#contact">Холбоо барих</a>
   </div>
-  <a href="#booking" class="nav-cta">Цаг захиалах</a>
+  <a href="#booking" class="nav-cta"><span>Цаг захиалах</span><span class="nav-cta-arrow" aria-hidden="true">↗</span></a>
 </nav>
 
 <aside class="scroll-index" aria-hidden="true">
@@ -1741,16 +1874,34 @@
       <h3 class="footer-title display">Ярилцаад <span style="color:var(--crimson)">эхэлье</span></h3>
       <p class="footer-desc">Та бидэнд өөрийн хүссэн загвар, хийцлээ хэлэхэд л хангалттай — үлдсэнийг бид гүйцэтгэнэ.</p>
     </div>
-    <div class="footer-col">
-      <h4>Холбоо барих</h4>
-      <a href="https://facebook.com/tattoo.mongol" target="_blank" rel="noopener">Facebook</a>
-      <a href="tel:+97695662813">+976 <strong>9566 2813</strong></a>
+    <div class="footer-col footer-info-grid">
+      <h4 class="footer-info-heading footer-contact-title">Холбоо барих</h4>
+      <h4 class="footer-info-heading footer-location-title">Байршил</h4>
+      <a href="https://facebook.com/tattoo.mongol" target="_blank" rel="noopener" class="footer-action-link footer-facebook" aria-label="Facebook хуудсыг нээх">
+        <span class="footer-action-main">
+          <svg class="footer-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 22v-9h3l.5-3.5h-3.5V7.3c0-1 .3-1.7 1.8-1.7h1.9V2.5c-.3 0-1.5-.1-2.8-.1-2.8 0-4.7 1.7-4.7 4.8v2.3H6.5V13h3.2v9h3.8Z"/></svg>
+          <span>Facebook</span>
+        </span>
+        <span class="footer-action-cue">Facebook нээх <span class="footer-action-arrow">↗</span></span>
+      </a>
+      <a href="tel:+97695662813" class="footer-action-link footer-phone" aria-label="+976 9566 2813 дугаар руу залгах">
+        <span class="footer-action-main">
+          <svg class="footer-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5c.6 0 1.1.4 1.3 1l1 2.6c.2.5.1 1.1-.3 1.5L7 10c1 2.4 2.6 4 5 5l1.4-1.5c.4-.4 1-.5 1.5-.3l2.6 1c.6.2 1 .7 1 1.3v2.3c0 .9-.8 1.6-1.7 1.5-3.5-.4-6.7-2-9.2-4.5S3.4 9.7 3 6.2C2.9 5.3 3.6 4.5 4.5 4.5h2Z"/></svg>
+          <span>+976 <strong>9566 2813</strong></span>
+        </span>
+        <span class="footer-action-cue">Шууд залгах <span class="footer-action-arrow">↗</span></span>
+      </a>
+      <div class="footer-location-block">
+        <a href="https://maps.app.goo.gl/3Rqh6hkvfEQb9PMa6" target="_blank" rel="noopener" class="footer-action-link" aria-label="Google Maps дээр байршлыг нээх">
+          <span class="footer-action-main">
+            <svg class="footer-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <span>СБД, 5-р хороо, <strong>45-1</strong></span>
+          </span>
+          <span class="footer-action-cue">Google Maps дээр нээх <span class="footer-action-arrow">↗</span></span>
+        </a>
+      </div>
     </div>
-    <div class="footer-col">
-      <h4>Байршил</h4>
-      <a href="https://maps.app.goo.gl/3Rqh6hkvfEQb9PMa6" target="_blank" rel="noopener">СБД, 5-р хороо, <strong>45-1</strong></a>
-      <p>Зөвхөн урьдчилсан цагаар</p>
-    </div>
+    <p class="appointment-note">Зөвхөн урьдчилан захиалсан цагаар үйлчилнэ</p>
   </div>
   <div class="footer-bottom">
     <span>© 2026 HUNNU TATTOO STUDIO</span>
@@ -1767,10 +1918,10 @@
         <span id="overlayTag">Fine-line / Color</span>
         <div class="overlay-name-row">
           <h2 id="overlayName" class="display">Mnhja Loco</h2>
-          <a href="#" target="_blank" rel="noopener" class="overlay-ig" id="overlayIG" aria-label="Instagram">
+          <a href="#" target="_blank" rel="noopener" class="overlay-ig" id="overlayIG" aria-label="Instagram нээх" data-tooltip="Instagram нээх">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
           </a>
-          <a href="#" class="overlay-ig" id="overlayPhone" aria-label="Утасдах" onclick="handlePhoneIconClick(event)">
+          <a href="#" class="overlay-ig" id="overlayPhone" aria-label="Утасны дугаар харах" data-tooltip="Дугаар харах" onclick="handlePhoneIconClick(event)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 3.5c.6 0 1.1.4 1.3 1l1 2.6c.2.5.1 1.1-.3 1.5L7 10c1 2.4 2.6 4 5 5l1.4-1.5c.4-.4 1-.5 1.5-.3l2.6 1c.6.2 1 .7 1 1.3v2.3c0 .9-.8 1.6-1.7 1.5-3.5-.4-6.7-2-9.2-4.5S3.4 9.7 3 6.2C2.9 5.3 3.6 4.5 4.5 4.5h2z"/></svg>
             <span class="phone-tip" id="phoneTip"></span>
           </a>
@@ -2121,9 +2272,13 @@
     var display = digits.length === 8 ? ('+976 ' + digits.slice(0,4) + ' ' + digits.slice(4)) : raw;
     var tip = document.getElementById('phoneTip');
     tip.textContent = display;
+    el.classList.add('tip-open');
     tip.classList.add('show');
     clearTimeout(window.__phoneTipTimer);
-    window.__phoneTipTimer = setTimeout(function(){ tip.classList.remove('show'); }, 3000);
+    window.__phoneTipTimer = setTimeout(function(){
+      tip.classList.remove('show');
+      el.classList.remove('tip-open');
+    }, 3000);
   }
 
   function openArtistPage(id, name, tag, bio){
@@ -2489,7 +2644,7 @@
       prepareGroup('.team-grid .artist-card',58,false);
       prepareGroup('.studio-stats > div',92,true);
       prepareGroup('.booking-wrap > *',105,true);
-      prepareGroup('.footer-top > *',88,true);
+      prepareGroup('.footer-top > div',88,true);
 
       parallaxEls = Array.prototype.slice.call(document.querySelectorAll(
         '#work > .flash-grid .flash-card:not(.flash-card-more) > img, .artist-portrait > img'
