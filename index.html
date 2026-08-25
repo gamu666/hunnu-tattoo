@@ -979,7 +979,18 @@
     font-size:11.5px;line-height:1.55;color:var(--muted);
   }
   .bio-highlight{color:var(--paper);font-weight:600;}
-  .overlay-book-btn{margin-top:26px;display:inline-block;}
+  .overlay-book-btn{
+    width:min(100%,390px);margin-top:14px;padding:15px 18px;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    border-radius:0 7px 7px 0;border-left:3px solid #d84a55;
+    font-weight:600;letter-spacing:.065em;text-align:left;
+    box-shadow:0 10px 24px rgba(163,22,33,.2);
+  }
+  .overlay-book-btn::after{
+    content:'→';flex:none;font-family:'JetBrains Mono',monospace;font-size:18px;
+    transition:transform .25s ease;
+  }
+  .overlay-book-btn:hover::after{transform:translateX(4px);}
   #overlayWorks{
     display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
     background:var(--line);border:1px solid var(--line);
@@ -994,6 +1005,7 @@
     .overlay-price-card{width:100%;padding:14px 15px 13px;}
     .overlay-price{align-items:flex-start;flex-direction:column;gap:7px;}
     .overlay-price strong{font-size:22px;}
+    .overlay-book-btn{width:100%;font-size:11px;line-height:1.45;}
     .artist-overlay-watermark{width:118vw;opacity:0;}
     #artist-overlay.open .artist-overlay-watermark{opacity:.048;}
   }
@@ -1967,7 +1979,7 @@
           <p class="overlay-price" id="overlayPrice">Цагийн үнэлгээ: <strong>999,000₮</strong></p>
           <p class="overlay-price-note" id="overlayPriceNote">Сонгосон скеч дээр үнэ тохирч болно.</p>
         </div>
-        <a href="#booking" class="btn-primary overlay-book-btn" id="overlayBookBtn" onclick="event.preventDefault(); bookArtist(this.dataset.artist);">Энэ artist-тай цаг захиалах</a>
+        <a href="#booking" class="btn-primary overlay-book-btn" id="overlayBookBtn" onclick="event.preventDefault(); bookArtist(this.dataset.artist);">Энэ артистийг сонгоод хүсэлт илгээх</a>
       </div>
     </div>
     <div id="overlayWorks"></div>
