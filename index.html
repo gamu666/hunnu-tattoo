@@ -957,12 +957,27 @@
     transition:opacity .2s ease, transform .2s ease;
   }
   #overlayBio{color:var(--muted);margin-top:16px;line-height:1.8;font-size:15px;text-align:justify;}
-  .overlay-price{
-    margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:17px;
-    letter-spacing:0.03em;color:var(--paper);
+  .overlay-price-card{
+    width:min(100%,390px);margin-top:22px;padding:16px 18px 14px;
+    background:linear-gradient(135deg,rgba(176,141,63,.11),rgba(22,21,26,.9) 58%);
+    border:1px solid rgba(176,141,63,.34);border-left:3px solid var(--brass);
+    border-radius:0 10px 10px 0;
+    box-shadow:0 12px 30px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.025);
   }
-  .overlay-price strong{color:var(--brass);font-weight:700;font-size:19px;}
-  .overlay-price-note{margin-top:6px;font-size:12.5px;color:var(--muted);}
+  .overlay-price{
+    margin:0;display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.4;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  }
+  .overlay-price strong{
+    color:var(--brass);font-family:'Oswald',sans-serif;font-weight:700;
+    font-size:24px;line-height:1;letter-spacing:.025em;white-space:nowrap;
+    text-shadow:0 0 18px rgba(176,141,63,.22);
+  }
+  .overlay-price-note{
+    margin-top:11px;padding-top:10px;border-top:1px solid rgba(176,141,63,.18);
+    font-size:11.5px;line-height:1.55;color:var(--muted);
+  }
   .bio-highlight{color:var(--paper);font-weight:600;}
   .overlay-book-btn{margin-top:26px;display:inline-block;}
   #overlayWorks{
@@ -976,6 +991,9 @@
     #overlayWorks{grid-template-columns:repeat(2,1fr);}
     .overlay-header{gap:24px;}
     .overlay-avatar{width:140px;aspect-ratio:4/5;font-size:44px;}
+    .overlay-price-card{width:100%;padding:14px 15px 13px;}
+    .overlay-price{align-items:flex-start;flex-direction:column;gap:7px;}
+    .overlay-price strong{font-size:22px;}
     .artist-overlay-watermark{width:118vw;opacity:0;}
     #artist-overlay.open .artist-overlay-watermark{opacity:.048;}
   }
@@ -1945,8 +1963,10 @@
           </a>
         </div>
         <p id="overlayBio">Тэмдэглэл шиг нарийн шугам, зөөлөн өнгөний ажлууд.</p>
-        <p class="overlay-price" id="overlayPrice">Цагийн үнэлгээ: <strong>999,000₮</strong></p>
-        <p class="overlay-price-note" id="overlayPriceNote">Сонгосон скеч дээр үнэ тохирч болно.</p>
+        <div class="overlay-price-card">
+          <p class="overlay-price" id="overlayPrice">Цагийн үнэлгээ: <strong>999,000₮</strong></p>
+          <p class="overlay-price-note" id="overlayPriceNote">Сонгосон скеч дээр үнэ тохирч болно.</p>
+        </div>
         <a href="#booking" class="btn-primary overlay-book-btn" id="overlayBookBtn" onclick="event.preventDefault(); bookArtist(this.dataset.artist);">Энэ artist-тай цаг захиалах</a>
       </div>
     </div>
