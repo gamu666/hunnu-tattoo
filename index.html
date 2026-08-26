@@ -2155,8 +2155,9 @@
       var j = Math.floor(Math.random() * (i + 1));
       var temp = cards[i]; cards[i] = cards[j]; cards[j] = temp;
     }
+    var visibleCount = window.matchMedia('(max-width: 720px)').matches ? 4 : 3;
     cards.forEach(function(card, index){
-      card.classList.toggle('flash-card-more', index >= 4);
+      card.classList.toggle('flash-card-more', index >= visibleCount);
       grid.appendChild(card);
     });
   })();
