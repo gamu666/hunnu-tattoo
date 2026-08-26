@@ -2156,7 +2156,7 @@
       var temp = cards[i]; cards[i] = cards[j]; cards[j] = temp;
     }
     cards.forEach(function(card, index){
-      card.classList.toggle('flash-card-more', index >= 3);
+      card.classList.toggle('flash-card-more', index >= 4);
       grid.appendChild(card);
     });
   })();
