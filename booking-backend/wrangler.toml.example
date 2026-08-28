@@ -10,6 +10,10 @@ binding = "DB"
 database_name = "hunnu-booking"
 database_id = "a75c662b-fbe5-422b-afcd-28e8b65eb5d6"
 
+[vars]
+LEGACY_BOOKING_URL = "https://hunnu-booking.gaorm0206.workers.dev/"
+PUBLIC_WORKER_URL = "https://hunnu-booking.ulamsainmunkhjargal.workers.dev"
+
 # Secrets are added with `wrangler secret put`, never committed here:
 # QPAY_TATTOO_CLIENT_ID / QPAY_TATTOO_CLIENT_SECRET / QPAY_TATTOO_INVOICE_CODE
 # QPAY_PIERCING_CLIENT_ID / QPAY_PIERCING_CLIENT_SECRET / QPAY_PIERCING_INVOICE_CODE

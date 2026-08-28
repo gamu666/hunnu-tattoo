@@ -2539,7 +2539,7 @@
     });
     var artist=document.getElementById('bookingArtistSelect');
     var query='?action=availability&service='+encodeURIComponent(service)+'&artist='+encodeURIComponent(artist&&artist.value||'')+'&date='+encodeURIComponent(dateInput.value);
-    fetch('https://hunnu-booking.gaorm0206.workers.dev/'+query).then(function(res){return res.ok?res.json():null;}).then(function(data){
+    fetch('https://hunnu-booking.ulamsainmunkhjargal.workers.dev/'+query).then(function(res){return res.ok?res.json():null;}).then(function(data){
       if(!data||!Array.isArray(data.busy)) return;
       wrap.querySelectorAll('.time-slot').forEach(function(btn){if(data.busy.indexOf(btn.textContent)!==-1)btn.disabled=true;});
     }).catch(function(){});
@@ -2571,7 +2571,7 @@
   function pollPaymentStatus(bookingId, attempt){
     if(attempt >= 60 || !document.getElementById('paymentOverlay').classList.contains('open')) return;
     setTimeout(function(){
-      fetch('https://hunnu-booking.gaorm0206.workers.dev/?action=payment-status&id='+encodeURIComponent(bookingId))
+      fetch('https://hunnu-booking.ulamsainmunkhjargal.workers.dev/?action=payment-status&id='+encodeURIComponent(bookingId))
         .then(function(res){return res.ok?res.json():null;})
         .then(function(data){
           if(data&&data.status==='paid'){
@@ -2676,7 +2676,7 @@
     submitBtn.textContent = 'Илгээж байна...';
     submitBtn.disabled = true;
 
-    fetch('https://hunnu-booking.gaorm0206.workers.dev/', {
+    fetch('https://hunnu-booking.ulamsainmunkhjargal.workers.dev/', {
       method: 'POST',
       body: formData
     }).then(function(res){ return res.json(); }).then(function(data){

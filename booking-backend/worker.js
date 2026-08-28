@@ -173,6 +173,13 @@ async function checkQpayPayment(env, route, invoiceId) {
 }
 
 async function sendTelegram(env, message, photo) {
+  if ((!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) && env.LEGACY_BOOKING_URL) {
+    const relayBody = new FormData();
+    relayBody.append('message', message);
+    if (photo && photo.size) relayBody.append('photo', photo);
+    await fetch(env.LEGACY_BOOKING_URL, {method:'POST', body:relayBody});
+    return;
+  }
   if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
   const api = `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}`;
   if (photo && photo.size) {

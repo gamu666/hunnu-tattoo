@@ -19,7 +19,7 @@
 <div class="field span2"><label>Тэмдэглэл</label><textarea id="note" placeholder="Нэмэлт мэдээлэл..."></textarea></div></div><button class="btn full" id="saveBtn">Цаг хадгалах</button><button type="button" class="btn secondary full hidden" id="cancelEdit" onclick="resetForm()">Засварыг болих</button><div class="error" id="formError"></div></form></section>
 <section class="panel"><h2>Захиалгын хуваарь</h2><div class="toolbar"><div class="field"><label>Эхлэх өдөр</label><input type="date" id="filterFrom"></div><div class="field"><label>Дуусах өдөр</label><input type="date" id="filterTo"></div><button class="btn" onclick="loadBookings()">Харах</button></div><div class="booking-list" id="bookingList"></div></section></div></main><div class="notice" id="notice"></div>
 <script>
-const API='https://hunnu-booking.gaorm0206.workers.dev/admin/api';let token=sessionStorage.getItem('hunnuAdminToken')||'';let bookings=[];
+const API='https://hunnu-booking.ulamsainmunkhjargal.workers.dev/admin/api';let token=sessionStorage.getItem('hunnuAdminToken')||'';let bookings=[];
 const names={ml:'Mnhja Loco',a2:'Jamuh',a3:'Gerlee',a4:'LILI',a5:'Zuugii',a6:'Caos',a7:'Zulka'};const services={tattoo:'Шивээс',piercing:'Piercing',removal:'Лазер арилгалт',course:'Сургалт'};
 function localDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function setup(){for(let h=10;h<=22;h++){let o=document.createElement('option');o.value=String(h).padStart(2,'0')+':00';o.textContent=o.value;time.appendChild(o)}let now=new Date(),later=new Date();later.setDate(later.getDate()+30);date.value=localDate(now);filterFrom.value=localDate(now);filterTo.value=localDate(later);if(token)showApp()}
