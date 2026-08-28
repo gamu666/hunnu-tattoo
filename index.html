@@ -2549,7 +2549,7 @@
       document.getElementById('paymentQrImg').src=payment.qrImage;
       qr.style.display='block';
       document.getElementById('paymentTitle').textContent='Урьдчилгаа төлбөр';
-      document.getElementById('paymentDescription').textContent='QR кодыг банкны апп-аар уншуулж төлнө үү.';
+      document.getElementById('paymentDescription').textContent=(payment.amount ? Number(payment.amount).toLocaleString()+'₮ — ' : '')+'QR кодыг банкны апп-аар уншуулж төлнө үү.';
       document.getElementById('paymentState').textContent='ТӨЛБӨР ХҮЛЭЭГДЭЖ БАЙНА';
       if(payment.deepLink){deep.href=payment.deepLink;deep.style.display='inline-block';}
       if(bookingId) pollPaymentStatus(bookingId, 0);
@@ -2722,7 +2722,7 @@
       infoTitle.textContent = 'Шивээсний цаг хэрхэн баталгаажуулах вэ?';
       infoText.textContent = 'Формоо илгээсний дараа таны сонгосон artist тантай утас эсвэл чатаар шуурхай холбогдож, шивээсний загвар, хэмжээ, байршил зэрэг дэлгэрэнгүйг тохирно. Та явуулсан шивээсний зураг, хийцлэлийг харж үзээд үнийг тохирно. Тохиролцсоны дараа урьдчилгаа төлбөрөөр цагаа баталгаажуулна.';
       infoLine1.textContent = 'Хүсэлт илгээмэгц artist тантай шуурхай холбогдоно';
-      infoLine2.textContent = 'Урьдчилгаа төлбөрөөр цаг баталгаажна';
+      infoLine2.textContent = 'Урьдчилгаа 20,000₮ төлснөөр цаг баталгаажна';
     } else if(val === 'piercing'){
       artistGroup.style.display = '';
       artistSelect.innerHTML = '<option value="a3">Gerlee</option>';
@@ -2734,7 +2734,7 @@
       infoTitle.textContent = 'Piercing цаг хэрхэн баталгаажих вэ';
       infoText.textContent = 'Формоо илгээсний дараа piercing artist тантай утас эсвэл чатаар шуурхай холбогдож, сонгосон piercing төрөл, тоо ширхэг болон шаардлагатай мэдээллийг тодруулна. Тохиролцсоны дараа урьдчилгаа төлбөрөөр цагаа баталгаажуулна.';
       infoLine1.textContent = 'Хүсэлт илгээмэгц piercing artist тантай шуурхай холбогдоно';
-      infoLine2.textContent = 'Урьдчилгаа төлбөрөөр цаг баталгаажна';
+      infoLine2.textContent = 'Урьдчилгаа 5,000₮ төлснөөр цаг баталгаажна';
     } else if(val === 'removal'){
       sizeGroup.style.display = '';
       locLabel.textContent = 'Байршил (арилгах шивээс)';
@@ -2746,7 +2746,7 @@
       infoTitle.textContent = 'Арилгалтын хүсэлт хэрхэн баталгаажуулах вэ';
       infoText.textContent = 'Формоо илгээсний дараа манай баг тантай утас эсвэл чатаар шуурхай холбогдож, арилгах шивээсний хэмжээ, байршил, өнгө болон насжилтын мэдээллийг тодруулна. Одоо байгаа шивээсний зургийг харж үзээд цагийн үнэлгээг тохирно. Үзлэг, зөвлөгөөний дараа тохирох цагийг баталгаажуулна.';
       infoLine1.textContent = 'Хүсэлт илгээмэгц манай баг тантай шуурхай холбогдоно';
-      infoLine2.textContent = 'Үзлэг, зөвлөгөөний дараа цаг баталгаажна';
+      infoLine2.textContent = 'Урьдчилгаа 20,000₮ төлснөөр цаг баталгаажна';
     } else if(val === 'course'){
       locLabel.textContent = 'Сонирхож буй сургалт';
       locSelect.innerHTML = '<option>Анхан шатны курс</option><option>Ахисан түвшин</option><option>Тодорхойгүй, зөвлөгөө авмаар байна</option>';

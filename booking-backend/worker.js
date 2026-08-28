@@ -56,7 +56,7 @@ async function createBooking(request, env) {
   if (!date || !time || !phone) return json({ok: false, error: 'Missing booking data'}, 400);
 
   const id = crypto.randomUUID();
-  const amount = Number(env[merchantRoute === 'piercing' ? 'PIERCING_DEPOSIT' : 'TATTOO_DEPOSIT'] || 0);
+  const amount = getDepositAmount(env, service);
   const qpayReady = amount > 0 && hasQpayCredentials(env, merchantRoute);
   let payment = null;
   let status = qpayReady ? 'pending_payment' : 'pending';
@@ -82,6 +82,13 @@ async function createBooking(request, env) {
 
   await sendTelegram(env, String(form.get('message') || ''), form.get('photo'));
   return json({ok: true, bookingId: id, status, payment});
+}
+
+function getDepositAmount(env, service) {
+  if (service === 'piercing') return Number(env.PIERCING_DEPOSIT || 5000);
+  if (service === 'tattoo') return Number(env.TATTOO_DEPOSIT || 20000);
+  if (service === 'removal') return Number(env.LASER_DEPOSIT || 20000);
+  return 0;
 }
 
 async function releaseExpiredBookings(env) {
@@ -118,7 +125,7 @@ async function createQpayInvoice(env, route, booking) {
   if (!invoiceRes.ok) throw new Error('QPay invoice creation failed');
   const invoice = await invoiceRes.json();
   const deepLink = Array.isArray(invoice.urls) && invoice.urls[0] ? invoice.urls[0].link : '';
-  return {invoiceId: invoice.invoice_id, qrImage: invoice.qr_image, deepLink};
+  return {invoiceId: invoice.invoice_id, qrImage: invoice.qr_image, deepLink, amount: booking.amount};
 }
 
 async function qpayCallback(request, env) {
