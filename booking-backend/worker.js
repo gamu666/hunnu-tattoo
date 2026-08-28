@@ -1,7 +1,7 @@
 const CORS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type'
+  'Access-Control-Allow-Methods': 'GET,POST,PATCH,DELETE,OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 };
 
 const json = (data, status = 200) => new Response(JSON.stringify(data), {
@@ -14,6 +14,7 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, {headers: CORS});
     const url = new URL(request.url);
     try {
+      if (url.pathname === '/admin/api') return adminApi(request, env, url);
       if (request.method === 'GET' && url.searchParams.get('action') === 'availability') {
         return availability(url, env);
       }
@@ -28,6 +29,9 @@ export default {
     } catch (error) {
       return json({ok: false, error: error.message || 'Server error'}, 500);
     }
+  },
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(sendScheduledReminders(env));
   }
 };
 
@@ -39,7 +43,7 @@ async function availability(url, env) {
   const rows = await env.DB.prepare(
     `SELECT booking_time FROM bookings
      WHERE artist = ? AND booking_date = ?
-     AND status IN ('pending_payment','paid','confirmed')`
+     AND status IN ('pending','pending_payment','paid','confirmed')`
   ).bind(artist, date).all();
   return json({ok: true, busy: rows.results.map(row => row.booking_time)});
 }
@@ -181,3 +185,115 @@ async function sendTelegram(env, message, photo) {
 
 function inferPhone(message) { return String(message || '').match(/📞 Утас:\s*([^\n]+)/)?.[1]?.trim() || ''; }
 function inferArtist(message) { return String(message || '').match(/🖌️ Artist:\s*([^\n]+)/)?.[1]?.trim() || ''; }
+
+const ARTIST_NAMES = {ml:'Mnhja Loco',a2:'Jamuh',a3:'Gerlee',a4:'LILI',a5:'Zuugii',a6:'Caos',a7:'Zulka',any:'Хамаагүй'};
+const SERVICE_NAMES = {tattoo:'Шивээс',piercing:'Piercing',removal:'Лазер арилгалт',course:'Сургалт'};
+
+function adminAuthorized(request, env) {
+  const supplied = request.headers.get('Authorization') || '';
+  return Boolean(env.ADMIN_TOKEN && supplied === `Bearer ${env.ADMIN_TOKEN}`);
+}
+
+async function adminApi(request, env, url) {
+  if (!adminAuthorized(request, env)) return json({ok:false,error:'Нууц код буруу байна.'}, 401);
+  if (!env.DB) return json({ok:false,error:'Database холбоогүй байна.'}, 503);
+
+  if (request.method === 'GET') {
+    const from = url.searchParams.get('from') || todayInUlaanbaatar();
+    const to = url.searchParams.get('to') || addDays(from, 30);
+    const rows = await env.DB.prepare(
+      `SELECT * FROM bookings WHERE booking_date BETWEEN ? AND ? AND status != 'cancelled'
+       ORDER BY booking_date, booking_time, artist`
+    ).bind(from, to).all();
+    return json({ok:true,bookings:rows.results});
+  }
+
+  if (request.method === 'POST') {
+    const data = await request.json();
+    const id = crypto.randomUUID();
+    const service = String(data.service || 'tattoo');
+    const artist = String(data.artist || '');
+    const date = String(data.booking_date || '');
+    const time = String(data.booking_time || '');
+    if (!artist || !date || !time) return json({ok:false,error:'Artist, өдөр, цаг шаардлагатай.'},400);
+    try {
+      await env.DB.prepare(
+        `INSERT INTO bookings(id,service,artist,booking_date,booking_time,customer_name,customer_phone,merchant_route,amount,status,source,note)
+         VALUES(?,?,?,?,?,?,?,?,?,'confirmed','admin',?)`
+      ).bind(id,service,artist,date,time,String(data.customer_name||''),String(data.customer_phone||''),service==='piercing'?'piercing':'tattoo',getDepositAmount(env,service),String(data.note||'')).run();
+    } catch (error) {
+      if (String(error).includes('UNIQUE')) return json({ok:false,error:'Энэ artist-ийн сонгосон цаг аль хэдийн дүүрсэн байна.'},409);
+      throw error;
+    }
+    await sendTelegram(env, formatAdminBooking('➕ ГАРААР ЦАГ НЭМЭГДЛЭЭ',{service,artist,booking_date:date,booking_time:time,customer_name:data.customer_name,customer_phone:data.customer_phone,note:data.note}));
+    return json({ok:true,id});
+  }
+
+  if (request.method === 'PATCH') {
+    const data = await request.json();
+    if (!data.id) return json({ok:false,error:'Booking ID байхгүй.'},400);
+    try {
+      await env.DB.prepare(
+        `UPDATE bookings SET service=?,artist=?,booking_date=?,booking_time=?,customer_name=?,customer_phone=?,note=?,status=?,updated_at=CURRENT_TIMESTAMP WHERE id=?`
+      ).bind(String(data.service||'tattoo'),String(data.artist||''),String(data.booking_date||''),String(data.booking_time||''),String(data.customer_name||''),String(data.customer_phone||''),String(data.note||''),String(data.status||'confirmed'),String(data.id)).run();
+    } catch (error) {
+      if (String(error).includes('UNIQUE')) return json({ok:false,error:'Шинэ цаг нь аль хэдийн дүүрсэн байна.'},409);
+      throw error;
+    }
+    await sendTelegram(env, formatAdminBooking('✏️ ЦАГИЙН МЭДЭЭЛЭЛ ӨӨРЧЛӨГДЛӨӨ',data));
+    return json({ok:true});
+  }
+
+  if (request.method === 'DELETE') {
+    const id = url.searchParams.get('id');
+    if (!id) return json({ok:false,error:'Booking ID байхгүй.'},400);
+    await env.DB.prepare("UPDATE bookings SET status='cancelled',updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(id).run();
+    await sendTelegram(env, `❌ ЦАГ ЦУЦЛАГДЛАА\n━━━━━━━━━━━━━━━━━━\nBooking ID: ${id}`);
+    return json({ok:true});
+  }
+  return json({ok:false,error:'Method not allowed'},405);
+}
+
+function formatAdminBooking(title, b) {
+  return [title,'━━━━━━━━━━━━━━━━━━',`🖌️ Artist: ${ARTIST_NAMES[b.artist]||b.artist}`,`🎨 Үйлчилгээ: ${SERVICE_NAMES[b.service]||b.service}`,`📅 Өдөр: ${b.booking_date}`,`🕐 Цаг: ${b.booking_time}`,b.customer_name?`👤 Нэр: ${b.customer_name}`:'',b.customer_phone?`📞 Утас: ${b.customer_phone}`:'',b.note?`📝 Тэмдэглэл: ${b.note}`:'','━━━━━━━━━━━━━━━━━━'].filter(Boolean).join('\n');
+}
+
+function todayInUlaanbaatar() {
+  return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ulaanbaatar',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+}
+function addDays(dateString, days) {
+  const date = new Date(`${dateString}T00:00:00+08:00`); date.setUTCDate(date.getUTCDate()+days);
+  return date.toISOString().slice(0,10);
+}
+async function reminderOnce(env, key, message) {
+  try {
+    await env.DB.prepare('INSERT INTO reminder_log(key) VALUES(?)').bind(key).run();
+  } catch (error) {
+    if (String(error).includes('UNIQUE')) return;
+    throw error;
+  }
+  await sendTelegram(env, message);
+}
+async function sendScheduledReminders(env) {
+  if (!env.DB) return;
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Ulaanbaatar',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
+  const today = todayInUlaanbaatar();
+  if (parts.hour === '20' && Number(parts.minute) < 15) {
+    const tomorrow = addDays(today,1);
+    const rows = await env.DB.prepare("SELECT * FROM bookings WHERE booking_date=? AND status IN ('pending','pending_payment','paid','confirmed') ORDER BY artist,booking_time").bind(tomorrow).all();
+    if (rows.results.length) {
+      const lines=['🔔 МАРГААШИЙН ЦАГИЙН САНУУЛГА',`📅 ${tomorrow}`,'━━━━━━━━━━━━━━━━━━'];
+      let artist=''; for (const b of rows.results) { if (artist!==b.artist){artist=b.artist;lines.push(`\n🖌️ ${ARTIST_NAMES[artist]||artist}`);} lines.push(`• ${b.booking_time} — ${b.customer_name||'Нэргүй'} — ${SERVICE_NAMES[b.service]||b.service}`); }
+      lines.push(`\nНийт: ${rows.results.length} захиалга`);
+      await reminderOnce(env,`daily:${tomorrow}`,lines.join('\n'));
+    }
+  }
+  const next = addDays(today,1);
+  const upcoming = await env.DB.prepare("SELECT * FROM bookings WHERE booking_date BETWEEN ? AND ? AND status IN ('pending','pending_payment','paid','confirmed')").bind(today,next).all();
+  const now=Date.now();
+  for (const b of upcoming.results) {
+    const start=new Date(`${b.booking_date}T${b.booking_time}:00+08:00`).getTime();
+    const minutes=(start-now)/60000;
+    if (minutes>105 && minutes<=120) await reminderOnce(env,`twohour:${b.id}`,formatAdminBooking('⏰ 2 ЦАГИЙН ДАРАА ЗАХИАЛГАТАЙ',b));
+  }
+}

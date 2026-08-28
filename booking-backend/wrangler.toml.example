@@ -2,6 +2,9 @@ name = "hunnu-booking"
 main = "worker.js"
 compatibility_date = "2026-08-01"
 
+[triggers]
+crons = ["*/15 * * * *"]
+
 [[d1_databases]]
 binding = "DB"
 database_name = "hunnu-booking"
@@ -11,4 +14,5 @@ database_id = "REPLACE_WITH_D1_DATABASE_ID"
 # QPAY_TATTOO_CLIENT_ID / QPAY_TATTOO_CLIENT_SECRET / QPAY_TATTOO_INVOICE_CODE
 # QPAY_PIERCING_CLIENT_ID / QPAY_PIERCING_CLIENT_SECRET / QPAY_PIERCING_INVOICE_CODE
 # TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID
+# ADMIN_TOKEN (admin.html-д нэвтрэх урт, давтагдашгүй нууц код)
 # Optional overrides (defaults): TATTOO_DEPOSIT=20000, LASER_DEPOSIT=20000, PIERCING_DEPOSIT=5000

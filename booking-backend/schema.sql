@@ -11,9 +11,17 @@ CREATE TABLE IF NOT EXISTS bookings (
   invoice_id TEXT,
   payment_id TEXT,
   status TEXT NOT NULL DEFAULT 'pending',
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  source TEXT NOT NULL DEFAULT 'website',
+  note TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS active_booking_slot
 ON bookings(artist, booking_date, booking_time)
-WHERE status IN ('pending_payment', 'paid', 'confirmed');
+WHERE status IN ('pending', 'pending_payment', 'paid', 'confirmed');
+
+CREATE TABLE IF NOT EXISTS reminder_log (
+  key TEXT PRIMARY KEY,
+  sent_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
