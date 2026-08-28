@@ -542,6 +542,11 @@
   .booking-schedule-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-end;margin-bottom:14px;}
   .booking-schedule-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;}
   .booking-schedule-status{font:10px 'JetBrains Mono',monospace;color:var(--brass);}
+  .booking-date-list{height:190px;overflow-y:auto;border:1px solid var(--line);scroll-snap-type:y mandatory;overscroll-behavior:contain;padding:58px 8px;scrollbar-width:thin;scrollbar-color:var(--crimson) var(--ink);}
+  .booking-date-option{width:100%;min-height:52px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--muted);padding:10px 14px;text-align:left;cursor:pointer;scroll-snap-align:center;font-family:'Inter',sans-serif;transition:.2s;}
+  .booking-date-option strong{font-size:14px;color:var(--paper);}.booking-date-option span{font:11px 'JetBrains Mono',monospace;}
+  .booking-date-option:hover{background:rgba(176,141,63,.08);}.booking-date-option.selected{background:var(--crimson);color:var(--paper);}.booking-date-option.selected strong{color:var(--paper);}
+  .booking-date-option:disabled{opacity:.28;cursor:not-allowed;}.booking-date-option:disabled strong{text-decoration:line-through;}
   .time-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
   .time-slot{border:1px solid var(--line);background:transparent;color:var(--paper);padding:10px 6px;cursor:pointer;font:12px 'JetBrains Mono',monospace;transition:.2s;}
   .time-slot:hover{border-color:var(--brass);}
@@ -1925,8 +1930,9 @@
           <span class="booking-schedule-status" id="scheduleStatus">СУЛ ЦАГУУД</span>
         </div>
         <div class="field">
-          <label for="bookingDateInput">Өдөр</label>
-          <input type="date" id="bookingDateInput" required onchange="renderTimeSlots()">
+          <label>Өдөр — доош гүйлгэж сонгоно уу</label>
+          <div class="booking-date-list" id="bookingDateList" aria-label="Өдөр сонгох"></div>
+          <input type="hidden" id="bookingDateInput" required>
         </div>
         <div class="time-slots" id="bookingTimeSlots" aria-label="Сул цаг сонгох"></div>
         <input type="hidden" id="bookingTimeInput" required>
@@ -2467,11 +2473,12 @@
     phoneError.classList.remove('show');
   }
 
+  var allBookingTimes = ['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00'];
   var bookingScheduleConfig = {
-    tattoo:   {times:['11:00','13:00','15:00','17:00','19:00'], merchant:'tattoo'},
-    piercing: {times:['11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'], merchant:'piercing'},
-    removal:  {times:['11:00','13:00','15:00','17:00','19:00'], merchant:'tattoo'},
-    course:   {times:['11:00','14:00','17:00'], merchant:'tattoo'}
+    tattoo:   {times:allBookingTimes, merchant:'tattoo'},
+    piercing: {times:allBookingTimes, merchant:'piercing'},
+    removal:  {times:allBookingTimes, merchant:'tattoo'},
+    course:   {times:allBookingTimes, merchant:'tattoo'}
   };
 
   function localDateValue(date){
@@ -2480,11 +2487,26 @@
   }
   function setupBookingDate(){
     var input=document.getElementById('bookingDateInput');
-    if(!input) return;
+    var list=document.getElementById('bookingDateList');
+    if(!input||!list) return;
     var tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);
     var max=new Date(tomorrow);max.setDate(max.getDate()+60);
-    input.min=localDateValue(tomorrow);input.max=localDateValue(max);
-    if(!input.value) input.value=localDateValue(tomorrow);
+    var weekdays=['Ням','Даваа','Мягмар','Лхагва','Пүрэв','Баасан','Бямба'];
+    var months=['1-р сар','2-р сар','3-р сар','4-р сар','5-р сар','6-р сар','7-р сар','8-р сар','9-р сар','10-р сар','11-р сар','12-р сар'];
+    list.innerHTML='';input.value='';
+    for(var cursor=new Date(tomorrow);cursor<=max;cursor.setDate(cursor.getDate()+1)){
+      (function(day){
+        var btn=document.createElement('button');btn.type='button';btn.className='booking-date-option';
+        btn.innerHTML='<strong>'+months[day.getMonth()]+' '+day.getDate()+'</strong><span>'+weekdays[day.getDay()]+'</span>';
+        if(day.getDay()===1){btn.disabled=true;btn.title='Studio амарна';}
+        btn.onclick=function(){
+          list.querySelectorAll('.booking-date-option').forEach(function(el){el.classList.remove('selected');});
+          btn.classList.add('selected');input.value=localDateValue(day);btn.scrollIntoView({behavior:'smooth',block:'center'});renderTimeSlots();
+        };
+        list.appendChild(btn);
+        if(!btn.disabled&&!input.value){btn.classList.add('selected');input.value=localDateValue(day);setTimeout(function(){btn.scrollIntoView({block:'center'});},0);}
+      })(new Date(cursor));
+    }
     renderTimeSlots();
   }
   function renderTimeSlots(){
@@ -2495,12 +2517,7 @@
     if(!dateInput||!timeInput||!wrap) return;
     timeInput.value='';wrap.innerHTML='';
     document.getElementById('scheduleError').classList.remove('show');
-    var selected=new Date(dateInput.value+'T12:00:00');
-    if(selected.getDay()===1){
-      status.textContent='ДАВАА — АМАРНА';
-      wrap.innerHTML='<span class="field-hint">Даваа гарагт studio амарна. Өөр өдөр сонгоно уу.</span>';
-      return;
-    }
+    if(!dateInput.value){status.textContent='ӨДӨР СОНГОНО УУ';return;}
     status.textContent='СУЛ ЦАГУУД';
     var service=document.getElementById('bookingServiceSelect').value;
     (bookingScheduleConfig[service]||bookingScheduleConfig.tattoo).times.forEach(function(time){
