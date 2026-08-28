@@ -8,7 +8,7 @@ crons = ["*/15 * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "hunnu-booking"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "a75c662b-fbe5-422b-afcd-28e8b65eb5d6"
 
 # Secrets are added with `wrangler secret put`, never committed here:
 # QPAY_TATTOO_CLIENT_ID / QPAY_TATTOO_CLIENT_SECRET / QPAY_TATTOO_INVOICE_CODE
