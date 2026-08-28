@@ -536,6 +536,28 @@
     cursor:pointer;transition:background .25s;font-family:'Inter',sans-serif;
   }
   .submit-btn:hover{background:#8a121b;}
+  .booking-schedule{
+    border:1px solid var(--line);background:rgba(11,11,13,.45);padding:20px;
+  }
+  .booking-schedule-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-end;margin-bottom:14px;}
+  .booking-schedule-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;}
+  .booking-schedule-status{font:10px 'JetBrains Mono',monospace;color:var(--brass);}
+  .time-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+  .time-slot{border:1px solid var(--line);background:transparent;color:var(--paper);padding:10px 6px;cursor:pointer;font:12px 'JetBrains Mono',monospace;transition:.2s;}
+  .time-slot:hover{border-color:var(--brass);}
+  .time-slot.selected{background:var(--crimson);border-color:var(--crimson);}
+  .time-slot:disabled{opacity:.25;cursor:not-allowed;text-decoration:line-through;}
+  .schedule-error{display:none;color:var(--crimson);font-size:11px;margin-top:10px;}
+  .schedule-error.show{display:block;}
+  .payment-overlay{position:fixed;inset:0;z-index:340;background:rgba(11,11,13,.9);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:.25s;}
+  .payment-overlay.open{opacity:1;visibility:visible;}
+  .payment-card{width:min(430px,100%);background:var(--ink-2);border:1px solid var(--line);padding:34px;text-align:center;position:relative;}
+  .payment-card h3{font-size:25px;margin-bottom:10px;}.payment-card p{color:var(--muted);font-size:13px;line-height:1.6;}
+  .payment-qr{width:220px;max-width:75%;aspect-ratio:1;margin:22px auto;background:white;padding:10px;display:none;}
+  .payment-qr img{width:100%;height:100%;object-fit:contain;}
+  .payment-state{margin:20px 0;padding:13px;border:1px solid rgba(176,141,63,.3);color:var(--brass);font:12px 'JetBrains Mono',monospace;}
+  .payment-close{position:absolute;right:12px;top:10px;border:0;background:none;color:var(--muted);font-size:20px;cursor:pointer;}
+  @media(max-width:520px){.time-slots{grid-template-columns:repeat(3,1fr)}.booking-schedule{padding:16px}.payment-card{padding:30px 20px}}
 
   @media(max-width:800px){
     .booking-wrap{grid-template-columns:1fr;}
@@ -1863,7 +1885,7 @@
       <div class="form-row">
         <div class="field" id="artistFieldGroup">
           <label>Artist сонгох</label>
-          <select id="bookingArtistSelect">
+          <select id="bookingArtistSelect" onchange="renderTimeSlots()">
             <option value="ml">Mnhja Loco</option>
             <option value="a2">Jamuh</option>
             <option value="a4">LILI</option>
@@ -1897,6 +1919,19 @@
         <label>Хэмжээ (см орчим)</label>
         <input type="text" id="bookingSizeInput" placeholder="жш: 10x10">
       </div>
+      <div class="booking-schedule" id="bookingSchedule">
+        <div class="booking-schedule-head">
+          <span class="booking-schedule-title">Өдөр, цаг сонгох</span>
+          <span class="booking-schedule-status" id="scheduleStatus">СУЛ ЦАГУУД</span>
+        </div>
+        <div class="field">
+          <label for="bookingDateInput">Өдөр</label>
+          <input type="date" id="bookingDateInput" required onchange="renderTimeSlots()">
+        </div>
+        <div class="time-slots" id="bookingTimeSlots" aria-label="Сул цаг сонгох"></div>
+        <input type="hidden" id="bookingTimeInput" required>
+        <span class="schedule-error" id="scheduleError">Үйлчилгээ авах өдөр, цагаа сонгоно уу</span>
+      </div>
       <div class="field">
         <label id="bookingNoteLabel">Санааны тайлбар</label>
         <textarea id="bookingNoteText" placeholder="Ямар шивээс хийлгэх гэж байгаагаа бичээрэй..."></textarea>
@@ -1910,6 +1945,18 @@
     </form>
   </div>
 </section>
+
+<div class="payment-overlay" id="paymentOverlay">
+  <div class="payment-card">
+    <button type="button" class="payment-close" onclick="closePaymentOverlay()" aria-label="Хаах">✕</button>
+    <span class="section-num">BOOKING PAYMENT</span>
+    <h3 class="display" id="paymentTitle">Захиалгын хүсэлт илгээгдлээ</h3>
+    <p id="paymentDescription">QPay API холбогдсоны дараа энд урьдчилгаа төлбөрийн QR автоматаар гарна.</p>
+    <div class="payment-qr" id="paymentQr"><img id="paymentQrImg" alt="QPay QR"></div>
+    <div class="payment-state" id="paymentState">ТӨЛБӨР ХҮЛЭЭГДЭЖ БАЙНА</div>
+    <a href="#" class="btn-primary" id="paymentDeepLink" style="display:none">Банкны апп-аар төлөх</a>
+  </div>
+</div>
 
 <footer id="contact">
   <div class="footer-top">
@@ -2420,6 +2467,98 @@
     phoneError.classList.remove('show');
   }
 
+  var bookingScheduleConfig = {
+    tattoo:   {times:['11:00','13:00','15:00','17:00','19:00'], merchant:'tattoo'},
+    piercing: {times:['11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'], merchant:'piercing'},
+    removal:  {times:['11:00','13:00','15:00','17:00','19:00'], merchant:'tattoo'},
+    course:   {times:['11:00','14:00','17:00'], merchant:'tattoo'}
+  };
+
+  function localDateValue(date){
+    var y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,'0'),d=String(date.getDate()).padStart(2,'0');
+    return y+'-'+m+'-'+d;
+  }
+  function setupBookingDate(){
+    var input=document.getElementById('bookingDateInput');
+    if(!input) return;
+    var tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);
+    var max=new Date(tomorrow);max.setDate(max.getDate()+60);
+    input.min=localDateValue(tomorrow);input.max=localDateValue(max);
+    if(!input.value) input.value=localDateValue(tomorrow);
+    renderTimeSlots();
+  }
+  function renderTimeSlots(){
+    var dateInput=document.getElementById('bookingDateInput');
+    var timeInput=document.getElementById('bookingTimeInput');
+    var wrap=document.getElementById('bookingTimeSlots');
+    var status=document.getElementById('scheduleStatus');
+    if(!dateInput||!timeInput||!wrap) return;
+    timeInput.value='';wrap.innerHTML='';
+    document.getElementById('scheduleError').classList.remove('show');
+    var selected=new Date(dateInput.value+'T12:00:00');
+    if(selected.getDay()===1){
+      status.textContent='ДАВАА — АМАРНА';
+      wrap.innerHTML='<span class="field-hint">Даваа гарагт studio амарна. Өөр өдөр сонгоно уу.</span>';
+      return;
+    }
+    status.textContent='СУЛ ЦАГУУД';
+    var service=document.getElementById('bookingServiceSelect').value;
+    (bookingScheduleConfig[service]||bookingScheduleConfig.tattoo).times.forEach(function(time){
+      var btn=document.createElement('button');btn.type='button';btn.className='time-slot';btn.textContent=time;
+      btn.onclick=function(){
+        wrap.querySelectorAll('.time-slot').forEach(function(el){el.classList.remove('selected');});
+        btn.classList.add('selected');timeInput.value=time;
+        document.getElementById('scheduleError').classList.remove('show');
+      };
+      wrap.appendChild(btn);
+    });
+    var artist=document.getElementById('bookingArtistSelect');
+    var query='?action=availability&service='+encodeURIComponent(service)+'&artist='+encodeURIComponent(artist&&artist.value||'')+'&date='+encodeURIComponent(dateInput.value);
+    fetch('https://hunnu-booking.gaorm0206.workers.dev/'+query).then(function(res){return res.ok?res.json():null;}).then(function(data){
+      if(!data||!Array.isArray(data.busy)) return;
+      wrap.querySelectorAll('.time-slot').forEach(function(btn){if(data.busy.indexOf(btn.textContent)!==-1)btn.disabled=true;});
+    }).catch(function(){});
+  }
+  function closePaymentOverlay(){
+    document.getElementById('paymentOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  function showPaymentOverlay(payment, bookingId){
+    var overlay=document.getElementById('paymentOverlay');
+    var qr=document.getElementById('paymentQr');
+    var deep=document.getElementById('paymentDeepLink');
+    qr.style.display='none';deep.style.display='none';
+    if(payment&&payment.qrImage){
+      document.getElementById('paymentQrImg').src=payment.qrImage;
+      qr.style.display='block';
+      document.getElementById('paymentTitle').textContent='Урьдчилгаа төлбөр';
+      document.getElementById('paymentDescription').textContent='QR кодыг банкны апп-аар уншуулж төлнө үү.';
+      document.getElementById('paymentState').textContent='ТӨЛБӨР ХҮЛЭЭГДЭЖ БАЙНА';
+      if(payment.deepLink){deep.href=payment.deepLink;deep.style.display='inline-block';}
+      if(bookingId) pollPaymentStatus(bookingId, 0);
+    }else{
+      document.getElementById('paymentTitle').textContent='Захиалгын хүсэлт илгээгдлээ';
+      document.getElementById('paymentDescription').textContent='Таны сонгосон өдөр, цагийг artist шалгаад холбогдоно. QPay API холбогдмогц энд урьдчилгаа төлбөрийн QR автоматаар гардаг болно.';
+      document.getElementById('paymentState').textContent='ARTIST БАТАЛГААЖУУЛАХЫГ ХҮЛЭЭЖ БАЙНА';
+    }
+    overlay.classList.add('open');document.body.style.overflow='hidden';
+  }
+  function pollPaymentStatus(bookingId, attempt){
+    if(attempt >= 60 || !document.getElementById('paymentOverlay').classList.contains('open')) return;
+    setTimeout(function(){
+      fetch('https://hunnu-booking.gaorm0206.workers.dev/?action=payment-status&id='+encodeURIComponent(bookingId))
+        .then(function(res){return res.ok?res.json():null;})
+        .then(function(data){
+          if(data&&data.status==='paid'){
+            document.getElementById('paymentState').textContent='ТӨЛБӨР АМЖИЛТТАЙ ✓';
+            document.getElementById('paymentDeepLink').style.display='none';
+            return;
+          }
+          pollPaymentStatus(bookingId, attempt+1);
+        }).catch(function(){pollPaymentStatus(bookingId, attempt+1);});
+    }, 3000);
+  }
+
   function submitBookingForm(e){
     e.preventDefault();
     var divider = '━━━━━━━━━━━━━━━━━━';
@@ -2444,8 +2583,16 @@
       return;
     }
     clearPhoneError();
+    var bookingDate=document.getElementById('bookingDateInput').value;
+    var bookingTime=document.getElementById('bookingTimeInput').value;
+    if(!bookingDate||!bookingTime){
+      document.getElementById('scheduleError').classList.add('show');
+      document.getElementById('bookingSchedule').scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
     if(name) lines.push('👤 Нэр: ' + name);
     lines.push('📞 Утас: ' + phone);
+    lines.push('📅 Өдөр: ' + bookingDate, '🕐 Цаг: ' + bookingTime);
 
     var artistGroup = document.getElementById('artistFieldGroup');
     if(artistGroup.style.display !== 'none'){
@@ -2484,6 +2631,15 @@
     var photoInput = document.getElementById('bookingPhotoInput');
     var formData = new FormData();
     formData.append('message', message);
+    formData.append('name', name);
+    formData.append('phone', phone);
+    formData.append('service', serviceSelect.value);
+    if(artistGroup.style.display !== 'none'){
+      formData.append('artist', document.getElementById('bookingArtistSelect').value);
+    }
+    formData.append('booking_date', bookingDate);
+    formData.append('booking_time', bookingTime);
+    formData.append('merchant_route', (bookingScheduleConfig[serviceSelect.value]||{}).merchant || 'tattoo');
     if(photoInput.files && photoInput.files.length){
       formData.append('photo', photoInput.files[0]);
     }
@@ -2499,8 +2655,10 @@
     }).then(function(res){ return res.json(); }).then(function(data){
       if(!data.ok) throw new Error(data.error || 'Send failed');
       submitBtn.textContent = 'Илгээгдлээ ✓';
+      showPaymentOverlay(data.payment || null, data.bookingId || '');
       e.target.reset();
       handleServiceChange();
+      setupBookingDate();
       setTimeout(function(){
         submitBtn.textContent = originalBtnText;
         submitBtn.disabled = false;
@@ -2582,8 +2740,10 @@
       infoLine1.textContent = 'Бүртгэлийн хүсэлт илгээмэгц манай баг тантай шуурхай холбогдоно';
       infoLine2.textContent = 'Төлбөрийн нөхцөл тохирсны дараа бүртгэл баталгаажна';
     }
+    renderTimeSlots();
   }
   handleServiceChange();
+  setupBookingDate();
   document.getElementById('bookingPhoneInput').addEventListener('input', clearPhoneError);
 
   if(sessionStorage.getItem('promoState') === 'minimized'){

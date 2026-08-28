@@ -1,0 +1,13 @@
+name = "hunnu-booking"
+main = "worker.js"
+compatibility_date = "2026-08-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "hunnu-booking"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+# Secrets are added with `wrangler secret put`, never committed here:
+# QPAY_TATTOO_CLIENT_ID / QPAY_TATTOO_CLIENT_SECRET / QPAY_TATTOO_INVOICE_CODE
+# QPAY_PIERCING_CLIENT_ID / QPAY_PIERCING_CLIENT_SECRET / QPAY_PIERCING_INVOICE_CODE
+# TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID
