@@ -478,6 +478,7 @@
     padding:56px 5vw;
     display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;
   }
+  .booking-wrap > *, .booking-wrap form, .booking-wrap .field{min-width:0;max-width:100%;}
   .booking-info h3{font-size:26px;margin-bottom:16px;}
   .booking-info p{color:var(--paper);font-size:14px;font-weight:300;line-height:1.8;margin-bottom:26px;}
   .booking-note{
@@ -549,13 +550,13 @@
   .booking-schedule-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:12px;}
   .booking-schedule-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;}
   .booking-schedule-status{font:10px 'JetBrains Mono',monospace;color:var(--brass);}
-  .booking-date-list{height:132px;overflow-y:auto;border:1px solid rgba(237,233,225,.1);border-radius:14px;scroll-snap-type:y mandatory;overscroll-behavior:contain;padding:44px 6px;background:rgba(0,0,0,.18);scrollbar-width:none;}
+  .booking-date-list{width:100%;max-width:100%;height:132px;overflow-y:auto;border:1px solid rgba(237,233,225,.1);border-radius:14px;scroll-snap-type:y mandatory;overscroll-behavior:contain;padding:44px 6px;background:rgba(0,0,0,.18);scrollbar-width:none;}
   .booking-date-list::-webkit-scrollbar,.time-slots::-webkit-scrollbar{display:none;}
   .booking-date-option{width:100%;min-height:44px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;border:0;background:transparent;color:var(--muted);padding:8px 13px;text-align:left;cursor:pointer;scroll-snap-align:center;font-family:'Inter',sans-serif;border-radius:10px;transition:.2s;}
   .booking-date-option strong{font-size:14px;color:var(--paper);}.booking-date-option span{font:11px 'JetBrains Mono',monospace;}
   .booking-date-option:hover{background:rgba(255,255,255,.05);}.booking-date-option.selected{background:rgba(163,22,33,.92);color:var(--paper);box-shadow:0 5px 18px rgba(163,22,33,.22);}.booking-date-option.selected strong{color:var(--paper);}
   .booking-date-option:disabled{opacity:.28;cursor:not-allowed;}.booking-date-option:disabled strong{text-decoration:line-through;}
-  .time-slots{display:flex;gap:8px;margin-top:12px;overflow-x:auto;scroll-snap-type:x proximity;overscroll-behavior-x:contain;padding:2px 1px 7px;scrollbar-width:none;}
+  .time-slots{width:100%;max-width:100%;min-width:0;display:flex;gap:8px;margin-top:12px;overflow-x:auto;scroll-snap-type:x proximity;overscroll-behavior-x:contain;padding:2px 1px 7px;scrollbar-width:none;}
   .time-slot{flex:0 0 68px;scroll-snap-align:start;border:1px solid rgba(237,233,225,.13);border-radius:999px;background:rgba(255,255,255,.035);color:var(--paper);padding:10px 8px;cursor:pointer;font:12px 'JetBrains Mono',monospace;transition:.2s;}
   .time-slot:hover{border-color:var(--brass);}
   .time-slot.selected{background:var(--crimson);border-color:var(--crimson);box-shadow:0 5px 16px rgba(163,22,33,.24);}
