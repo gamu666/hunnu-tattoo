@@ -301,6 +301,6 @@ async function sendScheduledReminders(env) {
   for (const b of upcoming.results) {
     const start=new Date(`${b.booking_date}T${b.booking_time}:00+08:00`).getTime();
     const minutes=(start-now)/60000;
-    if (minutes>105 && minutes<=120) await reminderOnce(env,`twohour:${b.id}`,formatAdminBooking('⏰ 2 ЦАГИЙН ДАРАА ЗАХИАЛГАТАЙ',b));
+    if (minutes>0 && minutes<=30) await reminderOnce(env,`halfhour:${b.id}`,formatAdminBooking('⏰ 30 МИНУТЫН ДАРАА ЗАХИАЛГАТАЙ',b));
   }
 }
