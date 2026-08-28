@@ -2498,7 +2498,7 @@
     var list=document.getElementById('bookingDateList');
     if(!input||!list) return;
     var tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);
-    var max=new Date(tomorrow);max.setDate(max.getDate()+60);
+    var max=new Date(tomorrow);max.setDate(max.getDate()+30);
     var weekdays=['Ням','Даваа','Мягмар','Лхагва','Пүрэв','Баасан','Бямба'];
     var months=['1-р сар','2-р сар','3-р сар','4-р сар','5-р сар','6-р сар','7-р сар','8-р сар','9-р сар','10-р сар','11-р сар','12-р сар'];
     list.innerHTML='';input.value='';
@@ -2506,7 +2506,6 @@
       (function(day){
         var btn=document.createElement('button');btn.type='button';btn.className='booking-date-option';
         btn.innerHTML='<strong>'+months[day.getMonth()]+' '+day.getDate()+'</strong><span>'+weekdays[day.getDay()]+'</span>';
-        if(day.getDay()===1){btn.disabled=true;btn.title='Studio амарна';}
         btn.onclick=function(){
           list.querySelectorAll('.booking-date-option').forEach(function(el){el.classList.remove('selected');});
           btn.classList.add('selected');input.value=localDateValue(day);btn.scrollIntoView({behavior:'smooth',block:'center'});renderTimeSlots();
@@ -2593,6 +2592,8 @@
       divider,
       '🎨 Үйлчилгээ: ' + serviceSelect.options[serviceSelect.selectedIndex].text
     ];
+    var depositLabels={tattoo:'20,000₮',removal:'20,000₮',piercing:'5,000₮',course:'Тохиролцоно'};
+    lines.push('💳 Урьдчилгаа: '+depositLabels[serviceSelect.value]);
 
     var name = document.getElementById('bookingNameInput').value.trim();
     var phone = document.getElementById('bookingPhoneInput').value.trim();
