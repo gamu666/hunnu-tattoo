@@ -506,6 +506,11 @@
     color:var(--paper);font-family:'Inter',sans-serif;font-size:15px;padding:8px 0;
     outline:none;transition:border-color .25s;
   }
+  .field select{
+    -webkit-appearance:none;appearance:none;padding-right:34px;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%238A8790' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 9 5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 7px center;background-size:18px;
+  }
   .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--crimson);}
   .field textarea{resize:none;height:70px;}
   .field select option{background:var(--ink-2);}
@@ -537,20 +542,23 @@
   }
   .submit-btn:hover{background:#8a121b;}
   .booking-schedule{
-    border:1px solid var(--line);background:rgba(11,11,13,.45);padding:20px;
+    border:1px solid rgba(237,233,225,.12);border-radius:20px;
+    background:rgba(255,255,255,.035);padding:16px;overflow:hidden;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
   }
-  .booking-schedule-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-end;margin-bottom:14px;}
+  .booking-schedule-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:12px;}
   .booking-schedule-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;}
   .booking-schedule-status{font:10px 'JetBrains Mono',monospace;color:var(--brass);}
-  .booking-date-list{height:190px;overflow-y:auto;border:1px solid var(--line);scroll-snap-type:y mandatory;overscroll-behavior:contain;padding:58px 8px;scrollbar-width:thin;scrollbar-color:var(--crimson) var(--ink);}
-  .booking-date-option{width:100%;min-height:52px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--muted);padding:10px 14px;text-align:left;cursor:pointer;scroll-snap-align:center;font-family:'Inter',sans-serif;transition:.2s;}
+  .booking-date-list{height:132px;overflow-y:auto;border:1px solid rgba(237,233,225,.1);border-radius:14px;scroll-snap-type:y mandatory;overscroll-behavior:contain;padding:44px 6px;background:rgba(0,0,0,.18);scrollbar-width:none;}
+  .booking-date-list::-webkit-scrollbar,.time-slots::-webkit-scrollbar{display:none;}
+  .booking-date-option{width:100%;min-height:44px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;border:0;background:transparent;color:var(--muted);padding:8px 13px;text-align:left;cursor:pointer;scroll-snap-align:center;font-family:'Inter',sans-serif;border-radius:10px;transition:.2s;}
   .booking-date-option strong{font-size:14px;color:var(--paper);}.booking-date-option span{font:11px 'JetBrains Mono',monospace;}
-  .booking-date-option:hover{background:rgba(176,141,63,.08);}.booking-date-option.selected{background:var(--crimson);color:var(--paper);}.booking-date-option.selected strong{color:var(--paper);}
+  .booking-date-option:hover{background:rgba(255,255,255,.05);}.booking-date-option.selected{background:rgba(163,22,33,.92);color:var(--paper);box-shadow:0 5px 18px rgba(163,22,33,.22);}.booking-date-option.selected strong{color:var(--paper);}
   .booking-date-option:disabled{opacity:.28;cursor:not-allowed;}.booking-date-option:disabled strong{text-decoration:line-through;}
-  .time-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
-  .time-slot{border:1px solid var(--line);background:transparent;color:var(--paper);padding:10px 6px;cursor:pointer;font:12px 'JetBrains Mono',monospace;transition:.2s;}
+  .time-slots{display:flex;gap:8px;margin-top:12px;overflow-x:auto;scroll-snap-type:x proximity;overscroll-behavior-x:contain;padding:2px 1px 7px;scrollbar-width:none;}
+  .time-slot{flex:0 0 68px;scroll-snap-align:start;border:1px solid rgba(237,233,225,.13);border-radius:999px;background:rgba(255,255,255,.035);color:var(--paper);padding:10px 8px;cursor:pointer;font:12px 'JetBrains Mono',monospace;transition:.2s;}
   .time-slot:hover{border-color:var(--brass);}
-  .time-slot.selected{background:var(--crimson);border-color:var(--crimson);}
+  .time-slot.selected{background:var(--crimson);border-color:var(--crimson);box-shadow:0 5px 16px rgba(163,22,33,.24);}
   .time-slot:disabled{opacity:.25;cursor:not-allowed;text-decoration:line-through;}
   .schedule-error{display:none;color:var(--crimson);font-size:11px;margin-top:10px;}
   .schedule-error.show{display:block;}
@@ -562,7 +570,7 @@
   .payment-qr img{width:100%;height:100%;object-fit:contain;}
   .payment-state{margin:20px 0;padding:13px;border:1px solid rgba(176,141,63,.3);color:var(--brass);font:12px 'JetBrains Mono',monospace;}
   .payment-close{position:absolute;right:12px;top:10px;border:0;background:none;color:var(--muted);font-size:20px;cursor:pointer;}
-  @media(max-width:520px){.time-slots{grid-template-columns:repeat(3,1fr)}.booking-schedule{padding:16px}.payment-card{padding:30px 20px}}
+  @media(max-width:520px){.booking-schedule{padding:14px;border-radius:18px}.payment-card{padding:30px 20px}.booking-date-list{height:128px}.time-slot{flex-basis:66px}}
 
   @media(max-width:800px){
     .booking-wrap{grid-template-columns:1fr;}
