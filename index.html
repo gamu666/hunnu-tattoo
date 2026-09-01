@@ -1442,13 +1442,6 @@
     100%{opacity:0;transform:translate(-50%,-50%) scale(18);}
   }
 
-  .footer-credit{
-    color:var(--muted);cursor:default;letter-spacing:.04em;
-    transition:color .32s ease,letter-spacing .48s cubic-bezier(.16,1,.3,1),text-shadow .32s ease;
-  }
-  .footer-credit:hover{color:var(--brass);letter-spacing:.12em;text-shadow:0 0 24px rgba(176,141,63,.2);}
-  .footer-credits{display:flex;align-items:center;gap:14px;}
-  .footer-credit-divider{width:1px;height:14px;background:var(--line);}
   .footer-dev-credit{
     display:inline-flex;align-items:center;gap:8px;
     color:var(--muted);cursor:default;letter-spacing:.04em;
@@ -1464,13 +1457,11 @@
   }
 
   @media(max-width:700px){
-    .footer-credits{gap:11px;}
-    .footer-credit-divider{height:12px;}
     .footer-dev-logo{width:25px;height:25px;}
   }
 
   @media(prefers-reduced-motion:reduce){
-    .flash-card::after,.flash-card::before,.artist-card,.artist-card::after,.artist-name::after,.footer-credit,.footer-dev-credit,.footer-dev-logo{transition:none;}
+    .flash-card::after,.flash-card::before,.artist-card,.artist-card::after,.artist-name::after,.footer-dev-credit,.footer-dev-logo{transition:none;}
     .artist-card:hover{transform:none;}
     .footer-dev-credit:hover .footer-dev-logo{transform:none;}
     .ink-ripple{display:none;}
@@ -2033,14 +2024,10 @@
   </div>
   <div class="footer-bottom">
     <span>© 2026 HUNNU TATTOO STUDIO</span>
-    <div class="mono footer-credits" aria-label="Studio credits">
-      <span class="footer-credit">DESIGN by Ga</span>
-      <span class="footer-credit-divider" aria-hidden="true"></span>
-      <span class="footer-dev-credit">
-        <span>DEV by</span>
-        <img class="footer-dev-logo" src="dev-by-logo.png" width="28" height="28" alt="Developer logo">
-      </span>
-    </div>
+    <span class="mono footer-dev-credit">
+      <span>DEV by</span>
+      <img class="footer-dev-logo" src="dev-by-logo.png" width="28" height="28" alt="Developer logo">
+    </span>
   </div>
 </footer>
 
